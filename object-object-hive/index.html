@@ -1,0 +1,2005 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="hive, 张文军,学习笔记,锁清秋">
+    <meta name="description" content="更多内容请关注：
+
+
+锁清秋
+
+
+hive一 . hive1. 概述数据仓库(Data Warehouse)工具
+基于Hadoop的
+将  结构化的数据文件  映射成一张表
+提供了类SQL的HQL的查询功能
+
+本质：将sql语句转换为Map">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+
+
+    <meta name="baidu_union_verify" content="28f5c5d83967eb03d315b5e8e7538217">
+
+
+    
+    <title>hive | 学习笔记</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+
+    
+    
+<link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">学习笔记</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>Medias</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>我的相册</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">学习笔记</div>
+        <div class="logo-desc">
+            
+            只懂追求技术的小白
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;" target="_blank" rel="noopener">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			Medias
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>   
+				
+                  <a href="/galleries " style="margin-left:75px";>
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>我的相册</span>
+                  </a>
+                </li>
+               
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/NJAUzhangwenjun" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/NJAUzhangwenjun" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页(或联系博主：qq：2447950131)！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        hive
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7/">
+                                <span class="chip bg-color">大数剧</span>
+                            </a>
+                        
+                            <a href="/tags/hive/">
+                                <span class="chip bg-color">hive</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/hive/" class="post-category">
+                                hive
+                            </a>
+                        
+                            <a href="/categories/hive/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                大数剧
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-10-05
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2021-01-28
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    7.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    34 分
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <center>更多内容请关注：</center>
+
+<p><img src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586869254.png" alt="Java快速开发学习"></p>
+<center><a href="https://wjhub.gitee.io">锁清秋</a></center>
+
+<hr>
+<h1 id="hive"><a href="#hive" class="headerlink" title="hive"></a>hive</h1><h1 id="一-hive"><a href="#一-hive" class="headerlink" title="一 . hive"></a>一 . hive</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><pre><code>数据仓库(Data Warehouse)工具
+基于Hadoop的
+将  结构化的数据文件  映射成一张表
+提供了类SQL的HQL的查询功能
+
+本质：将sql语句转换为MapReduce任务进行运行（ 记住 ），本质上就是MapReduce
+作用： 对海量的大数据（结构化）  数据进行分析和统计
+
+HQL:HQL是Hibernate Query Language的缩写，提供更加丰富灵活、更为强大的查询能力；
+HQL更接近SQL语句查询语法。
+数据仓库: 英文名称为Data Warehouse ，存储各种类型的数据，面向主体（分类存储），
+          存储大量的数据，数据的不可以更新，可以一直追加数据</code></pre><h2 id="1-2-组成架构（运行流程）"><a href="#1-2-组成架构（运行流程）" class="headerlink" title="1.2. 组成架构（运行流程）"></a>1.2. 组成架构（运行流程）</h2><p><img src="hive/20191015154125544.png" alt="在这里插入图片描述"></p>
+<pre><code>1. 用户使用命令行工具或者JDBC发送HQL
+2. 使用Driver驱动结合MetaStore元数据，将指定翻译成MapReduce
+3. 首先使用SQL Parser解释器进行HQL的翻译
+4. 使用编译器对解释结果进行编译
+5. 使用优化器对编译结果进行优化
+6. 最后将优化的结果使用执行器进行执行操作（本质上就是在Hadoop集群上使用MapReduce操作）
+7. 将处理结果返回给客户端用户
+
+
+组成：客户端接口、Hive的引擎（驱动）、元数据、Hadoop
+
+说明：
+    元数据（数据的描述信息：表的名称，数据库的名称，权限，所有者，组成字段等等）
+        默认情况下存储在hive内部自带的derby数据库中
+        问题：derby数据库，在同一时刻，只允许一个线程操作
+        建议：使用MySQL对元数据进行存储
+
+    Hive的引擎：
+        解释器、编译器、优化器、执行器 （顺序）
+
+    Hadoop:
+        执行Hive
+
+    Client 接口：用户操作、访问Hive 的方式（jdbc,cli... ...）</code></pre><h2 id="1-3-特点"><a href="#1-3-特点" class="headerlink" title="1.3. 特点"></a>1.3. 特点</h2><pre><code>Hive使用HQL实现对数据的操作，操作方便简单（比MapReduce操作方便）
+Hive处理大数据（比MySQL/Oracle强大）
+Hive提供的大量的工具
+Hive支持自定义函数，使用自定义需求
+Hive实现离线数据分析
+
+
+Hive使用类SQL语句实现功能，处理业务的范围受限（SQL语法所能表达的业务受限）
+Hive运行效率较低（延迟高，离线数据分析）
+    Hive ----&gt; MapReduce （效率低）（机器转换的）
+
+hadoop  mr    离线
+        hive  离线
+        hbase 离线 实时
+        spark 实时</code></pre><h2 id="4-Hive和数据库的区别"><a href="#4-Hive和数据库的区别" class="headerlink" title="4. Hive和数据库的区别"></a>4. Hive和数据库的区别</h2><pre><code>Hive不是数据库
+能够使用类SQL对数据进行查询操作（和数据库的相同点）
+
+Hive中没有索引（暴力扫描整张表 ， 访问数据延迟高；使用MR，并行访问数据） 
+
+Hive操作的数据是在分布式文件系统（HDFS）上的数据
+
+Hive使用类SQL语言，功能更加的强大（分布式集群数据）
+
+Hive不支持数据的修改
+
+... ...
+
+
+索引的使用场景：
+    税务局：
+        白天查询数据
+        晚上添加新的数10000条数据据
+
+    提高效率：
+        白天查询：给表建立索引
+        晚上：创建临时表，没有索引的（索引需要动态维护的），向此表中追加数据
+             删除主表的索引，追加新的数据，建立索引
+
+oracle： select * from teacher  where age = 10 and id &gt;10;   
+    where后的条件语句的顺序是：从右向左</code></pre><h1 id="二、Hive的搭建"><a href="#二、Hive的搭建" class="headerlink" title="二、Hive的搭建"></a>二、Hive的搭建</h1><h2 id="2-1-版本的选择"><a href="#2-1-版本的选择" class="headerlink" title="2.1. 版本的选择"></a>2.1. 版本的选择</h2><p>建议使用 1.x 版本</p>
+<p>只需要在一个节点上安装（Master节点）</p>
+<h2 id="2-2-步骤"><a href="#2-2-步骤" class="headerlink" title="2.2. 步骤"></a>2.2. 步骤</h2><ol>
+<li><p>下载<br>hive.apache.org</p>
+</li>
+<li><p>拷贝到linux<br>winscp<br>设置共享文件夹</p>
+</li>
+<li><p>解压<br>tar -zxvf apache-hive-1.2.1-bin.tar.gz -C /opt/programfile/</p>
+</li>
+<li><p>配置环境变量（/etc/profile）</p>
+<pre><code>  export HIVE_HOME=/opt/programfile/hive
+  export PATH= $PATH:$HIVE_HOME/bin</code></pre><p>使新的配置生效：source /etc/profile</p>
+</li>
+<li><p>配置hive</p>
+<ol>
+<li><p>改名<br>cp hive-env.sh.template hive-env.sh</p>
+</li>
+<li><p>修改配置（指定hadoop的路径，因为hive基于Hadoop运行的）<br>HADOOP_HOME=/opt/programfile/hadoop<br>export HIVE_CONF_DIR=/opt/programfile/hive/conf</p>
+</li>
+<li><p>开启集群<br>start-dfs.sh<br>start-yarn.sh</p>
+</li>
+<li><p>配置数据仓库的存储路径（数据最终存储在HDFS上）（在HDFS上配置的路径）<br>注意：此路径需要具有写权限</p>
+<p>创建数据存储目录：<br>hdfs dfs -mkdir /tmp<br>hdfs dfs -mkdir -p /user/hive/warehouse</p>
+<p>修改权限：<br>hdfs dfs -chmod 777 /tmp<br>hdfs dfs -chmod 777 /user/hive/warehouse</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="2-3-软件的基本操作"><a href="#2-3-软件的基本操作" class="headerlink" title="2.3. 软件的基本操作"></a>2.3. 软件的基本操作</h2><h3 id="2-3-1-进入hive"><a href="#2-3-1-进入hive" class="headerlink" title="2.3.1. 进入hive"></a>2.3.1. 进入hive</h3><pre><code>[root@localhost ~] hive  回车</code></pre><h3 id="2-3-2-操作"><a href="#2-3-2-操作" class="headerlink" title="2.3.2. 操作"></a>2.3.2. 操作</h3><pre><code>    show databases;
+    use databaseName;
+    show tables;
+    create table...
+    insert into ...
+    select ....</code></pre><h3 id="2-3-3-退出"><a href="#2-3-3-退出" class="headerlink" title="2.3.3. 退出"></a>2.3.3. 退出</h3><pre><code>ctrl+c
+exit;
+quit;</code></pre><h3 id="2-3-4-hive对本地文件数据进行表的映射操作"><a href="#2-3-4-hive对本地文件数据进行表的映射操作" class="headerlink" title="2.3.4. hive对本地文件数据进行表的映射操作"></a>2.3.4. hive对本地文件数据进行表的映射操作</h3><pre><code>hive&gt; load data local inpath   '/home/zhangsan/cat.txt 文件路径'   into table  表名称 ;
+
+添加失败：当前表没有指定数据属性的分割符好
+
+解决：指定属性间的分隔符
+    create table dog(did int ,name string)  
+        ROW FORMAT DELIMITED FIELDS  TERNIBATED BY  ',';  //分隔符</code></pre><h3 id="2-3-5-转移元数据的存储路径"><a href="#2-3-5-转移元数据的存储路径" class="headerlink" title="2.3.5. 转移元数据的存储路径"></a>2.3.5. 转移元数据的存储路径</h3><pre><code>问题：derby数据库，在同一时刻，只允许一个进程操作（连接数据库，访问数据库derby）
+建议：使用MySQL对元数据进行存储</code></pre><h3 id="2-3-6-metastore的设置方式-：元数据"><a href="#2-3-6-metastore的设置方式-：元数据" class="headerlink" title="2.3.6. metastore的设置方式 ：元数据"></a>2.3.6. metastore的设置方式 ：元数据</h3><pre><code>内嵌方式：
+    使用derby数据库作为内嵌的metastore数据库（用于测试），在同一时刻，只允许一个进程操作
+
+外嵌方式（远程方式）：
+    使用第三方数据库存储metastore</code></pre><h3 id="2-3-7-设置metastore的存储路径（选择MySQL数据库进行存储）实现多客户端范文hive"><a href="#2-3-7-设置metastore的存储路径（选择MySQL数据库进行存储）实现多客户端范文hive" class="headerlink" title="2.3.7. 设置metastore的存储路径（选择MySQL数据库进行存储）实现多客户端范文hive"></a>2.3.7. 设置metastore的存储路径（选择MySQL数据库进行存储）实现多客户端范文hive</h3><h4 id="2-3-7-1-安装MySQL数据库（在线安装模式，请保持外网络畅通"><a href="#2-3-7-1-安装MySQL数据库（在线安装模式，请保持外网络畅通" class="headerlink" title="2.3.7.1 安装MySQL数据库（在线安装模式，请保持外网络畅通 )"></a>2.3.7.1 安装MySQL数据库（在线安装模式，请保持外网络畅通 )</h4><p>使用root用户登录系统，并切换到根目录<br>进入opt文件下，创建文件目录mysql57，并进入）</p>
+<ol>
+<li>再次切换到/opt/mysql57目录下，执行下载命令：<br>wget <a href="http://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm" target="_blank" rel="noopener">http://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm</a></li>
+<li>如果提示wget命令未找到，则在保持外网网络畅通下执行命令：<br>cd /<br>yum install wget -y<br><img src="hive/20191015155953914.png" alt="在这里插入图片描述"></li>
+<li>再次切换到/opt/mysql57目录下，执行下载命令：<br>wget <a href="http://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm" target="_blank" rel="noopener">http://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm</a></li>
+<li>下载完毕之后，执行如下命令：<br>sudo rpm -ivh mysql57-community-release-el7-11.noarch.rpm</li>
+<li>执行如下命令，安装mysql数据库<br>安装过程中提示如下信息，输入y，然后回车即可<br><strong>sudo yum install mysql-server</strong><br><img src="hive/20191015160155912.png" alt="在这里插入图片描述"><br>至此，mysql基本安装已经成功，接下来配置mysql一些相关信息</li>
+<li>输入如下命令，登录数据库客户端<br>mysql -u root<br>提示如下信息：<br><img src="hive/20191015160323623.png" alt="在这里插入图片描述"><br>是因为此目录，没有对应的操作权限问题，执行如下命令修改目录权限<br>sudo chown -R root:root /var/lib/mysql<br>重新启动数据库，执行如下命令：<br>service mysqld restart</li>
+<li>再次登录，执行如下命令：<br>mysql -u root -p<br>初始化密码查看：<br>通过命令：more /var/log/mysqld.log 获取：1#;htwi(e&gt;Bw<br><img src="hive/2019101516052428.png" alt="在这里插入图片描述"></li>
+<li>再次登录，执行如下命令<br>mysql -u root -p 1#;htwi(e&gt;Bw</li>
+<li>修改登录密码<br>alter user user() identified by ‘12345678’;</li>
+<li>提示密码安全问题<br>执行如下命令，修改密码安全策略后，再次修改密码<br>set global validate_password_policy=0;</li>
+</ol>
+<p>重启mysql数据库，测试密码登录<br>service mysqld restart<br><img src="hive/20191015161111690.png" alt="在这里插入图片描述"><br>至此，centos下，mysql安装成功</p>
+<h4 id="2-3-7-2远程连接配置"><a href="#2-3-7-2远程连接配置" class="headerlink" title="2.3.7.2远程连接配置"></a>2.3.7.2远程连接配置</h4><p>如果此时需要远程客户端访问数据库，则还需要进行如下配置 ：</p>
+<ol>
+<li><p>开启3306默认端口，并保存<br>/sbin/iptables -I INPUT -p tcp –dport 3306 -j ACCEPT</p>
+</li>
+<li><p>设置远程连接信息</p>
+<pre><code> mysql -u root -p
+ use mysql;
+ update user set host='%' where user ='root' and host='localhost';
+ select host,user from user;
+ set global validate_password_policy=0;
+ grant all privileges on *.* to root@'%' identified by 'Likang123qwe' with grant option</code></pre></li>
+<li><p>重启mysql服务<br>service mysqld restart</p>
+</li>
+<li><p>其他配置<br>取消mysql默认分区表、字段的大小写<br>修改配置文件/etc/my.conf</p>
+<pre><code> lower_case_table_names=1 不区分大小写
+ lower_case_table_names=0 默认、区分大小写</code></pre></li>
+</ol>
+<h4 id="2-3-7-3MySQL管理"><a href="#2-3-7-3MySQL管理" class="headerlink" title="2.3.7.3MySQL管理"></a>2.3.7.3MySQL管理</h4><ol>
+<li><p>查看mysql服务是否启动<br>ps -ef|grep mysqld</p>
+</li>
+<li><p>启动、关闭mysql服务<br>service mysqld restart 重启<br>service mysqld start 启动<br>service mysqld stop 停止</p>
+</li>
+<li><p>配置文件<br>/etc/my.cnf</p>
+</li>
+<li><p>常见管理命令</p>
+<pre><code> USE 数据库名 使用数据库
+ SHOW DATABASES 列出 MySQL 数据库管理系统的数据库列表
+ SHOW TABLES 显示指定数据库的所有表
+ SHOW COLUMNS FROM 数据表 显示数据表的属性
+ SHOW INDEX FROM 数据表 显示数据表的详细索引信息
+ SHOW TABLE STATUS LIKE [FROM db_name] [LIKE 'pattern'] \G: 该命令将输出Mysql数据库管理系统
+ 的性能及统计信息。</code></pre></li>
+</ol>
+<h4 id="2-3-7-4-Hive元数据存到到MySQL的参数配置"><a href="#2-3-7-4-Hive元数据存到到MySQL的参数配置" class="headerlink" title="2.3.7.4 Hive元数据存到到MySQL的参数配置"></a>2.3.7.4 Hive元数据存到到MySQL的参数配置</h4><pre><code>    目的：hive如何能连接上mysql
+
+    步骤：
+        1. 驱动
+            mv /opt/software/mysql-connection-java-xxx.jar  /opt/programfile/hive/lib/
+
+        2. 连接mysql参数配置：user  password  driver  url
+            hive-default.xml.template ，  hive的配置文件模板    
+
+        3. 创建一个配置文件：hive-site.xml
+            &lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+            &lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?&gt;
+            &lt;configuration&gt;
+
+                      &lt;property&gt;
+                        &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;
+                        &lt;value&gt;root&lt;/value&gt;
+                      &lt;/property&gt;
+
+                     &lt;property&gt;
+                        &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;
+                        &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;
+                      &lt;/property&gt;
+
+                      &lt;property&gt;
+                        &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;
+                        &lt;value&gt;root&lt;/value&gt;
+                      &lt;/property&gt;
+
+                     &lt;property&gt;
+                        &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;
+                        &lt;value&gt;jdbc:mysql://192.168.175.200:3306/metastore?createDatabaseIfNotExist=true&lt;/value&gt;
+                      &lt;/property&gt;
+
+            &lt;/configuration&gt;</code></pre><h3 id="2-3-8-Hive的基本配置"><a href="#2-3-8-Hive的基本配置" class="headerlink" title="2.3.8. Hive的基本配置"></a>2.3.8. Hive的基本配置</h3><h4 id="2-3-8-1-配置日志的存储位置"><a href="#2-3-8-1-配置日志的存储位置" class="headerlink" title="2.3.8.1 配置日志的存储位置"></a>2.3.8.1 配置日志的存储位置</h4><pre><code>    日志文件默认存储位置：/tmp/zhangsan/hive.log
+
+    设置用户自定义的存储位置：
+        1. 创建   hive-log4j.properties   
+            cp hive-log4j.properties.template  hive-log4j.properties    
+
+        2. 修改参数
+            hive.log.dir=/opt/programfile/hive/logs
+
+        3. 重新进入hive，当前日志文件所在的路径发生的变更</code></pre><h4 id="2-3-8-2-hive-site-xml中进行配置"><a href="#2-3-8-2-hive-site-xml中进行配置" class="headerlink" title="2.3.8.2 hive-site.xml中进行配置"></a>2.3.8.2 hive-site.xml中进行配置</h4><pre><code>    配置数据仓库的位置：
+         &lt;property&gt;
+            &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;
+            &lt;value&gt;/user/hive/warehouse&lt;/value&gt;
+          &lt;/property&gt;
+
+    配置当前数据库提示信息：
+          &lt;property&gt;
+            &lt;name&gt;hive.cli.print.current.db&lt;/name&gt;
+            &lt;value&gt;false&lt;/value&gt;
+          &lt;/property&gt;
+
+    配置查询结果的字段提示信息：
+          &lt;property&gt;
+            &lt;name&gt;hive.cli.print.header&lt;/name&gt;
+            &lt;value&gt;true&lt;/value&gt;
+          &lt;/property&gt;</code></pre><h3 id="2-3-9-特有的操作"><a href="#2-3-9-特有的操作" class="headerlink" title="2.3.9. 特有的操作"></a>2.3.9. 特有的操作</h3><h4 id="2-3-9-1-将文件中的数据存储到数据表中：指定分隔符"><a href="#2-3-9-1-将文件中的数据存储到数据表中：指定分隔符" class="headerlink" title="2.3.9.1. 将文件中的数据存储到数据表中：指定分隔符"></a>2.3.9.1. 将文件中的数据存储到数据表中：指定分隔符</h4><pre><code>    hive&gt; load data local inpath  "路径" into table 表名称 （在创建表时，指定了分隔符）
+
+    注意：create table(字段列表... ...)  row format delimited fields terminated "分隔符"</code></pre><h4 id="2-3-9-2-不进入hive，执行sql语句"><a href="#2-3-9-2-不进入hive，执行sql语句" class="headerlink" title="2.3.9. 2. 不进入hive，执行sql语句"></a>2.3.9. 2. 不进入hive，执行sql语句</h4><pre><code>    hive -e  select * from teacher;
+        -e 直接在命令行编写sql语句，执行sql语句，不需要进入hive中
+
+    hive -f 文件名称
+        -f 直接在文件中编写sql语句，执行sql语句，不需要进入hive中
+
+    hive -f 文件名称     &gt; 结果数据的存储路径  
+        将hive命令的结果数据，指定存储到一个文件中</code></pre><h4 id="2-3-9-3-在hive查看hdfs文件系统"><a href="#2-3-9-3-在hive查看hdfs文件系统" class="headerlink" title="2.3.9.3. 在hive查看hdfs文件系统"></a>2.3.9.3. 在hive查看hdfs文件系统</h4><pre><code>    hive (default)&gt; dfs ls /;
+
+    hive (default)&gt; dfs ls /user/hive/;
+
+    hive (default)&gt; ! ls /home/zhangsan;     //查看本地的文件系统</code></pre><h4 id="2-3-9-4-查看hive操作的历史记录"><a href="#2-3-9-4-查看hive操作的历史记录" class="headerlink" title="2.3.9.4. 查看hive操作的历史记录"></a>2.3.9.4. 查看hive操作的历史记录</h4><pre><code>    [zhangsan@master /home/zhangsan]$ cat .hivehistory</code></pre><h3 id="2-3-10-配置文件的修改（优先级）"><a href="#2-3-10-配置文件的修改（优先级）" class="headerlink" title="2.3.10. 配置文件的修改（优先级）"></a>2.3.10. 配置文件的修改（优先级）</h3><pre><code>默认的配置、用户编写hive-site.xml配置文件、用户通过命令行实现参数的配置
+
+优先级：从小到大的顺序</code></pre><h3 id="2-3-11-hive-元数据存储到MySQL（初始化）"><a href="#2-3-11-hive-元数据存储到MySQL（初始化）" class="headerlink" title="2.3.11. hive 元数据存储到MySQL（初始化）"></a>2.3.11. hive 元数据存储到MySQL（初始化）</h3><pre><code>schematool -dbType mysql -initSchema</code></pre><h2 id="2-4-Hive的数据类型"><a href="#2-4-Hive的数据类型" class="headerlink" title="2.4 Hive的数据类型"></a>2.4 Hive的数据类型</h2><h3 id="2-4-1-基本数据类型"><a href="#2-4-1-基本数据类型" class="headerlink" title="2.4.1. 基本数据类型"></a>2.4.1. 基本数据类型</h3><pre><code>int float double  string boolean  timestamp
+
+在hive中使用string来表示字符串类型的数据，存储数据量为：2G左右       </code></pre><h3 id="2-4-2-复杂数据类型"><a href="#2-4-2-复杂数据类型" class="headerlink" title="2.4.2. 复杂数据类型"></a>2.4.2. 复杂数据类型</h3><pre><code>array、map、struct</code></pre><h4 id="2-4-2-1-Array"><a href="#2-4-2-1-Array" class="headerlink" title="2.4.2.1 Array"></a>2.4.2.1 Array</h4><pre><code>    create table arr_tb(name string,score Array&lt;double&gt;)
+        row format delimited fields terminated by '\t'  # 设置每行中的每一个属性间的分隔符
+        collection items terminated by '_'              # 设置一个数组类型的数据项间的分隔符     
+        lines terminated by '\n';                       # 设置多行间的分隔符</code></pre><h4 id="2-4-2-2-Map"><a href="#2-4-2-2-Map" class="headerlink" title="2.4.2.2 Map"></a>2.4.2.2 Map</h4><pre><code>    create table hash_tb(name string ,score map&lt;string,double&gt;)
+        row format delimited fields terminated by '\t' 
+        collection items terminated by '_'
+        map keys terminated by ':'          # map中一个数据项的kv的分隔符
+        lines terminated by '\n';   </code></pre><h4 id="2-4-2-3-Struct"><a href="#2-4-2-3-Struct" class="headerlink" title="2.4.2.3 Struct"></a>2.4.2.3 Struct</h4><pre><code>    create table struct_tb(name string ,score struct&lt;java:double,bigdata:double,mysql:double&gt;)
+        row format delimited fields terminated by '\t' 
+        collection items terminated by '_'
+        lines terminated by '\n';</code></pre><h3 id="2-4-3-hive数据类型向上转型"><a href="#2-4-3-hive数据类型向上转型" class="headerlink" title="2.4.3. hive数据类型向上转型"></a>2.4.3. hive数据类型向上转型</h3><pre><code>小的数据类型可以转换成大的数据类型       
+所有的数据类型类型都可以转成double类型
+boolean类型无法转换</code></pre><h1 id="三-Hive数据的DDL-DML"><a href="#三-Hive数据的DDL-DML" class="headerlink" title="三.Hive数据的DDL,DML"></a>三.Hive数据的DDL,DML</h1><p>SQL：数据库的核心语言，采纳为操作关系型数据库的国际标准语言（ ISO ）<br>非关系型数据库引入此语言（ hive : HQL 额外的功能 ）</p>
+<p>分类：<br>数据定义语言 ：Data definition language DDL ，create /drop /alter<br>数据操作语言 ：Data manipulation language DML ，update /delete /insert<br>数据查询语言 ：Data Query language DQL ， select</p>
+<h2 id="1-DDL（和数据无关）"><a href="#1-DDL（和数据无关）" class="headerlink" title="1. DDL（和数据无关）"></a>1. DDL（和数据无关）</h2><h3 id="1-1-针对数据库"><a href="#1-1-针对数据库" class="headerlink" title="1.1 针对数据库"></a>1.1 针对数据库</h3><h4 id="1-1-1-创建数据库"><a href="#1-1-1-创建数据库" class="headerlink" title="1.1.1. 创建数据库"></a>1.1.1. 创建数据库</h4><pre><code>语法：create database  [if not exists]   dbName  [location  path];
+
+例如：
+    create database db1;  //    /user/hive/warehouse/
+    create database db1;//报错 
+    create database if not exists db1;
+
+    create database  db2 location '/user/db2.db';</code></pre><h4 id="1-1-2-查看数据库"><a href="#1-1-2-查看数据库" class="headerlink" title="1.1.2. 查看数据库"></a>1.1.2. 查看数据库</h4><pre><code>使用某一个数据库：use databaseName;
+
+查看所有的数据库：show databases;
+
+查看某一个数据库的详细信息：desc database [extended]  dbName</code></pre><h4 id="1-1-3-修改数据库"><a href="#1-1-3-修改数据库" class="headerlink" title="1.1.3. 修改数据库"></a>1.1.3. 修改数据库</h4><pre><code>只能修改数据库的描述信息
+
+语法：alter database  dbName  set dbproperties('desc'='ceshi db');</code></pre><h4 id="1-1-4-删除数据库"><a href="#1-1-4-删除数据库" class="headerlink" title="1.1.4. 删除数据库"></a>1.1.4. 删除数据库</h4><pre><code>语法：
+    drop database [if exists] dbName</code></pre><h3 id="1-2-针对数据表"><a href="#1-2-针对数据表" class="headerlink" title="1.2 针对数据表"></a>1.2 针对数据表</h3><h4 id="1-2-1-创建表"><a href="#1-2-1-创建表" class="headerlink" title="1.2.1. 创建表"></a>1.2.1. 创建表</h4><pre><code>完整版的建表语句：
+
+create [external] table [if not exists] tbName
+    (col definiton [comment 字段的描述信息] ... ... ...)
+    [comment 表的描述信息]
+
+    [PARTITIONED BY (col_name data_type [COMMENT col_comment], ...)] # 创建分区
+    [CLUSTERED BY (col_name, col_name, ...)  ]                       # 创建分桶表
+    [row format ... ... ...] # 指定表的分隔符
+    [location path] # 指定表的存储位置
+
+
+    [AS select_statement]               # 创建表的方式
+    LIKE existing_table_or_view_name    # 创建表的方式
+
+创建表方式一：直接创建
+    create table tbName (col  type... ...)
+
+创建表方式二：查询建表法     , AS  （复制表结构，和表中所有数据到新的表中）
+    create table tbName 
+                as  
+            select * from tbName2 ;
+
+创建表方式三：like建表法 , LIKE （只复制表结构，不复制表中所有数据到新的表中）
+    create table tbName 
+                like
+                tbName2;</code></pre><h4 id="1-2-2-查看表"><a href="#1-2-2-查看表" class="headerlink" title="1.2.2. 查看表"></a>1.2.2. 查看表</h4><pre><code>show tables;  查看当前库中的所有的表
+show create table tbName;  查看某一个表的具体的建表语句（获取当前表设置的分隔符信息）
+
+show tables in dbName;  指定查看某一个数据库中的所有的表
+show tables like 'stu*' ;  模糊查询多个表
+
+desc tbName; 查看表中的具体的字段信息
+desc extended tbName ; 查看表的详情 （查看外部表）
+desc formatted tbName ; 查看表的详情 （查看内部表和外部表）</code></pre><h4 id="1-2-3-修改表"><a href="#1-2-3-修改表" class="headerlink" title="1.2.3. 修改表"></a>1.2.3. 修改表</h4><pre><code>1. 修改表的名称
+    alter table tbName  rename to newTbName ;
+
+2. 修改表字段的定义
+    添加新的列：
+        alter table tbName add columns(colName type... ....)
+
+    修改列定义：change可以修改  列名称 / 列类型 /  列的位置
+        alert table tbName change  oldColName  newColName newType  [first|after colName]
+
+    表结构替换： 替换调原来的表结构
+        alert table tbName replace  columns(colName type... ....)
+
+
+注意：hive2.0+版本中，对类型转换进行限制
+        小类型 》大类型 ---&gt; 运行
+        大类型 》小大类型 ---&gt; 运行</code></pre><h4 id="1-2-4-删除表"><a href="#1-2-4-删除表" class="headerlink" title="1.2.4. 删除表"></a>1.2.4. 删除表</h4><pre><code>1. 删除内部表
+    drop table tbName;
+    truncate table tbName;
+
+
+    注意：更换mysql驱动包的版本
+
+2. 删除外部表
+    方式一：
+        alter table  tbName set tblproperties('external'='false');  
+        drop table tbName;
+
+    方式二：
+        hdfs dfs -rm -r -f /user/hive/warehouse/tbName</code></pre><h2 id="2-DML"><a href="#2-DML" class="headerlink" title="2. DML"></a>2. DML</h2><p>数据仓库</p>
+<h1 id="四、表的分类（内部表、外部表、分区表）"><a href="#四、表的分类（内部表、外部表、分区表）" class="headerlink" title="四、表的分类（内部表、外部表、分区表）"></a>四、表的分类（内部表、外部表、分区表）</h1><h2 id="1-内部表（管理表）"><a href="#1-内部表（管理表）" class="headerlink" title="1. 内部表（管理表）"></a>1. 内部表（管理表）</h2><p>概述：<br>默认创建的所有表<br>当前用户对其拥有所有的操作权限（删除，修改… …）<br>删除内部表，数据仓库存储的数据被删除，元数据中的内容也被删除</p>
+<p>查看表的类型：desc formatted tbName ;<br>Table Type: MANAGED_TABLE</p>
+<p>删除表：<br>drop table tbName;</p>
+<p>注意：删除管理表，将所有数据全部删除</p>
+<h2 id="2-外部表"><a href="#2-外部表" class="headerlink" title="2. 外部表"></a>2. 外部表</h2><p>概述：<br>在创建表时使用external关键字创建的表时外部表<br>当前用户其拥有部分的操作权限（删除，修改… …）<br>删除外部表，数据仓库存储的数据不会被删除，元数据中的内容会被删除<br>适合存储被共享的数据</p>
+<p>创建表：<br>使用关键字 : external</p>
+<p>查看表的类型：desc formatted tbName ;<br>desc extended tbName;<br>desc tbName;</p>
+<pre><code>        Table Type:             EXTERNAL_TABLE</code></pre><p>删除表： 除的删是当前表的元数据<br>drop table tbName;</p>
+<p>注意：删除外部表，不会将所有数据全部删除<br>创建新的同名称表，数据会进行自动的管理操作</p>
+<h2 id="3-分区表"><a href="#3-分区表" class="headerlink" title="3. 分区表"></a>3. 分区表</h2><p>概述：<br>分区表对当前数据进行划分并存储不同的分区中（ 文件夹 ）<br>分区表对当前的数据所在的分区进行单独的管理<br>提高查询效率</p>
+<p>创建表：partitioned by</p>
+<pre><code>create table tbName(col type... ...)
+    partitioned by (pCol type)  # 按照什么字段进行分区
+    row format delimited fields terminated by ',';</code></pre><p>例如：创建订单表，order</p>
+<pre><code>create table partition_tb(id int ,name string)
+    partitioned by (year string)  # 按照什么字段进行分区
+    row format delimited fields terminated by ',';      </code></pre><p>导入数据：将一个文件中的所有数据全部加载到一个分区中</p>
+<pre><code>    load data local inpath ' asdsad' into table partition_tb  
+            partition(k=v);</code></pre><p>查询分区数据：</p>
+<pre><code>select * from tbName where k=v ; 查询 k所在分区   
+
+select * from tbName where k=v 
+    union
+    select * from tbName  where k =v2 ; 查询 多个分区 </code></pre><p>查看表的分区信息：</p>
+<pre><code>show partitions tbName;</code></pre><p>删除分区：</p>
+<pre><code>alter table tbName drop  parititon(k='v') [,parititon(k='v'),parititon(k='v')... ...]           </code></pre><p>添加分区：一次添加多个分区时，分区间不需要添加逗号</p>
+<pre><code>alter table tbName add  parititon(k='v') [parititon(k='v') parititon(k='v')... ...]     </code></pre><p>多级分区表：（本质上就是多层级目录）</p>
+<pre><code>partitioned by(year string ,month string)  //按照多个字段分区</code></pre><p>多级分区表查询指定分区的数据：</p>
+<pre><code>select * from tbName where year=2019 and  month=6</code></pre><h2 id="4-分区表的数据的上传方式"><a href="#4-分区表的数据的上传方式" class="headerlink" title="4. 分区表的数据的上传方式"></a>4. 分区表的数据的上传方式</h2><h3 id="方式一：用户自定义分区目录，上传数据"><a href="#方式一：用户自定义分区目录，上传数据" class="headerlink" title="方式一：用户自定义分区目录，上传数据"></a>方式一：用户自定义分区目录，上传数据</h3><pre><code>hive (default)&gt; dfs -mkdir -p /user/hive/warehouse/partition_tb2/year=2019/month=7;
+hive (default)&gt; dfs -put /home/zhangsan/partition.sql  /user/hive/warehouse/partition_tb2/year=2019/month=7;
+
+修复表上的分区的元数据
+    msck repair table partition_tb2; </code></pre><h3 id="方式二：用户自定义分区目录"><a href="#方式二：用户自定义分区目录" class="headerlink" title="方式二：用户自定义分区目录"></a>方式二：用户自定义分区目录</h3><pre><code>hive (default)&gt; dfs -mkdir -p /user/hive/warehouse/partition_tb2/year=2019/month=1;
+hive (default)&gt; dfs -put /home/zhangsan/partition.sql  /user/hive/warehouse/partition_tb2/year=2019/month=1;
+
+show partitions partition_tb2 ;//查看此表的分区信息
+
+手动的给表添加用户的自定义的分区路径：
+    alter table partition_tb2 add partition(year='2019',month='1');</code></pre><h3 id="方式三："><a href="#方式三：" class="headerlink" title="方式三："></a>方式三：</h3><pre><code>hive (default)&gt; dfs -mkdir -p /user/hive/warehouse/partition_tb2/year=2019/month=2;
+hive (default)&gt; load data local inpath '/home/zhangsan/partition.sql' into table partition(year='2019',month='2')   </code></pre><h1 id="五、数据的导入导出"><a href="#五、数据的导入导出" class="headerlink" title="五、数据的导入导出"></a>五、数据的导入导出</h1><h2 id="1-导入数据"><a href="#1-导入数据" class="headerlink" title="1. 导入数据"></a>1. 导入数据</h2><h3 id="方式一：load方式"><a href="#方式一：load方式" class="headerlink" title="方式一：load方式"></a>方式一：load方式</h3><pre><code>语法：load data [local] inpath  数据源路径 into table tbName [overwrite] [partition(k=v)]
+
+说明：local表示从本地文件系统中导入数据
+     不加local 默认从HDFS文件系统中导入数据
+
+情况一：数据从本地导入
+    本质：将数据从本地上传到HDFS的数据仓库中
+
+情况二：数据从hdfs加载
+    本质：在HDFS上进行数据的移动（不是复制）
+
+    注意：数据源一定需要在hdfs上存在</code></pre><h3 id="方式二：insert语句-（使用少）"><a href="#方式二：insert语句-（使用少）" class="headerlink" title="方式二：insert语句 （使用少）"></a>方式二：insert语句 （使用少）</h3><pre><code>语法：insert into  table  tbName   [partition(k=v)]    values(v,v,v,v)
+
+此方式底层：将insert语句转换成MR任务执行
+          效率较低</code></pre><p>补充：创建表时，直接导入HDFS上数据， location 指定数据表加载数据的路径<br>create table tbName(…)<br>location ‘hdfs path’</p>
+<pre><code>例如：
+    create table load_tb2(id int ,name string)
+          &gt; row format delimited fields terminated by '@'
+          &gt; location '/home/zhangsan/';</code></pre><h2 id="2导出数据"><a href="#2导出数据" class="headerlink" title="2导出数据"></a>2导出数据</h2><h3 id="方式一：将数据仓库中的数据表的数据导出到HDFS"><a href="#方式一：将数据仓库中的数据表的数据导出到HDFS" class="headerlink" title="方式一：将数据仓库中的数据表的数据导出到HDFS"></a>方式一：将数据仓库中的数据表的数据导出到HDFS</h3><pre><code>export table  tbName to 'hdfs path'</code></pre><h3 id="方式二：将数据仓库中的数据表的数据导出到本地"><a href="#方式二：将数据仓库中的数据表的数据导出到本地" class="headerlink" title="方式二：将数据仓库中的数据表的数据导出到本地"></a>方式二：将数据仓库中的数据表的数据导出到本地</h3><pre><code>dfs -get hiveDataPath  localPath</code></pre><h3 id="方式三：insert-overwrite-命令"><a href="#方式三：insert-overwrite-命令" class="headerlink" title="方式三：insert overwrite 命令"></a>方式三：insert overwrite 命令</h3><pre><code>语法格式：insert overwrite [local] directory  path  selectExpr
+
+说明：local表示从本地文件系统中导入数据
+     不加local 默认从HDFS文件系统中导入数据   
+
+     path 本地或者HDFS的具体导出路径
+
+例如：insert overwrite local directory /home/zhangsan select * from tbName</code></pre><h1 id="六、数据的查询（-重点-）"><a href="#六、数据的查询（-重点-）" class="headerlink" title="六、数据的查询（ 重点 ）"></a>六、数据的查询（ 重点 ）</h1><pre><code>语法：
+    select  [ all | distinct] expr | 字段列表
+         [
+            from  tableName
+            where 条件
+            group by 分组条件 
+            having 过滤
+            order by 排序条件
+            limit 启动，数量
+         ]
+
+模糊查询：like  , not like , rlike
+
+多表查询：
+    连接查询：join 
+        右连接： 
+        左连接：
+    合并查询：union
+
+    子查询：
+
+    自连接：
+
+常用的聚合/分组函数：
+    max(字段)
+    min(字段)
+    sum(字段)
+    avg(字段)
+    count(*|字段)</code></pre><h1 id="七-Hive的DQL"><a href="#七-Hive的DQL" class="headerlink" title="七. Hive的DQL"></a>七. Hive的DQL</h1><h2 id="1-语法"><a href="#1-语法" class="headerlink" title="1. 语法"></a>1. 语法</h2><pre><code>select [distinct|all] expr，expr... ...
+    from tbName
+    where whereCondition
+    group by colList
+    having havingCondition
+    order by colList
+    cluster by colList 
+    limit num</code></pre><h2 id="2-where子句"><a href="#2-where子句" class="headerlink" title="2. where子句"></a>2. where子句</h2><pre><code>is null
+is not null
+between...and...
+in(v1,v2,v3,... ...) | not in( v1,v2,v3,... ...)
+and
+or
+like | rlike
+        %  通配符
+        _  占位符</code></pre><h2 id="3-group-by-子句"><a href="#3-group-by-子句" class="headerlink" title="3. group by 子句"></a>3. group by 子句</h2><p>概述：<br>按照某些字段的值进行分组，有相同值的放置到一起<br>通常和聚合函数一起使用</p>
+<p>SQL案例：<br>select c1 ,c2<br>where condition ——&gt;map端执行<br>group by c1,c2 ——&gt;reduce端执行<br>having condition ——&gt;reduce端执行</p>
+<h3 id="3-1-案例："><a href="#3-1-案例：" class="headerlink" title="3.1 案例："></a>3.1 案例：</h3><pre><code>1. 建表
+    create table order_tb(oid int ,num int ,pname string ,uid int)
+        row format delimited fields terminated by ',';
+
+    导入数据：
+        load data local inpath '/home/zhangsan/order.txt' into table order_tb;
+
+
+    create table user_tb(uid int ,name string ,addr string)
+        row format delimited fields terminated by ',';
+
+    导入数据：
+        load data local inpath '/home/zhangsan/user.txt' into table user_tb;
+2. 注意
+    select 后面非聚合列，必须要出现在group by 中
+    可以使用as对表和列设置别名
+
+    having和where的区别：
+        位置，condition使用的过滤字段，针对的数据（单位：一条数据；单位：一组数据）
+
+3. 按照用户id分组查询订单表
+    select o.uid from order_tb as o group by o.uid 
+
+    使用分组函数|聚合函数：查询用户购买商品数量
+        select o.uid , count(o.num) from order_tb as o group by o.uid 
+
+    使用分组函数|聚合函数：查询用户购买商品数量，显示数量大于2的信息
+        select  o.uid , count(o.num) from order_tb as o group by o.uid having count(o.num) &gt;2;
+
+4. 常见的聚合参数
+    count()         
+    max()1
+    min()
+    sum()
+    avg()</code></pre><h2 id="4-order-by-子句"><a href="#4-order-by-子句" class="headerlink" title="4. order by 子句"></a>4. order by 子句</h2><ol>
+<li><p>概述<br>按照某些字段进行排序</p>
+<p>现象：order by 可以使用多列进行排序（全局排序），此操作在reduce阶段进行，只有一个reduce<br>问题：数据量很大</p>
+</li>
+<li><p>全局排序：order by<br>asc|desc</p>
+</li>
+<li><p>案例<br>select * from order_tb order by num desc;</p>
+<p>select * from order_tb order by num ,oid asc ; // 多字段排序</p>
+</li>
+</ol>
+<h2 id="5-sort-by-排序"><a href="#5-sort-by-排序" class="headerlink" title="5. sort by 排序"></a>5. sort by 排序</h2><pre><code>在mapreduce内部的排序，不是全局排序
+
+1. 设置reduce的个数
+    默认 &lt; 配置文件 &lt; 命令行 
+
+    set key=value 设置属性
+    set key 获取属性
+
+    set mapreduce.job.reduces=3; 设置属性值
+    set mapreduce.job.reduces  ; 查看属性值
+
+
+2. 执行排序
+    select * from order_tb sort by num;
+
+3. 查看reduce中各个阶段输出的结果数据（将结果导出到本地查看）
+    insert overwrite local directory '/home/zhangsan/sortbyResult' 
+        select * from order_tb sort by num desc;
+
+总结：只对当前的分区进行内容的排序</code></pre><h2 id="6-distribute-by-分区"><a href="#6-distribute-by-分区" class="headerlink" title="6. distribute by 分区"></a>6. distribute by 分区</h2><pre><code>mapreduce中的partition操作,进行分区，结果sort by使用
+
+distribute by字句需要写在sort by之前（先分区，在排序）
+
+案例：sql转成mr时，内部使用oid字段进行分区，使用num字段进行排序
+    insert overwrite local directory '/home/zhangsan/distributebyResult'
+        select * from order_tb distribute by oid  sort by num desc;</code></pre><h2 id="7-cluster-by-分区并排序"><a href="#7-cluster-by-分区并排序" class="headerlink" title="7. cluster by 分区并排序"></a>7. cluster by 分区并排序</h2><pre><code>insert overwrite local directory '/home/zhangsan/clusterbyResult'
+        select * from cluster by num ;  
+
+注意：分区和排序的字段需要一致
+     不可以指定排序的方向</code></pre><h2 id="8-join-子句（多表连接查询）（子查询）"><a href="#8-join-子句（多表连接查询）（子查询）" class="headerlink" title="8. join 子句（多表连接查询）（子查询）"></a>8. join 子句（多表连接查询）（子查询）</h2><ol>
+<li><p>概述<br>两张表m,n之间可以按照on的条件进行连接，m中的一条记录和n表中的一条记录组成一个新的记录。</p>
+<p>join 等值连接（内连接）：只有某个值在m和n中同时存在时，才连接。<br>left outer join (左外连接) ：左表中的值无论在右表中是否存在，都输出；右表中的值只有在左表中存在才输出<br>right outer join (右外连接) ：相反<br>mapjoin （map端完成连接）: 在map端进行表的连接操作，基于内存（优化的方式）</p>
+</li>
+<li><p>案例<br>等值连接：<br>select from user_tb u join order_tb o ; // 笛卡尔积现象<br>select u.name,o.num,o.pname from user_tb u join order_tb o on u.uid=o.uid ; //添加过滤条件避免，笛卡尔积现象</p>
+<p>左外连接：（和右外连接相对的）<br>insert into user_tb values(10004,‘xiaoliu’,‘beijing’);<br>select u.name,o.num,o.pname from user_tb u<br>left join order_tb o on u.uid=o.uid ;</p>
+<p>注意：表和表的一次连接，代表一个MapReduce 作业job<br>如果sql语句中存在多个表之间的连接，会创建多个job作业，连接的顺序就是job执行的顺序</p>
+</li>
+<li><p>子查询<br>SQL语句的嵌套查询</p>
+<pre><code> select * from (select * from ...)
+ selct * from tbName  where col = (select * from ...)</code></pre><p>嵌套的SQL语句中，子SQL语句的结果 可以作为查询的数据源，也可以作为查询的条件</p>
+<p>统计汽车类型的分布：<br>商用 n1/count<br>个人 n2/count</p>
+<p>hive:<br>select 汽车的类型 , count(<em>) from cart group by 汽车类型select count(</em>) from cart</p>
+<pre><code> select 汽车类型 ， 当前类型数量/ (select count(*) from cart )  from    
+     (select 汽车的类型 , count(*) from cart group by 汽车类型)</code></pre></li>
+</ol>
+<h1 id="八、Hive中的分桶"><a href="#八、Hive中的分桶" class="headerlink" title="八、Hive中的分桶"></a>八、Hive中的分桶</h1><p>分区：将文件切割成多个子目录<br>select * from partition(k=v) ;//减少数据量</p>
+<p>分桶：将文件切割成多个小文件<br>采集数据，按照桶采集 //减少数据量<br>桶中数据的join操作，效率更高 //减少数据量</p>
+<p>原理：<br>MR中：按照key的hash值对reducetask个数求模<br>Hive中：按照分桶字段的hash值对分桶的个数求模</p>
+<p>分桶：<br>方便抽样（采用数据）<br>提高join的查询效率</p>
+<p>案例：</p>
+<pre><code>1. 创建表，设置分桶字段
+    create table cluster_tb(id int ,name string) 
+        clustered by(id) into 4 buckets
+        row format delimited fields terminated by ',';
+
+    创建普通表：
+        create table cluster_tb2(id int ,name string)
+            row format delimited fields terminated by ',';
+
+        load data local inpath '/home/zhangsan/cluster.txt' into table cluster_tb2;
+
+2. 配置属性
+    set hive.enforce.bucketing=true
+    set mapreduce.job.reduces=-1
+
+
+3. 使用子查询的方式，将数据添加到cluster_tb中
+    insert into table cluster_tb
+        select id,name from cluster_tb2 cluster by(id); </code></pre><p>数据的采集：<br>select * from tbName tablesample (bucket startNum out of sizeNum on colName)</p>
+<pre><code>从startNum开始抽取数据，采取bucketSize/sizeNum的数据</code></pre><h1 id="九、自定义函数"><a href="#九、自定义函数" class="headerlink" title="九、自定义函数"></a>九、自定义函数</h1><pre><code>1. 查看系统提供的函数列表
+    show functions;
+
+2. 查看具体某一个函数的描述信息
+    desc function  [extended] 函数名称；
+
+3. 自定义函数User defined function  / UDF    
+    3.1 创建一个java项目，导入hive的libs
+
+    3.2 创建类，继承org.apache.hadoop.hive.ql.exec.UDF
+        public class FirstChar extends UDF {
+        }
+    3.3 业务代码
+        public String evaluate(final String s) { # 重写此方法 evaluate
+                if (s == null) {
+                    return null;
+                }
+                return s.charAt(0)+"";
+            }
+
+    3.4 将当前项目打包成jar包，将jar包移动linux上
+
+    3.5 将jar包添加hive的classpath下
+        hive&gt; add jar  /opt/software/FirstChar.jar
+
+    3.6 创建临时函数和自定义class 的关联
+        hive&gt; create [temporary] function my_func3 as 'cn.xdl.hanshu.FirstChar';
+
+    3.7 HQL中使用自定义函数
+        select my_func3(name) from user_tb;
+            z
+            w
+            ...
+            ...</code></pre><h1 id="十、优化"><a href="#十、优化" class="headerlink" title="十、优化"></a>十、优化</h1><h2 id="1-数据倾斜"><a href="#1-数据倾斜" class="headerlink" title="1. 数据倾斜"></a>1. 数据倾斜</h2><p>maptask和reducetask的个数</p>
+<h3 id="1-1-maptask的个数：-文件的大小、文件的个数、集群上blocksize的大小"><a href="#1-1-maptask的个数：-文件的大小、文件的个数、集群上blocksize的大小" class="headerlink" title="1.1 maptask的个数： 文件的大小、文件的个数、集群上blocksize的大小"></a>1.1 maptask的个数： 文件的大小、文件的个数、集群上blocksize的大小</h3><p>问题：小文件过多的问题 （ maptask并不是越多越好 ）<br>在map执行前进行合并，减少maptask的个数</p>
+<pre><code>//配置文件修改配置
+      &lt;property&gt;
+         &lt;name&gt;hive.input.format&lt;/name&gt;
+         &lt;value&gt;org.apache.hadoop.hive.ql.io.CombineHiveInputFormat&lt;/value&gt;
+      &lt;/property&gt;
+
+
+//命令行修改配置
+    set hive.input.format = org.apache.hadoop.hive.ql.io.CombineHiveInputFormat</code></pre><p>问题：字段少，数据量，大小于128M的文件数据处理，造成一个maptask压力过大<br>添加maptask的个数（ 127.999M&lt;128M — maptask ）</p>
+<pre><code>    computeSpliteSize(){                 50     128
+        return Math.max( 0,   Math.min(maxSize,blockSize))
+    }
+
+//命令行修改配置
+    set mapreduce.input.fileinputformat.split.maxsize=50  #  默认是256M
+
+127.999  50     ----maptask
+         50     ----maptask
+         27.999 ----maptask</code></pre><h3 id="1-2-reducetask的个数，合理的设计"><a href="#1-2-reducetask的个数，合理的设计" class="headerlink" title="1.2 reducetask的个数，合理的设计"></a>1.2 reducetask的个数，合理的设计</h3><p>设置reduce的个数：<br>set mapreduce.job.reduces=10； # 一个job中的</p>
+<p>reduce的个数决定的输出文件的个数，参考当前环境下的数据量和数据分布</p>
+<h2 id="2-JVM的重用（性能提升的力度很大50-）"><a href="#2-JVM的重用（性能提升的力度很大50-）" class="headerlink" title="2. JVM的重用（性能提升的力度很大50%）"></a>2. JVM的重用（性能提升的力度很大50%）</h2><p>在hadoop的配置文件mapred-site.xml,添加jvm配置：</p>
+<p>mapreduce.job.jvm.numtasks<br>15</p>
+<p>JVM的创建和启动会消耗大量的性能，不建议频繁的创建和启动<br>重用：一个jvm实例在同一个job作业中重用15次。</p>
+<h2 id="3-Fetch-抓取"><a href="#3-Fetch-抓取" class="headerlink" title="3.Fetch 抓取"></a>3.Fetch 抓取</h2><p>Hive对某些操作不执行MapReduce计算<br>select * from user_tb; //查询语句没有必要去开启mr运算</p>
+<pre><code>配置文件：hive-site.xml
+     &lt;property&gt;
+        &lt;name&gt;hive.fetch.task.conversion&lt;/name&gt;
+        &lt;value&gt;more&lt;/value&gt;
+        &lt;description&gt;
+          0. none : 所有操作都执行mr
+          1. minimal : 全表查询，字段查询，limit，分区等操作
+          2. more    : 查询和limit语句不走mr (不需要执行mr计算)
+        &lt;/description&gt;
+      &lt;/property&gt;   </code></pre><p>命令行修改：</p>
+<pre><code>set hive.fetch.task.conversion ; 查看默认值
+set hive.fetch.task.conversion = more ; 查看默认值
+
+select * from tbName;//不需要使用mr计算</code></pre><h2 id="4-本地模式"><a href="#4-本地模式" class="headerlink" title="4.本地模式"></a>4.本地模式</h2><p>处理数据量非常小，hive可以在本地模式下的一台机器上处理当前job的所有的任务，减少执行时间。</p>
+<p>开启本地模式：</p>
+<pre><code> //开启本地模式
+      &lt;property&gt;
+        &lt;name&gt;hive.exec.mode.local.auto&lt;/name&gt;
+        &lt;value&gt;true&lt;/value&gt;
+      &lt;/property&gt;
+
+ //设置本地模式下能够处理的数据的数量规模  128M
+      &lt;property&gt;  
+        &lt;name&gt;hive.exec.mode.local.auto.inputbytes.max&lt;/name&gt;
+        &lt;value&gt;134217728&lt;/value&gt;
+      &lt;/property&gt;
+
+ //设置本地模式下能够处理的数据的个数
+      &lt;property&gt;
+        &lt;name&gt;hive.exec.mode.local.auto.input.files.max&lt;/name&gt;
+        &lt;value&gt;4&lt;/value&gt;
+      &lt;/property&gt;</code></pre><p>命令行：</p>
+<pre><code>set hive.exec.mode.local.auto=true|false;</code></pre><h2 id="5-并发执行"><a href="#5-并发执行" class="headerlink" title="5. 并发执行"></a>5. 并发执行</h2><p>Hive将命令划分成多个阶段执行，默认hive一次只执行一个阶段，减少执行时间</p>
+<p>设置Hive的并发操作：</p>
+<pre><code> //是否并发的执行一个job作业
+     &lt;property&gt;
+        &lt;name&gt;hive.exec.parallel&lt;/name&gt;
+        &lt;value&gt;false&lt;/value&gt;
+      &lt;/property&gt;
+
+ //一个job的并发度，默认 8  （此大小的设置和当前机器的硬件配置有关）
+      &lt;property&gt;
+        &lt;name&gt;hive.exec.parallel.thread.number&lt;/name&gt;
+        &lt;value&gt;8&lt;/value&gt;
+      &lt;/property&gt;</code></pre><p>命令行：</p>
+<pre><code>set hive.exec.parallel = true; //开启任务的并发执行
+set hive.exec.parallel.thread.number = 10; //设置一个job的并发度</code></pre><h2 id="6-表的设计和查询优化"><a href="#6-表的设计和查询优化" class="headerlink" title="6.表的设计和查询优化"></a>6.表的设计和查询优化</h2><p><img src="hive/20191015170208531.png" alt="在这里插入图片描述"><br>mapjoin：在map阶段进行数据的合并<br>默认情况下，join操作在reduce阶段完成。</p>
+<pre><code>开启Mapjoin:
+        //开启mapjoin
+           &lt;property&gt;
+             &lt;name&gt;hive.auto.convert.join&lt;/name&gt;
+             &lt;value&gt;true&lt;/value&gt;
+            &lt;/property&gt;
+
+        //如果文件小于25M则是要被合并小表
+          &lt;property&gt;
+            &lt;name&gt;hive.mapjoin.smalltable.filesize&lt;/name&gt;
+            &lt;value&gt;25000000&lt;/value&gt; 
+          &lt;/property&gt;
+
+    set hive.auto.convert.join = true;
+    set hive.mapjoin.smalltable.filesize = 20000000;
+
+案例：
+    order_tb   join   user_tb
+
+总结：在map阶段进行合并操作，避免reduce数据的倾斜和压力
+
+group by：
+    map阶段切割的同一个key-------------&gt;一个reduce处理-----------&gt;outputFile  （数据倾斜）
+        同一个key的数量级大           默认聚合操作在reduce端处理
+     在map阶段对key进行聚合操作   
+
+实现：在map端开启聚合操作
+
+     //开启map阶段聚合操作
+      &lt;property&gt;
+        &lt;name&gt;hive.map.aggr&lt;/name&gt;
+        &lt;value&gt;true&lt;/value&gt;
+      &lt;/property&gt;
+
+
+    //map阶段能够聚合的数据量
+      &lt;property&gt;
+            &lt;name&gt;hive.groupby.mapaggr.checkinterval&lt;/name&gt;
+             &lt;value&gt;100000&lt;/value&gt; //十万条
+      &lt;/property&gt;
+
+
+    //如果存在数据倾斜，启动均衡负载   ，默认是关闭
+     &lt;property&gt;
+        &lt;name&gt;hive.groupby.skewindata&lt;/name&gt;
+        &lt;value&gt;true&lt;/value&gt; 
+      &lt;/property&gt;
+
+    启动均衡负载原理：
+        job-----添加一个新的MR JOB，在当前job的map中将处理结果  随机  交给reduce，避免数据发生倾斜
+        然后使用第二个MR JOB实现对结果数据的分组在合并。
+
+    总结：使用两个job,一个实现负载均衡，一个实现最终数据的聚合操作。</code></pre><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io" rel="external nofollow noreferrer">张文军</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io/object-object-hive/">https://wjhub.gitee.io/object-object-hive/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="https://wjhub.gitee.io" target="_blank">张文军</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7/">
+                                    <span class="chip bg-color">大数剧</span>
+                                </a>
+                            
+                                <a href="/tags/hive/">
+                                    <span class="chip bg-color">hive</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e2373eeaa1a18c1"></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XACT7J8EsoUU4ytieqXVWC8G-gzGzoHsz',
+        appKey: 'KGl573Bxj9uiDPoYFyg6M9Ls',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/object-object-leetcode-shu-zu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="leetcode-数组">
+                        
+                        <span class="card-title">leetcode-数组</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            leetcode-数组
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-11-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/leetcode/" class="post-category">
+                                    leetcode
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/leetcode-%E6%95%B0%E7%BB%84/">
+                        <span class="chip bg-color">leetcode-数组</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/object-object-mybatis/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Mybatis">
+                        
+                        <span class="card-title">Mybatis</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            1、什么是Mybatis？（1）Mybatis是一个半ORM（对象关系映射）框架，它内部封装了JDBC，开发时只需要关注SQL语句本身，不需要花费精力去处理加载驱动、创建连接、创建statement等繁杂的过程。程序员直接编写原生态sql，
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            张文军
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('300')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 学习笔记<br />'
+            + '文章作者: 张文军<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归张文军所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            <span style="vertical-align: text-bottom;">更多内容请关注公众号:<img   width="70" height="70" src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586509086.png"></span>
+            Copyright&nbsp;&copy; 
+            <span id="year">年份</span>
+            <a href="https://wjhub.gitee.io" target="_blank">张文军</a><br>
+            
+            
+            
+            
+            
+            <!-- 
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+             -->
+            <br>
+
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "23";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="http://beian.miit.gov.cn" target="_blank">苏ICP备19067943号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/NJAUzhangwenjun" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:njauzhangwenjun@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2447950131" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2447950131" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+ <!-- 广告
+ <script
+ data-ad-client="ca-pub-1951614324840467"
+ async
+ src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+></script> -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?870b03ca633b2094a1f2f17b76a4fe65";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?63270bce1614ac74b0f3b8911574a80b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i["DaoVoiceObject"] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            a.charset = "utf-8";
+            m.parentNode.insertBefore(a, m)
+        })(window, document, "script", ('https:' == document.location.protocol ? 'https:' : 'http:') +
+            "//widget.daovoice.io/widget/6984b559.js", "daovoice")
+        daovoice('init', {
+            app_id: "c60a1431"
+        });
+        daovoice('update');
+    </script>
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

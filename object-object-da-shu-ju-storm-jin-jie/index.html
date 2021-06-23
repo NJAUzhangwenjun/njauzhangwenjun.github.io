@@ -1,0 +1,1461 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="大数剧-storm-进阶, 张文军,学习笔记,锁清秋">
+    <meta name="description" content="更多内容请关注：https://wjhub.gitee.io
+
+
+锁清秋
+
+
+大数剧-storm-进阶Storm集群的框架Storm集群遵循主/从( master/slave)结构，和Hadoop等分布式计算技术类似，语义上稍有不同。主/从">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+
+
+    <meta name="baidu_union_verify" content="28f5c5d83967eb03d315b5e8e7538217">
+
+
+    
+    <title>大数剧-storm-进阶 | 学习笔记</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+
+    
+    
+<link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">学习笔记</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>Medias</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>我的相册</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">学习笔记</div>
+        <div class="logo-desc">
+            
+            只懂追求技术的小白
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;" target="_blank" rel="noopener">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			Medias
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>   
+				
+                  <a href="/galleries " style="margin-left:75px";>
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>我的相册</span>
+                  </a>
+                </li>
+               
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/NJAUzhangwenjun" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/NJAUzhangwenjun" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页(或联系博主：qq：2447950131)！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        大数剧-storm-进阶
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-storm-%E8%BF%9B%E9%98%B6/">
+                                <span class="chip bg-color">大数剧-storm-进阶</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                大数剧
+                            </a>
+                        
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/storm/" class="post-category">
+                                storm
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-12-13
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2021-01-28
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    11 分
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <center>更多内容请关注：https://wjhub.gitee.io</center>
+
+<p><img src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586869254.png" alt="Java快速开发学习"></p>
+<center><a href="https://wjhub.gitee.io">锁清秋</a></center>
+
+<hr>
+<h1 id="大数剧-storm-进阶"><a href="#大数剧-storm-进阶" class="headerlink" title="大数剧-storm-进阶"></a>大数剧-storm-进阶</h1><h2 id="Storm集群的框架"><a href="#Storm集群的框架" class="headerlink" title="Storm集群的框架"></a>Storm集群的框架</h2><p>Storm集群遵循主/从( master/slave)结构，和Hadoop等分布式计算技术类似，语义上稍有不同。主/从结构中，通常有一个配置中静态指定或运行时动态选举出的主节点。<br>Storm使用前一种实现方式。主/从结构中因为引人了单点故障的风险而被诟病，因此解释Storm的主节点是半容错的。</p>
+<p>Storm集群由一个主节点(称为nimbus)和一个或者多个工作节点(称为supervisor)组成。在nimbus和supervisor节点之外，Storm 还需要一个Apache ZooKeeper的实例，<br>ZooKeeper实例本身可以由一个或者多个节点组成。如图下图所示。</p>
+<p><img src="https://myblog-1258908231.cos.ap-shanghai.myqcloud.com/%E5%A4%A7%E6%95%B0%E5%89%A7-storm-%E8%BF%9B%E9%98%B6/20201213064908583.png" alt="Storm集群的框架"></p>
+<p>nimbus和supervisor都是Storm提供的后台守护进程，可以共存在同一台机器上。实际上，可以建立一个单节点伪集群，把nimbus、supervisor 和ZooKeeper进程都运行在同<br>一台机器上。</p>
+<blockquote>
+<ul>
+<li><p>类似于Hadoop的架构，主从(Master/Slave)</p>
+</li>
+<li><p>Nimbus: 主<br>  集群的主节点，负责任务(task)的指派和分发、资源的分配</p>
+</li>
+<li><p>Supervisor: 从<br>  可以启动多个Worker，具体几个呢？可以通过配置来指定<br>  一个Topology可以运行在多个Worker之上，也可以通过配置来指定集群的从节点，(负责干活的)，负责执行任务的具体部分</p>
+<p>  启动和停止自己管理的Worker进程</p>
+</li>
+<li><p>无状态，在他们上面的信息(元数据)会存储在ZK中</p>
+</li>
+<li><p>Worker: 运行具体组件逻辑(Spout/Bolt)的进程</p>
+</li>
+<li><p>task：<br>  Spout和Bolt<br>  Worker中每一个Spout和Bolt的线程称为一个Task</p>
+</li>
+<li><p>executor： spout和bolt可能会共享一个线程</p>
+</li>
+</ul>
+</blockquote>
+<p>  <img src="https://myblog-1258908231.cos.ap-shanghai.myqcloud.com/%E5%A4%A7%E6%95%B0%E5%89%A7-storm-%E8%BF%9B%E9%98%B6/20201216094344551.png" alt="Storm集群的框架"></p>
+<h3 id="nimbus守护进程"><a href="#nimbus守护进程" class="headerlink" title="nimbus守护进程"></a>nimbus守护进程</h3><p>nimbus守护进程的主要职责是管理，协调和监控在集群上运行的topology。包括topology的发布，任务指派，事件处理失败时重新指派任务。<br>将topology发布到Storm集群，将预先打包成jar文件的topology和配置信息提交( submitting)到nimbus服务器上。一旦nimbus接收到了topology 的压缩包，会将jar<br>包分发到足够数量的supervisor节点上。当supervisor节点接收到了topology压缩文件，nimbus就会指派task ( bolt和spout实例)到每个supervisor 并且发送信号指示supervisoer生成足够的worker来执行指派的task。<br>nimbus记录所有supervisor节点的状态和分配给它们的task。如果nimbus发现某个supervisor没有上报心跳或者已经不可达了，它会将故障supervisor分配的task 重新分配到集群中的其他supervisor节点。</p>
+<p>前面提到过，严格意义上讲nimbus不会引起单点故障。这个特性是因为nimubs并不参与topology的数据处理过程，它仅仅是管理topology的初始化，任务分发和进行监控。<br>实际上，如果nimbus守护进程在topology运行时停止了，只要分配的supervisor和worker健康运行，topology 一直继续数据处理。要注意的是，在nimbus已经停止的情况<br>下supervisor异常终止，因为没有nimbus守护进程来重新指派失败这个终止的supervisor的任务，数据处理就会失败。</p>
+<h3 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h3><p>ZooKeeper使用一个简单的操作原语集合和分组服务，在分布式环境下提供了集中式的信息维护管理服务。<br>它是一种简单但功能强大的分布式同步机制，允许客户端的应用程序监控或者订阅数据集中的部分数据，当数据产生，更新或者修改时，客户端都会收到通<br>知。<br>使用常见的ZooKeeper模式或方法，开发者可以实现分布式计算所需要的很多种机制，比如Leader选举，分布式锁和队列。Storm主要使用ZooKeeper来协调一个集群中的状态信息，比如任务的分配情况，<br>worker的状态，supervisor 之间的nimbus的拓扑度量。nimbus 和supervisor节点之间的通信主要是结合ZooKeeper的状态变更通知和监控通知来处理的。<br>Storm对ZooKeeper的使用相对比较轻量化，不会造成很重的资源负担。对于重量级的数据传输操作，比如发布topology时传输jar包，Storm 依赖Thirft（RPC）进行通信。</p>
+<h3 id="Storm的DRPC服务工作机制"><a href="#Storm的DRPC服务工作机制" class="headerlink" title="Storm的DRPC服务工作机制"></a>Storm的DRPC服务工作机制</h3><p>Storm应用中的一个常见模式期望将Storm的并发性和分布式计算能力应用到“请求-响应”范式中。一个客户端进程或者应用提交了一个请求并同步地等待响应。这样的范式<br>可能看起来和典型topology的高异步性、长时间运行的特点恰恰相反，Storm 具有事务处理的特性来实现这种应用场景，如图所示。</p>
+<p><img src="https://myblog-1258908231.cos.ap-shanghai.myqcloud.com/%E5%A4%A7%E6%95%B0%E5%89%A7-storm-%E8%BF%9B%E9%98%B6/20201213070137137.png" alt="Storm的DRPC服务工作机制"></p>
+<p>为了实现这个功能，Storm将额外的服务(StormDRPC)以及spout和bolt整合在-起工作，提供了可扩展的分布式RPC能力。<br>DRPC功能是完全是可选的，当Storm集群中的应用有使用这个功能时，DRPC服务节点才是必须的。</p>
+<h3 id="Storm-UI"><a href="#Storm-UI" class="headerlink" title="Storm UI"></a>Storm UI</h3><p>Storm UI也是可选功能，非常有用，会提供一个基于 Web的GUI来监控Storm集群，对正在运行的topology有一定的管理功能。Storm UI提供了已经发布的topology的统计信<br>息，对监控Storm集群的运转和topology的功能有很大帮助，如图。</p>
+<p><img src="https://myblog-1258908231.cos.ap-shanghai.myqcloud.com/%E5%A4%A7%E6%95%B0%E5%89%A7-storm-%E8%BF%9B%E9%98%B6/20201213070509528.png" alt="Storm UI"></p>
+<p>StormUI只能报告由nimubs的thiftAPI获取的信息，不会影响到topology上其他功能。StormUI可以随时开关而不影响任何topology的运行，在那里它完全是无状态<br>的。它还可以用配置来进行一些简单的管理功能，如开启、停止、暂停和重新均衡负载topology。</p>
+<h3 id="Stor-并行度"><a href="#Stor-并行度" class="headerlink" title="Stor 并行度"></a>Stor 并行度</h3><p><img src="https://myblog-1258908231.cos.ap-shanghai.myqcloud.com/hexo/20201218204258.png" alt="Stor 并行度"></p>
+<ol>
+<li><h3 id="Storm-常用配置项"><a href="#Storm-常用配置项" class="headerlink" title="Storm 常用配置项"></a>Storm 常用配置项</h3></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>分类</th>
+<th>前缀</th>
+<th>分类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>storm.*</td>
+<td>通用配置</td>
+<td>supervisor.*</td>
+<td>Supervisor配置</td>
+</tr>
+<tr>
+<td>nimbus.*</td>
+<td>Nimbus配置</td>
+<td>worker.*</td>
+<td>Worker配置</td>
+</tr>
+<tr>
+<td>ui.*</td>
+<td>StormUI配置</td>
+<td>zmq.*</td>
+<td>ZeroMQ配置</td>
+</tr>
+<tr>
+<td>drpc.*</td>
+<td>DRPC服务配置</td>
+<td>topology.*</td>
+<td>Topology配置</td>
+</tr>
+</tbody></table>
+<blockquote>
+<ul>
+<li>nimbus.childopts(default: “-Xms1024m” ):这项JVM的配置会添加在启动nimbus守护进程的Java 命令行中。</li>
+<li>ui.port(default:8080): 这项配置指定了Storm UI的Web服务器监听的端口。</li>
+<li>ui.childopts(default: “-Xms1024m”) :这项JVM配置会添加在Storm UI服务启动的Java命令行中。</li>
+<li>supervisor.childopts(default: “ -Xms768m” ):这个JVM选项会添加在Supervisor启动的Java命令行中。</li>
+<li>worker.childopts(default: “-Xms768m” ):这个JVM选项会添加在启动worker进程的Java命令行中。</li>
+<li>tog.mssge.timeout. secs(default:30):这个配置项设定了一个tuple树需要应答最大时间秒数限制，超过这个时间的认为已经执行失败(超时)。这个值设置得太小可能会导致tuple反复重新发送。当这个选项生效时，spout 必须设定来发送锚定的tuple。</li>
+<li>topology.max.spout.pending(default:null): 在默认值null的时候，每当spout产生了新的tuple,Storm会立即将tuple向后端数据流发送。由于下游bolt执行可能有延迟，默认的数据发送行为可能导致topology过载，从而导致消息处理超时。将本选项设置为非null大于0的数字时，Storm会暂停发送tuple到数据流直到发送出去的tuple小于这个数字，起到了对spout限速的作用。这项配置和topology.message.timeoutsecs一起，是调节topology性能的最重要的两个参数。</li>
+<li>topology.enable. message.timeouts(default:ture):这个选项用来设定锚定的tuple的超时时间。如果设置为false, 则锚定的tuple不会超时。谨慎使用这个选项，将本项配置设置为flase 之前，考虑改变topology.message.timeout.secs.本项配置生效后，spout必须配置为发送锚定tuple。</li>
+</ul>
+</blockquote>
+<h3 id="Storm-后台进程命令-（关闭当前会话将会关闭该进程）"><a href="#Storm-后台进程命令-（关闭当前会话将会关闭该进程）" class="headerlink" title="Storm 后台进程命令 （关闭当前会话将会关闭该进程）"></a>Storm 后台进程命令 （关闭当前会话将会关闭该进程）</h3><p>Storm的守护进程用来启动Storm服务，应该在被监督模式下启动，这样，程序如果有异常失败，服务就可以重启。在启动时，Storm 守护程序从 $STORM_HOME/conf/storm.yaml中读取配置。这个配置文件中的任何配置项都会重新定义内置的默认配置。(如果要在后台运行，命令后面可加上 &amp;，如：storm nimbus &amp; (这种方式关闭当前会话将会关闭该进程))</p>
+<ol>
+<li>Nimbus<br>用法: storm nimbus &amp;<br>这个命令启动nimbus后台进程</li>
+<li>Supervisor<br>用法: storm supervisor &amp;<br>这个命令启动supervisor后台进程</li>
+<li>UI<br>用法: storm ui &amp;<br>这个命令启动StormUI的后台进程，提供了一个web的UI界面用来监控Storm集群。</li>
+<li>DRPC<br>用法: storm drpc &amp;<br>这个命令启动一个DRPC服务后台进程</li>
+</ol>
+<h3 id="Storm部署条件"><a href="#Storm部署条件" class="headerlink" title="Storm部署条件"></a>Storm部署条件</h3><blockquote>
+<p>Storm部署的前置条件</p>
+<ul>
+<li>jdk7+</li>
+<li>python2.6.6+</li>
+</ul>
+</blockquote>
+<p>我使用的Storm版本是：2.0.0</p>
+<h3 id="Storm部署"><a href="#Storm部署" class="headerlink" title="Storm部署"></a>Storm部署</h3><ul>
+<li><p>下载</p>
+</li>
+<li><p>解压到/usr/local</p>
+</li>
+<li><p>修改文件名为storm</p>
+</li>
+<li><p>添加到系统环境变量:~/.bashrc</p>
+<p>  export STORM_HOME=/usr/local/storm</p>
+<p>  export PATH=$STORM_HOME/bin:$PATH</p>
+</li>
+<li><p>使其生效: </p>
+<p>  source ~/.bashrc</p>
+</li>
+<li><p>目录结构<br>  -bin<br>  -examples<br>  -conf<br>  -lib</p>
+</li>
+</ul>
+<h3 id="Storm启动"><a href="#Storm启动" class="headerlink" title="Storm启动"></a>Storm启动</h3><pre><code>$STORM_HOME/bin/storm   #如何使用  执行storm就能看到很多详细的命令</code></pre><p><strong>提示</strong>：</p>
+<blockquote>
+<ul>
+<li><code>command &amp;</code> 在后台执行，如果未指定输出文件，依然会输出到当前窗口屏幕，且关闭会话时会结束该进程</li>
+<li><code>nohup command &amp;</code> 如果以 <code>exit</code> 方式退出，不会结束该进程，切文件默认不会输出到屏幕</li>
+</ul>
+</blockquote>
+<h4 id="启动自带zk"><a href="#启动自带zk" class="headerlink" title="启动自带zk"></a>启动自带zk</h4><pre><code>storm dev-zookeeper #启动自带zk 
+
+nohup storm dev-zookeeper &amp; #前台启动
+
+jps ： dev_zookeeper</code></pre><h4 id="nimbus-启动主节点"><a href="#nimbus-启动主节点" class="headerlink" title="nimbus  启动主节点"></a>nimbus  启动主节点</h4><pre><code>nohup storm nimbus &amp;</code></pre><h4 id="supervisor-启动从节点"><a href="#supervisor-启动从节点" class="headerlink" title="supervisor 启动从节点"></a>supervisor 启动从节点</h4><pre><code>nohup storm supervisor &amp;</code></pre><h4 id="ui-启动UI界面"><a href="#ui-启动UI界面" class="headerlink" title="ui  启动UI界面"></a>ui  启动UI界面</h4><pre><code>nohup storm ui &amp;</code></pre><h4 id="logviewer-启动日志查看服务"><a href="#logviewer-启动日志查看服务" class="headerlink" title="logviewer 启动日志查看服务"></a>logviewer 启动日志查看服务</h4><pre><code>nohup storm logviewer &amp;</code></pre><blockquote>
+<p>注意事项<br>    1) 为什么是4个slot<br>    2) 为什么有2个Nimbus</p>
+</blockquote>
+<h3 id="Storm如何运行自己开发的应用程序呢"><a href="#Storm如何运行自己开发的应用程序呢" class="headerlink" title="Storm如何运行自己开发的应用程序呢?"></a>Storm如何运行自己开发的应用程序呢?</h3><pre><code>Syntax: storm jar topology-jar-path class args0 args1 args2
+
+storm jar /home/hadoop/lib/storm-1.0.jar com.imooc.bigdata.ClusterSumStormTopology</code></pre><blockquote>
+<p>问题: 3个executor，那么页面就看到spout1个和bolt1个，那么还有一个去哪了？</p>
+</blockquote>
+<blockquote>
+<p>如何修改将跑在本地的storm toplogy改成运行在集群上的</p>
+</blockquote>
+<p>StormSubmitter.submitTopology(topoName,new Config(), builder.createTopology());</p>
+<h3 id="storm-其他命令的使用"><a href="#storm-其他命令的使用" class="headerlink" title="storm 其他命令的使用"></a>storm 其他命令的使用</h3><h4 id="list"><a href="#list" class="headerlink" title="list"></a>list</h4><pre><code>Syntax: storm list
+
+List the running topologies and their statuses.</code></pre><h4 id="停止作业"><a href="#停止作业" class="headerlink" title="停止作业"></a>停止作业</h4><pre><code>kill
+Syntax: storm kill topology-name [-w wait-time-secs]</code></pre><h4 id="如何停止集群"><a href="#如何停止集群" class="headerlink" title="如何停止集群"></a>如何停止集群</h4><pre><code>hadoop： stop-all.sh
+
+kill -9 pid,pid....</code></pre><h3 id="主要常用命令："><a href="#主要常用命令：" class="headerlink" title="主要常用命令："></a>主要常用命令：</h3><h4 id="nimbus-启动主节点-1"><a href="#nimbus-启动主节点-1" class="headerlink" title="nimbus  启动主节点"></a>nimbus  启动主节点</h4><pre><code>nohup sh storm nimbus &amp;</code></pre><h4 id="supervisor-启动从节点-1"><a href="#supervisor-启动从节点-1" class="headerlink" title="supervisor 启动从节点"></a>supervisor 启动从节点</h4><pre><code>nohup sh storm supervisor &amp;</code></pre><h4 id="ui-启动UI界面-1"><a href="#ui-启动UI界面-1" class="headerlink" title="ui  启动UI界面"></a>ui  启动UI界面</h4><pre><code>nohup sh storm ui &amp;</code></pre><h4 id="logviewer-启动日志查看服务-1"><a href="#logviewer-启动日志查看服务-1" class="headerlink" title="logviewer 启动日志查看服务"></a>logviewer 启动日志查看服务</h4><pre><code>nohup sh storm logviewer &amp;</code></pre><h4 id="运行文件"><a href="#运行文件" class="headerlink" title="运行文件"></a>运行文件</h4><pre><code>storm jar /mnt/c/Users/user/Desktop/storm-1.0-SNAPSHOT.jar cn.zhanghub.bigdata.storm.sum.SumTopology</code></pre><h2 id="Storm-周边框架"><a href="#Storm-周边框架" class="headerlink" title="Storm 周边框架"></a>Storm 周边框架</h2><h3 id="logstash-amp-amp-kafka"><a href="#logstash-amp-amp-kafka" class="headerlink" title="logstash &amp;&amp; kafka"></a>logstash &amp;&amp; kafka</h3><blockquote>
+<p>logstash 和 kafka 的版本一定要按照logstash的要求选择（这里是logstash 2.4.1，kafka是kafka 2.11-0.9.0）</p>
+</blockquote>
+<h4 id="下载解压安装、配置path"><a href="#下载解压安装、配置path" class="headerlink" title="下载解压安装、配置path"></a>下载解压安装、配置path</h4><h4 id="kafka-2-11-0-9-0"><a href="#kafka-2-11-0-9-0" class="headerlink" title="kafka 2.11-0.9.0"></a>kafka 2.11-0.9.0</h4><h4 id="中文文档-（文档有错，看时注意）"><a href="#中文文档-（文档有错，看时注意）" class="headerlink" title="中文文档 （文档有错，看时注意）"></a>中文文档 （文档有错，看时注意）</h4><p><a href="https://kafka.apachecn.org/quickstart.html#quickstart_send" target="_blank" rel="noopener">https://kafka.apachecn.org/quickstart.html#quickstart_send</a></p>
+<h4 id="开启zookeeper"><a href="#开启zookeeper" class="headerlink" title="开启zookeeper"></a>开启zookeeper</h4><pre><code>zkServer.sh start</code></pre><h4 id="开启kafka"><a href="#开启kafka" class="headerlink" title="开启kafka"></a>开启kafka</h4><pre><code>kafka-server-start.sh -daemon /usr/local/kafka/config/server.properties</code></pre><h4 id="创建一个topic"><a href="#创建一个topic" class="headerlink" title="创建一个topic"></a>创建一个topic</h4><pre><code>kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic logstash_topic</code></pre><h4 id="查看所有topic"><a href="#查看所有topic" class="headerlink" title="查看所有topic"></a>查看所有topic</h4><pre><code>kafka-topics.sh  --list --zookeeper localhost:2181</code></pre><h4 id="开启一个生产者"><a href="#开启一个生产者" class="headerlink" title="开启一个生产者"></a>开启一个生产者</h4><pre><code>kafka-console-producer.sh --broker-list localhost:9092 --topic logstash_topic</code></pre><h4 id="开启一个消费者"><a href="#开启一个消费者" class="headerlink" title="开启一个消费者"></a>开启一个消费者</h4><pre><code>kafka-console-consumer.sh --zookeeper localhost:2181 --topic logstash_topic --from-beginning</code></pre><h4 id="logstash-2-4-1"><a href="#logstash-2-4-1" class="headerlink" title="logstash 2.4.1"></a>logstash 2.4.1</h4><h4 id="执行脚本文件"><a href="#执行脚本文件" class="headerlink" title="执行脚本文件"></a>执行脚本文件</h4><pre><code>logstash -f /usr/local/logstash/conf/mykafka.conf
+
+mykafka.conf:
+
+```shell
+
+input {
+    file {
+        path =&gt; "/usr/local/logstash/test/logstash.txt"
+    }
+}
+
+output {
+  kafka {
+    topic_id =&gt; "logstash_topic"
+    bootstrap_servers =&gt; "localhost:9092"
+    codec =&gt; "json"
+    batch_size =&gt; 1
+  }
+}
+
+```</code></pre><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io" rel="external nofollow noreferrer">张文军</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io/object-object-da-shu-ju-storm-jin-jie/">https://wjhub.gitee.io/object-object-da-shu-ju-storm-jin-jie/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="https://wjhub.gitee.io" target="_blank">张文军</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-storm-%E8%BF%9B%E9%98%B6/">
+                                    <span class="chip bg-color">大数剧-storm-进阶</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e2373eeaa1a18c1"></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XACT7J8EsoUU4ytieqXVWC8G-gzGzoHsz',
+        appKey: 'KGl573Bxj9uiDPoYFyg6M9Ls',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/object-object-chang-shi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="常识">
+                        
+                        <span class="card-title">常识</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            开发常用常识
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-16
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%B8%B8%E8%AF%86/" class="post-category">
+                                    常识
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Linux%E5%91%BD%E4%BB%A4nohup%E5%92%8C/">
+                        <span class="chip bg-color">Linux命令nohup和&amp;</span>
+                    </a>
+                    
+                    <a href="/tags/2-1-%E8%A7%A3%E6%9E%90/">
+                        <span class="chip bg-color">2&gt;&amp;1 解析</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/object-object-da-shu-ju-storm/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="大数剧-storm">
+                        
+                        <span class="card-title">大数剧-storm</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            大数剧,storm
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                    大数剧
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-storm/">
+                        <span class="chip bg-color">大数剧-storm</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('300')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 学习笔记<br />'
+            + '文章作者: 张文军<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归张文军所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            <span style="vertical-align: text-bottom;">更多内容请关注公众号:<img   width="70" height="70" src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586509086.png"></span>
+            Copyright&nbsp;&copy; 
+            <span id="year">年份</span>
+            <a href="https://wjhub.gitee.io" target="_blank">张文军</a><br>
+            
+            
+            
+            
+            
+            <!-- 
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+             -->
+            <br>
+
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "23";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="http://beian.miit.gov.cn" target="_blank">苏ICP备19067943号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/NJAUzhangwenjun" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:njauzhangwenjun@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2447950131" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2447950131" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+ <!-- 广告
+ <script
+ data-ad-client="ca-pub-1951614324840467"
+ async
+ src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+></script> -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?870b03ca633b2094a1f2f17b76a4fe65";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?63270bce1614ac74b0f3b8911574a80b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i["DaoVoiceObject"] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            a.charset = "utf-8";
+            m.parentNode.insertBefore(a, m)
+        })(window, document, "script", ('https:' == document.location.protocol ? 'https:' : 'http:') +
+            "//widget.daovoice.io/widget/6984b559.js", "daovoice")
+        daovoice('init', {
+            app_id: "c60a1431"
+        });
+        daovoice('update');
+    </script>
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

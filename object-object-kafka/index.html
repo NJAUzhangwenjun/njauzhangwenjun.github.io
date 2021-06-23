@@ -1,0 +1,1449 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Kafka, 张文军,学习笔记,锁清秋">
+    <meta name="description" content="1、请说明什么是Apache Kafka?Apache Kafka是由Apache开发的一种发布订阅消息系统，它是一个分布式的、分区的和可复制的提交日志服务。
+2、说说Kafka的使用场景？①异步处理
+②应用解耦
+③流量削峰
+④日志处理
+⑤">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+
+
+    <meta name="baidu_union_verify" content="28f5c5d83967eb03d315b5e8e7538217">
+
+
+    
+    <title>Kafka | 学习笔记</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+
+    
+    
+<link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">学习笔记</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>Medias</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>我的相册</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">学习笔记</div>
+        <div class="logo-desc">
+            
+            只懂追求技术的小白
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;" target="_blank" rel="noopener">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			Medias
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>   
+				
+                  <a href="/galleries " style="margin-left:75px";>
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>我的相册</span>
+                  </a>
+                </li>
+               
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/NJAUzhangwenjun" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/NJAUzhangwenjun" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页(或联系博主：qq：2447950131)！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Kafka
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-03-30
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2021-03-30
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    6.4k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    22 分
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="1、请说明什么是Apache-Kafka"><a href="#1、请说明什么是Apache-Kafka" class="headerlink" title="1、请说明什么是Apache Kafka?"></a>1、请说明什么是Apache Kafka?</h2><p>Apache Kafka是由Apache开发的一种发布订阅消息系统，它是一个分布式的、分区的和可复制的提交日志服务。</p>
+<h2 id="2、说说Kafka的使用场景？"><a href="#2、说说Kafka的使用场景？" class="headerlink" title="2、说说Kafka的使用场景？"></a>2、说说Kafka的使用场景？</h2><p>①异步处理</p>
+<p>②应用解耦</p>
+<p>③流量削峰</p>
+<p>④日志处理</p>
+<p>⑤消息通讯等。</p>
+<h2 id="3、使用Kafka有什么优点和缺点？"><a href="#3、使用Kafka有什么优点和缺点？" class="headerlink" title="3、使用Kafka有什么优点和缺点？"></a>3、使用Kafka有什么优点和缺点？</h2><p>优点：</p>
+<p>①支持跨数据中心的消息复制；</p>
+<p>②单机吞吐量：十万级，最大的优点，就是吞吐量高;</p>
+<p>③topic数量都吞吐量的影响：topic从几十个到几百个的时候，吞吐量会大幅度下降。所以在同等机器下，kafka尽量保证topic数量不要过多。如果要支撑大规模topic，需要增加更多的机器资源;</p>
+<p>④时效性：ms级;</p>
+<p>⑤可用性：非常高，kafka是分布式的，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用;</p>
+<p>⑥消息可靠性：经过参数优化配置，消息可以做到0丢失;</p>
+<p>⑦功能支持：功能较为简单，主要支持简单的MQ功能，在大数据领域的实时计算以及日志采集被大规模使用。</p>
+<p>缺点：</p>
+<p>①由于是批量发送，数据并非真正的实时； 仅支持统一分区内消息有序，无法实现全局消息有序；</p>
+<p>②有可能消息重复消费；</p>
+<p>③依赖zookeeper进行元数据管理，等等。</p>
+<h2 id="4、为什么说Kafka性能很好，体现在哪里？"><a href="#4、为什么说Kafka性能很好，体现在哪里？" class="headerlink" title="4、为什么说Kafka性能很好，体现在哪里？"></a>4、为什么说Kafka性能很好，体现在哪里？</h2><p>①顺序读写</p>
+<p>②零拷贝</p>
+<p>③分区</p>
+<p>④批量发送</p>
+<p>⑤数据压缩</p>
+<h2 id="5、请说明什么是传统的消息传递方法"><a href="#5、请说明什么是传统的消息传递方法" class="headerlink" title="5、请说明什么是传统的消息传递方法?"></a>5、请说明什么是传统的消息传递方法?</h2><p>传统的消息传递方法包括两种：</p>
+<p>排队：在队列中，一组用户可以从服务器中读取消息，每条消息都发送给其中一个人。</p>
+<p>发布-订阅：在这个模型中，消息被广播给所有的用户。</p>
+<h2 id="6、请说明Kafka相对传统技术有什么优势"><a href="#6、请说明Kafka相对传统技术有什么优势" class="headerlink" title="6、请说明Kafka相对传统技术有什么优势?"></a>6、请说明Kafka相对传统技术有什么优势?</h2><p>①快速:单一的Kafka代理可以处理成千上万的客户端，每秒处理数兆字节的读写操作。</p>
+<p>②可伸缩:在一组机器上对数据进行分区</p>
+<p>③和简化，以支持更大的数据</p>
+<p>④持久:消息是持久性的，并在集群中进</p>
+<p>⑤行复制，以防止数据丢失。</p>
+<p>⑥设计:它提供了容错保证和持久性</p>
+<h2 id="7、解释Kafka的Zookeeper是什么-我们可以在没有Zookeeper的情况下使用Kafka吗"><a href="#7、解释Kafka的Zookeeper是什么-我们可以在没有Zookeeper的情况下使用Kafka吗" class="headerlink" title="7、解释Kafka的Zookeeper是什么?我们可以在没有Zookeeper的情况下使用Kafka吗?"></a>7、解释Kafka的Zookeeper是什么?我们可以在没有Zookeeper的情况下使用Kafka吗?</h2><p>Zookeeper是一个开放源码的、高性能的协调服务，它用于Kafka的分布式应用。</p>
+<p>不，不可能越过Zookeeper，直接联系Kafka broker。一旦Zookeeper停止工作，它就不能服务客户端请求。</p>
+<p>Zookeeper主要用于在集群中不同节点之间进行通信</p>
+<p>在Kafka中，它被用于提交偏移量，因此如果节点在任何情况下都失败了，它都可以从之前提交的偏移量中获取</p>
+<p>除此之外，它还执行其他活动，如: leader检测、分布式同步、配置管理、识别新节点何时离开或连接、集群、节点实时状态等等。</p>
+<h2 id="8、解释Kafka的用户如何消费信息"><a href="#8、解释Kafka的用户如何消费信息" class="headerlink" title="8、解释Kafka的用户如何消费信息?"></a>8、解释Kafka的用户如何消费信息?</h2><p>在Kafka中传递消息是通过使用sendfile API完成的。它支持将字节从套接口转移到磁盘，通过内核空间保存副本，并在内核用户之间调用内核。</p>
+<h2 id="9、解释如何提高远程用户的吞吐量"><a href="#9、解释如何提高远程用户的吞吐量" class="headerlink" title="9、解释如何提高远程用户的吞吐量?"></a>9、解释如何提高远程用户的吞吐量?</h2><p>如果用户位于与broker不同的数据中心，则可能需要调优套接口缓冲区大小，以对长网络延迟进行摊销。</p>
+<h2 id="10、解释一下，在数据制作过程中，你如何能从Kafka得到准确的信息"><a href="#10、解释一下，在数据制作过程中，你如何能从Kafka得到准确的信息" class="headerlink" title="10、解释一下，在数据制作过程中，你如何能从Kafka得到准确的信息?"></a>10、解释一下，在数据制作过程中，你如何能从Kafka得到准确的信息?</h2><p>在数据中，为了精确地获得Kafka的消息，你必须遵循两件事: 在数据消耗期间避免重复，在数据生产过程中避免重复。</p>
+<p>这里有两种方法，可以在数据生成时准确地获得一个语义:</p>
+<p>每个分区使用一个单独的写入器，每当你发现一个网络错误，检查该分区中的最后一条消息，以查看您的最后一次写入是否成功</p>
+<p>在消息中包含一个主键(UUID或其他)，并在用户中进行反复制</p>
+<h2 id="11、解释如何减少ISR中的扰动-broker什么时候离开ISR"><a href="#11、解释如何减少ISR中的扰动-broker什么时候离开ISR" class="headerlink" title="11、解释如何减少ISR中的扰动?broker什么时候离开ISR?"></a>11、解释如何减少ISR中的扰动?broker什么时候离开ISR?</h2><p>ISR是一组与leaders完全同步的消息副本，也就是说ISR中包含了所有提交的消息。ISR应该总是包含所有的副本，直到出现真正的故障。如果一个副本从leader中脱离出来，将会从ISR中删除。</p>
+<h2 id="12、Kafka为什么需要复制"><a href="#12、Kafka为什么需要复制" class="headerlink" title="12、Kafka为什么需要复制?"></a>12、Kafka为什么需要复制?</h2><p>Kafka的信息复制确保了任何已发布的消息不会丢失，并且可以在机器错误、程序错误或更常见些的软件升级中使用。</p>
+<h2 id="13、如果副本在ISR中停留了很长时间表明什么"><a href="#13、如果副本在ISR中停留了很长时间表明什么" class="headerlink" title="13、如果副本在ISR中停留了很长时间表明什么?"></a>13、如果副本在ISR中停留了很长时间表明什么?</h2><p>如果一个副本在ISR中保留了很长一段时间，那么它就表明，跟踪器无法像在leader收集数据那样快速地获取数据。</p>
+<h2 id="14、请说明如果首选的副本不在ISR中会发生什么"><a href="#14、请说明如果首选的副本不在ISR中会发生什么" class="headerlink" title="14、请说明如果首选的副本不在ISR中会发生什么?"></a>14、请说明如果首选的副本不在ISR中会发生什么?</h2><p>如果首选的副本不在ISR中，控制器将无法将leadership转移到首选的副本。</p>
+<h2 id="15、有可能在生产后发生消息偏移吗"><a href="#15、有可能在生产后发生消息偏移吗" class="headerlink" title="15、有可能在生产后发生消息偏移吗?"></a>15、有可能在生产后发生消息偏移吗?</h2><p>在大多数队列系统中，作为生产者的类无法做到这一点，它的作用是触发并忘记消息。broker将完成剩下的工作，比如使用id进行适当的元数据处理、偏移量等。</p>
+<p>作为消息的用户，你可以从Kafka broker中获得补偿。如果你注视SimpleConsumer类，你会注意到它会获取包括偏移量作为列表的MultiFetchResponse对象。此外，当你对Kafka消息进行迭代时，你会拥有包括偏移量和消息发送的MessageAndOffset对象。</p>
+<h2 id="16、Kafka的设计时什么样的呢？"><a href="#16、Kafka的设计时什么样的呢？" class="headerlink" title="16、Kafka的设计时什么样的呢？"></a>16、Kafka的设计时什么样的呢？</h2><p>Kafka将消息以topic为单位进行归纳 将向Kafka topic发布消息的程序成为producers. 将预订topics并消费消息的程序成为consumer. Kafka以集群的方式运行，可以由一个或多个服务组成，每个服务叫做一个broker. producers通过网络将消息发送到Kafka集群，集群向消费者提供消息</p>
+<h2 id="17、数据传输的事物定义有哪三种？"><a href="#17、数据传输的事物定义有哪三种？" class="headerlink" title="17、数据传输的事物定义有哪三种？"></a>17、数据传输的事物定义有哪三种？</h2><p>（1）最多一次:</p>
+<p>消息不会被重复发送，最多被传输一次，但也有可能一次不传输</p>
+<p>（2）最少一次: 消息不会被漏发送，最少被传输一次，但也有可能被重复传输.</p>
+<p>（3）精确的一次（Exactly once）: 不会漏传输也不会重复传输,每个消息都传输被一次而且仅仅被传输一次，这是大家所期望的</p>
+<h2 id="18、Kafka判断一个节点是否还活着有那两个条件？"><a href="#18、Kafka判断一个节点是否还活着有那两个条件？" class="headerlink" title="18、Kafka判断一个节点是否还活着有那两个条件？"></a>18、Kafka判断一个节点是否还活着有那两个条件？</h2><p>（1）节点必须可以维护和ZooKeeper的连接，Zookeeper通过心跳机制检查每个节点的连接</p>
+<p>（2）如果节点是个follower,他必须能及时的同步leader的写操作，延时不能太久</p>
+<h2 id="19、producer是否直接将数据发送到broker的leader-主节点-？"><a href="#19、producer是否直接将数据发送到broker的leader-主节点-？" class="headerlink" title="19、producer是否直接将数据发送到broker的leader(主节点)？"></a>19、producer是否直接将数据发送到broker的leader(主节点)？</h2><p>producer直接将数据发送到broker的leader(主节点)，不需要在多个节点进行分发，为了帮助producer做到这点，所有的Kafka节点都可以及时的告知:哪些节点是活动的，目标topic目标分区的leader在哪。这样producer就可以直接将消息发送到目的地了。</p>
+<h2 id="20、Kafa-consumer是否可以消费指定分区消息？"><a href="#20、Kafa-consumer是否可以消费指定分区消息？" class="headerlink" title="20、Kafa consumer是否可以消费指定分区消息？"></a>20、Kafa consumer是否可以消费指定分区消息？</h2><p>Kafa consumer消费消息时，向broker发出”fetch”请求去消费特定分区的消息，consumer指定消息在日志中的偏移量（offset），就可以消费从这个位置开始的消息，customer拥有了offset的控制权，可以向后回滚去重新消费之前的消息，这是很有意义的</p>
+<h2 id="21、Kafka消息是采用Pull模式，还是Push模式？"><a href="#21、Kafka消息是采用Pull模式，还是Push模式？" class="headerlink" title="21、Kafka消息是采用Pull模式，还是Push模式？"></a>21、Kafka消息是采用Pull模式，还是Push模式？</h2><p>Kafka最初考虑的问题是，customer应该从brokes拉取消息还是brokers将消息推送到consumer，也就是pull还push。在这方面，Kafka遵循了一种大部分消息系统共同的传统的设计：producer将消息推送到broker，consumer从broker拉取消息一些消息系统比如Scribe和Apache Flume采用了push模式，将消息推送到下游的consumer。这样做有好处也有坏处：由broker决定消息推送的速率，对于不同消费速率的consumer就不太好处理了。消息系统都致力于让consumer以最大的速率最快速的消费消息，但不幸的是，push模式下，当broker推送的速率远大于consumer消费的速率时，consumer恐怕就要崩溃了。最终Kafka还是选取了传统的pull模式</p>
+<p>Pull模式的另外一个好处是consumer可以自主决定是否批量的从broker拉取数据。Push模式必须在不知道下游consumer消费能力和消费策略的情况下决定是立即推送每条消息还是缓存之后批量推送。如果为了避免consumer崩溃而采用较低的推送速率，将可能导致一次只推送较少的消息而造成浪费。Pull模式下，consumer就可以根据自己的消费能力去决定这些策略</p>
+<p>Pull有个缺点是，如果broker没有可供消费的消息，将导致consumer不断在循环中轮询，直到新消息到t达。为了避免这点，Kafka有个参数可以让consumer阻塞知道新消息到达(当然也可以阻塞知道消息的数量达到某个特定的量这样就可以批量发</p>
+<h2 id="22、Kafka存储在硬盘上的消息格式是什么？"><a href="#22、Kafka存储在硬盘上的消息格式是什么？" class="headerlink" title="22、Kafka存储在硬盘上的消息格式是什么？"></a>22、Kafka存储在硬盘上的消息格式是什么？</h2><p>消息由一个固定长度的头部和可变长度的字节数组组成。头部包含了一个版本号和CRC32校验码。</p>
+<p>消息长度: 4 bytes (value: 1+4+n)</p>
+<p>版本号: 1 byte</p>
+<p>CRC校验码: 4 bytes</p>
+<p>具体的消息: n bytes</p>
+<h2 id="23、Kafka高效文件存储设计特点："><a href="#23、Kafka高效文件存储设计特点：" class="headerlink" title="23、Kafka高效文件存储设计特点："></a>23、Kafka高效文件存储设计特点：</h2><p>(1).Kafka把topic中一个parition大文件分成多个小文件段，通过多个小文件段，就容易定期清除或删除已经消费完文件，减少磁盘占用。</p>
+<p>(2).通过索引信息可以快速定位message和确定response的最大大小。</p>
+<p>(3).通过index元数据全部映射到memory，可以避免segment file的IO磁盘操作。</p>
+<p>(4).通过索引文件稀疏存储，可以大幅降低index文件元数据占用空间大小。</p>
+<h2 id="24、Kafka-与传统消息系统之间有三个关键区别"><a href="#24、Kafka-与传统消息系统之间有三个关键区别" class="headerlink" title="24、Kafka 与传统消息系统之间有三个关键区别"></a>24、Kafka 与传统消息系统之间有三个关键区别</h2><p>(1).Kafka 持久化日志，这些日志可以被重复读取和无限期保留</p>
+<p>(2).Kafka 是一个分布式系统：它以集群的方式运行，可以灵活伸缩，在内部通过复制数据提升容错能力和高可用性</p>
+<p>(3).Kafka 支持实时的流式处理</p>
+<h2 id="25、Kafka创建Topic时如何将分区放置到不同的Broker中"><a href="#25、Kafka创建Topic时如何将分区放置到不同的Broker中" class="headerlink" title="25、Kafka创建Topic时如何将分区放置到不同的Broker中"></a>25、Kafka创建Topic时如何将分区放置到不同的Broker中</h2><p>副本因子不能大于 Broker 的个数；</p>
+<p>第一个分区（编号为0）的第一个副本放置位置是随机从 brokerList 选择的；</p>
+<p>其他分区的第一个副本放置位置相对于第0个分区依次往后移。也就是如果我们有5个 Broker，5个分区，假设第一个分区放在第四个 Broker 上，那么第二个分区将会放在第五个 Broker 上；第三个分区将会放在第一个 Broker 上；第四个分区将会放在第二个 Broker 上，依次类推；</p>
+<p>剩余的副本相对于第一个副本放置位置其实是由 nextReplicaShift 决定的，而这个数也是随机产生的</p>
+<h2 id="26、Kafka新建的分区会在哪个目录下创建"><a href="#26、Kafka新建的分区会在哪个目录下创建" class="headerlink" title="26、Kafka新建的分区会在哪个目录下创建"></a>26、Kafka新建的分区会在哪个目录下创建</h2><p>在启动 Kafka 集群之前，我们需要配置好 log.dirs 参数，其值是 Kafka 数据的存放目录，这个参数可以配置多个目录，目录之间使用逗号分隔，通常这些目录是分布在不同的磁盘上用于提高读写性能。 当然我们也可以配置 log.dir 参数，含义一样。只需要设置其中一个即可。 如果 log.dirs 参数只配置了一个目录，那么分配到各个 Broker 上的分区肯定只能在这个目录下创建文件夹用于存放数据。 但是如果 log.dirs 参数配置了多个目录，那么 Kafka 会在哪个文件夹中创建分区目录呢？答案是：Kafka 会在含有分区目录最少的文件夹中创建新的分区目录，分区目录名为 Topic名+分区ID。注意，是分区文件夹总数最少的目录，而不是磁盘使用量最少的目录！也就是说，如果你给 log.dirs 参数新增了一个新的磁盘，新的分区目录肯定是先在这个新的磁盘上创建直到这个新的磁盘目录拥有的分区目录不是最少为止。</p>
+<h2 id="27、partition的数据如何保存到硬盘"><a href="#27、partition的数据如何保存到硬盘" class="headerlink" title="27、partition的数据如何保存到硬盘"></a>27、partition的数据如何保存到硬盘</h2><p>topic中的多个partition以文件夹的形式保存到broker，每个分区序号从0递增， 且消息有序 Partition文件下有多个segment（xxx.index，xxx.log） segment 文件里的 大小和配置文件大小一致可以根据要求修改 默认为1g 如果大小大于1g时，会滚动一个新的segment并且以上一个segment最后一条消息的偏移量命名</p>
+<h2 id="28、kafka的ack机制"><a href="#28、kafka的ack机制" class="headerlink" title="28、kafka的ack机制"></a>28、kafka的ack机制</h2><p>request.required.acks有三个值 0 1 -1</p>
+<p>0:生产者不会等待broker的ack，这个延迟最低但是存储的保证最弱当server挂掉的时候就会丢数据</p>
+<p>1：服务端会等待ack值 leader副本确认接收到消息后发送ack但是如果leader挂掉后他不确保是否复制完成新leader也会导致数据丢失</p>
+<p>-1：同样在1的基础上 服务端会等所有的follower的副本受到数据后才会受到leader发出的ack，这样数据不会丢失</p>
+<h2 id="29、Kafka的消费者如何消费数据"><a href="#29、Kafka的消费者如何消费数据" class="headerlink" title="29、Kafka的消费者如何消费数据"></a>29、Kafka的消费者如何消费数据</h2><p>消费者每次消费数据的时候，消费者都会记录消费的物理偏移量（offset）的位置 等到下次消费时，他会接着上次位置继续消费。同时也可以按照指定的offset进行重新消费。</p>
+<h2 id="30、消费者负载均衡策略"><a href="#30、消费者负载均衡策略" class="headerlink" title="30、消费者负载均衡策略"></a>30、消费者负载均衡策略</h2><p>结合consumer的加入和退出进行再平衡策略。</p>
+<h2 id="31、kafka消息数据是否有序？"><a href="#31、kafka消息数据是否有序？" class="headerlink" title="31、kafka消息数据是否有序？"></a>31、kafka消息数据是否有序？</h2><p>消费者组里某具体分区是有序的，所以要保证有序只能建一个分区，但是实际这样会存在性能问题，具体业务具体分析后确认。</p>
+<h2 id="32、kafaka生产数据时数据的分组策略-生产者决定数据产生到集群的哪个partition中"><a href="#32、kafaka生产数据时数据的分组策略-生产者决定数据产生到集群的哪个partition中" class="headerlink" title="32、kafaka生产数据时数据的分组策略,生产者决定数据产生到集群的哪个partition中"></a>32、kafaka生产数据时数据的分组策略,生产者决定数据产生到集群的哪个partition中</h2><p>每一条消息都是以（key，value）格式 Key是由生产者发送数据传入 所以生产者（key）决定了数据产生到集群的哪个partition</p>
+<h2 id="33、kafka-consumer-什么情况会触发再平衡reblance"><a href="#33、kafka-consumer-什么情况会触发再平衡reblance" class="headerlink" title="33、kafka consumer 什么情况会触发再平衡reblance?"></a>33、kafka consumer 什么情况会触发再平衡reblance?</h2><p>①一旦消费者加入或退出消费组，导致消费组成员列表发生变化，消费组中的所有消费者都要执行再平衡。</p>
+<p>②订阅主题分区发生变化，所有消费者也都要再平衡。</p>
+<h2 id="34、描述下kafka-consumer-再平衡步骤"><a href="#34、描述下kafka-consumer-再平衡步骤" class="headerlink" title="34、描述下kafka consumer 再平衡步骤?"></a>34、描述下kafka consumer 再平衡步骤?</h2><p>①关闭数据拉取线程，情空队列和消息流，提交偏移量；</p>
+<p>②释放分区所有权，删除zk中分区和消费者的所有者关系；</p>
+<p>③将所有分区重新分配给每个消费者，每个消费者都会分到不同分区；</p>
+<p>④将分区对应的消费者所有关系写入ZK，记录分区的所有权信息；</p>
+<p>⑤重启消费者拉取线程管理器，管理每个分区的拉取线程。</p>
+<p>##——————————————————————————————-</p>
+<h2 id="1-Kafka-的设计时什么样的呢"><a href="#1-Kafka-的设计时什么样的呢" class="headerlink" title="1.Kafka 的设计时什么样的呢"></a>1.Kafka 的设计时什么样的呢</h2><p>Kafka 将消息以 topic 为单位进行归纳</p>
+<p>将向 Kafka topic 发布消息的程序成为 producers.</p>
+<p>将预订 topics 并消费消息的程序成为 consumer.</p>
+<p>Kafka 以集群的方式运行，可以由一个或多个服务组成，每个服务叫做一个 broker.</p>
+<p>producers 通过网络将消息发送到 Kafka 集群，集群向消费者提供消息</p>
+<h2 id="2-数据传输的事物定义有哪三种？"><a href="#2-数据传输的事物定义有哪三种？" class="headerlink" title="2.数据传输的事物定义有哪三种？"></a>2.数据传输的事物定义有哪三种？</h2><p>数据传输的事务定义通常有以下三种级别：</p>
+<p>（1）最多一次: 消息不会被重复发送，最多被传输一次，但也有可能一次不传输</p>
+<p>（2）最少一次: 消息不会被漏发送，最少被传输一次，但也有可能被重复传输.</p>
+<p>（3）精确的一次（Exactly once）: 不会漏传输也不会重复传输,每个消息都传输被一次而</p>
+<p>且仅仅被传输一次，这是大家所期望的</p>
+<h2 id="3-Kafka-判断一个节点是否还活着有那两个条件？"><a href="#3-Kafka-判断一个节点是否还活着有那两个条件？" class="headerlink" title="3.Kafka 判断一个节点是否还活着有那两个条件？"></a>3.Kafka 判断一个节点是否还活着有那两个条件？</h2><p>（1）节点必须可以维护和 ZooKeeper 的连接，Zookeeper 通过心跳机制检查每个节点的连</p>
+<p>接</p>
+<p>（2）如果节点是个 follower,他必须能及时的同步 leader 的写操作，延时不能太久</p>
+<h2 id="4-producer-是否直接将数据发送到-broker-的-leader-主节点-？"><a href="#4-producer-是否直接将数据发送到-broker-的-leader-主节点-？" class="headerlink" title="4.producer 是否直接将数据发送到 broker 的 leader(主节点)？"></a>4.producer 是否直接将数据发送到 broker 的 leader(主节点)？</h2><p>producer 直接将数据发送到 broker 的 leader(主节点)，不需要在多个节点进行分发，为了</p>
+<p>帮助 producer 做到这点，所有的 Kafka 节点都可以及时的告知:哪些节点是活动的，目标</p>
+<p>topic 目标分区的 leader 在哪。这样 producer 就可以直接将消息发送到目的地了</p>
+<h2 id="5、Kafa-consumer-是否可以消费指定分区消息？"><a href="#5、Kafa-consumer-是否可以消费指定分区消息？" class="headerlink" title="5、Kafa consumer 是否可以消费指定分区消息？"></a>5、Kafa consumer 是否可以消费指定分区消息？</h2><p>Kafa consumer 消费消息时，向 broker 发出”fetch”请求去消费特定分区的消息，consumer</p>
+<p>指定消息在日志中的偏移量（offset），就可以消费从这个位置开始的消息，customer 拥有</p>
+<p>了 offset 的控制权，可以向后回滚去重新消费之前的消息，这是很有意义的</p>
+<h2 id="6、Kafka-消息是采用-Pull-模式，还是-Push-模式？"><a href="#6、Kafka-消息是采用-Pull-模式，还是-Push-模式？" class="headerlink" title="6、Kafka 消息是采用 Pull 模式，还是 Push 模式？"></a>6、Kafka 消息是采用 Pull 模式，还是 Push 模式？</h2><p>Kafka 最初考虑的问题是，customer 应该从 brokes 拉取消息还是 brokers 将消息推送到</p>
+<p>consumer，也就是 pull 还 push。在这方面，Kafka 遵循了一种大部分消息系统共同的传统</p>
+<p>的设计：producer 将消息推送到 broker，consumer 从 broker 拉取消息</p>
+<p>一些消息系统比如 Scribe 和 Apache Flume 采用了 push 模式，将消息推送到下游的</p>
+<p>consumer。这样做有好处也有坏处：由 broker 决定消息推送的速率，对于不同消费速率的</p>
+<p>consumer 就不太好处理了。消息系统都致力于让 consumer 以最大的速率最快速的消费消</p>
+<p>息，但不幸的是，push 模式下，当 broker 推送的速率远大于 consumer 消费的速率时，</p>
+<p>consumer 恐怕就要崩溃了。最终 Kafka 还是选取了传统的 pull 模式</p>
+<p>Pull 模式的另外一个好处是 consumer 可以自主决定是否批量的从 broker 拉取数据。Push</p>
+<p>模式必须在不知道下游 consumer 消费能力和消费策略的情况下决定是立即推送每条消息还</p>
+<p>是缓存之后批量推送。如果为了避免 consumer 崩溃而采用较低的推送速率，将可能导致一</p>
+<p>次只推送较少的消息而造成浪费。Pull 模式下，consumer 就可以根据自己的消费能力去决</p>
+<p>定这些策略</p>
+<p>Pull 有个缺点是，如果 broker 没有可供消费的消息，将导致 consumer 不断在循环中轮询，</p>
+<p>直到新消息到 t 达。为了避免这点，Kafka 有个参数可以让 consumer 阻塞知道新消息到达</p>
+<p>(当然也可以阻塞知道消息的数量达到某个特定的量这样就可以批量发</p>
+<h2 id="7-Kafka-存储在硬盘上的消息格式是什么？"><a href="#7-Kafka-存储在硬盘上的消息格式是什么？" class="headerlink" title="7.Kafka 存储在硬盘上的消息格式是什么？"></a>7.Kafka 存储在硬盘上的消息格式是什么？</h2><p>消息由一个固定长度的头部和可变长度的字节数组组成。头部包含了一个版本号和 CRC32</p>
+<p>校验码。</p>
+<p>消息长度: 4 bytes (value: 1+4+n)</p>
+<p>版本号: 1 byte</p>
+<p>CRC 校验码: 4 bytes</p>
+<p>具体的消息: n bytes</p>
+<h2 id="8-Kafka-高效文件存储设计特点："><a href="#8-Kafka-高效文件存储设计特点：" class="headerlink" title="8.Kafka 高效文件存储设计特点："></a>8.Kafka 高效文件存储设计特点：</h2><p>(1).Kafka 把 topic 中一个 parition 大文件分成多个小文件段，通过多个小文件段，就容易定</p>
+<p>期清除或删除已经消费完文件，减少磁盘占用。</p>
+<p>(2).通过索引信息可以快速定位 message 和确定 response 的最大大小。</p>
+<p>(3).通过 index 元数据全部映射到 memory，可以避免 segment file 的 IO 磁盘操作。</p>
+<p>(4).通过索引文件稀疏存储，可以大幅降低 index 文件元数据占用空间大小。</p>
+<h2 id="9-Kafka-与传统消息系统之间有三个关键区别"><a href="#9-Kafka-与传统消息系统之间有三个关键区别" class="headerlink" title="9.Kafka 与传统消息系统之间有三个关键区别"></a>9.Kafka 与传统消息系统之间有三个关键区别</h2><p>(1).Kafka 持久化日志，这些日志可以被重复读取和无限期保留</p>
+<p>(2).Kafka 是一个分布式系统：它以集群的方式运行，可以灵活伸缩，在内部通过复制数据</p>
+<p>提升容错能力和高可用性</p>
+<p>(3).Kafka 支持实时的流式处理</p>
+<h2 id="10-Kafka-创建-Topic-时如何将分区放置到不同的-Broker-中"><a href="#10-Kafka-创建-Topic-时如何将分区放置到不同的-Broker-中" class="headerlink" title="10.Kafka 创建 Topic 时如何将分区放置到不同的 Broker 中"></a>10.Kafka 创建 Topic 时如何将分区放置到不同的 Broker 中</h2><p>副本因子不能大于 Broker 的个数；</p>
+<p>第一个分区（编号为 0）的第一个副本放置位置是随机从 brokerList 选择的；</p>
+<p>其他分区的第一个副本放置位置相对于第 0 个分区依次往后移。也就是如果我们有 5 个</p>
+<p>Broker，5 个分区，假设第一个分区放在第四个 Broker 上，那么第二个分区将会放在第五</p>
+<p>个 Broker 上；第三个分区将会放在第一个 Broker 上；第四个分区将会放在第二个</p>
+<p>Broker 上，依次类推；</p>
+<p>剩余的副本相对于第一个副本放置位置其实是由 nextReplicaShift 决定的，而这个数也是</p>
+<p>随机产生的</p>
+<h2 id="11-Kafka-新建的分区会在哪个目录下创建"><a href="#11-Kafka-新建的分区会在哪个目录下创建" class="headerlink" title="11.Kafka 新建的分区会在哪个目录下创建"></a>11.Kafka 新建的分区会在哪个目录下创建</h2><p>在启动 Kafka 集群之前，我们需要配置好 log.dirs 参数，其值是 Kafka 数据的存放目录，</p>
+<p>这个参数可以配置多个目录，目录之间使用逗号分隔，通常这些目录是分布在不同的磁盘</p>
+<p>上用于提高读写性能。</p>
+<p>当然我们也可以配置 log.dir 参数，含义一样。只需要设置其中一个即可。</p>
+<p>如果 log.dirs 参数只配置了一个目录，那么分配到各个 Broker 上的分区肯定只能在这个</p>
+<p>目录下创建文件夹用于存放数据。</p>
+<p>但是如果 log.dirs 参数配置了多个目录，那么 Kafka 会在哪个文件夹中创建分区目录呢？</p>
+<p>答案是：Kafka 会在含有分区目录最少的文件夹中创建新的分区目录，分区目录名为 Topic</p>
+<p>名+分区 ID。注意，是分区文件夹总数最少的目录，而不是磁盘使用量最少的目录！也就</p>
+<p>是说，如果你给 log.dirs 参数新增了一个新的磁盘，新的分区目录肯定是先在这个新的磁</p>
+<p>盘上创建直到这个新的磁盘目录拥有的分区目录不是最少为止。</p>
+<h2 id="12-partition-的数据如何保存到硬盘"><a href="#12-partition-的数据如何保存到硬盘" class="headerlink" title="12.partition 的数据如何保存到硬盘"></a>12.partition 的数据如何保存到硬盘</h2><p>topic 中的多个 partition 以文件夹的形式保存到 broker，每个分区序号从 0 递增，</p>
+<p>且消息有序</p>
+<p>Partition 文件下有多个 segment（xxx.index，xxx.log）</p>
+<p>segment 文件里的 大小和配置文件大小一致可以根据要求修改 默认为 1g</p>
+<p>如果大小大于 1g 时，会滚动一个新的 segment 并且以上一个 segment 最后一条消息的偏移</p>
+<p>量命名</p>
+<h2 id="13-kafka-的-ack-机制"><a href="#13-kafka-的-ack-机制" class="headerlink" title="13.kafka 的 ack 机制"></a>13.kafka 的 ack 机制</h2><p>request.required.acks 有三个值 0 1 -1</p>
+<p>0:生产者不会等待 broker 的 ack，这个延迟最低但是存储的保证最弱当 server 挂掉的时候</p>
+<p>就会丢数据</p>
+<p>1：服务端会等待 ack 值 leader 副本确认接收到消息后发送 ack 但是如果 leader 挂掉后他</p>
+<p>不确保是否复制完成新 leader 也会导致数据丢失</p>
+<p>-1：同样在 1 的基础上 服务端会等所有的 follower 的副本受到数据后才会受到 leader 发出</p>
+<p>的 ack，这样数据不会丢失</p>
+<h2 id="14-Kafka-的消费者如何消费数据"><a href="#14-Kafka-的消费者如何消费数据" class="headerlink" title="14.Kafka 的消费者如何消费数据"></a>14.Kafka 的消费者如何消费数据</h2><p>消费者每次消费数据的时候，消费者都会记录消费的物理偏移量（offset）的位置</p>
+<p>等到下次消费时，他会接着上次位置继续消费</p>
+<h2 id="15-消费者负载均衡策略"><a href="#15-消费者负载均衡策略" class="headerlink" title="15.消费者负载均衡策略"></a>15.消费者负载均衡策略</h2><p>一个消费者组中的一个分片对应一个消费者成员，他能保证每个消费者成员都能访问，如</p>
+<p>果组中成员太多会有空闲的成员</p>
+<h2 id="16-数据有序"><a href="#16-数据有序" class="headerlink" title="16.数据有序"></a>16.数据有序</h2><p>一个消费者组里它的内部是有序的</p>
+<p>消费者组与消费者组之间是无序的</p>
+<h2 id="17-kafaka-生产数据时数据的分组策略"><a href="#17-kafaka-生产数据时数据的分组策略" class="headerlink" title="17.kafaka 生产数据时数据的分组策略"></a>17.kafaka 生产数据时数据的分组策略</h2><p>生产者决定数据产生到集群的哪个 partition 中</p>
+<p>每一条消息都是以（key，value）格式</p>
+<p>Key 是由生产者发送数据传入</p>
+<p>所以生产者（key）决定了数据产生到集群的哪个 partition</p>
+<p>###——————————————————————————————-</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io" rel="external nofollow noreferrer">张文军</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io/object-object-kafka/">https://wjhub.gitee.io/object-object-kafka/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="https://wjhub.gitee.io" target="_blank">张文军</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e2373eeaa1a18c1"></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XACT7J8EsoUU4ytieqXVWC8G-gzGzoHsz',
+        appKey: 'KGl573Bxj9uiDPoYFyg6M9Ls',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/object-object-bio-aio-nio-gai-nian/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="BIO-AIO-NIO概念">
+                        
+                        <span class="card-title">BIO-AIO-NIO概念</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            线程概述
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-08
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    网络
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">网络</span>
+                    </a>
+                    
+                    <a href="/tags/BIO-AIO-NIO%E6%A6%82%E5%BF%B5/">
+                        <span class="chip bg-color">BIO-AIO-NIO概念</span>
+                    </a>
+                    
+                    <a href="/tags/netty/">
+                        <span class="chip bg-color">netty</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/object-object-fen-bu-shi-shi-wu-zookeeper/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="分布式事务Zookeeper">
+                        
+                        <span class="card-title">分布式事务Zookeeper</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            对MySQL事务回顾1. 事务 参考文章ACID
+
+A:原子性(Atomicity)
+
+一个事务(transaction)中的所有操作，要么全部完成，要么全部不完成，不会结束在中间某个环节。事务在执行过程中发生错误，会被回滚（Rollbac
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            张文军
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('300')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 学习笔记<br />'
+            + '文章作者: 张文军<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归张文军所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            <span style="vertical-align: text-bottom;">更多内容请关注公众号:<img   width="70" height="70" src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586509086.png"></span>
+            Copyright&nbsp;&copy; 
+            <span id="year">年份</span>
+            <a href="https://wjhub.gitee.io" target="_blank">张文军</a><br>
+            
+            
+            
+            
+            
+            <!-- 
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+             -->
+            <br>
+
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "23";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="http://beian.miit.gov.cn" target="_blank">苏ICP备19067943号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/NJAUzhangwenjun" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:njauzhangwenjun@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2447950131" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2447950131" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+ <!-- 广告
+ <script
+ data-ad-client="ca-pub-1951614324840467"
+ async
+ src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+></script> -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?870b03ca633b2094a1f2f17b76a4fe65";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?63270bce1614ac74b0f3b8911574a80b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i["DaoVoiceObject"] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            a.charset = "utf-8";
+            m.parentNode.insertBefore(a, m)
+        })(window, document, "script", ('https:' == document.location.protocol ? 'https:' : 'http:') +
+            "//widget.daovoice.io/widget/6984b559.js", "daovoice")
+        daovoice('init', {
+            app_id: "c60a1431"
+        });
+        daovoice('update');
+    </script>
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

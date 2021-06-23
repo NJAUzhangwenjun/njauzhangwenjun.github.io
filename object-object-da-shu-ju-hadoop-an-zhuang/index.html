@@ -1,0 +1,1538 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="大数剧-hadoop-安装, 张文军,学习笔记,锁清秋">
+    <meta name="description" content="更多内容请关注：https://wjhub.gitee.io
+
+
+锁清秋
+
+
+大数剧-hadoop-安装
+使用ambari环境搭建 可参考网络优秀博客：https://www.cnblogs.com/langfanyun/p/1036868">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+
+
+    <meta name="baidu_union_verify" content="28f5c5d83967eb03d315b5e8e7538217">
+
+
+    
+    <title>大数剧-hadoop-安装 | 学习笔记</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+
+    
+    
+<link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">学习笔记</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>Medias</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>我的相册</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">学习笔记</div>
+        <div class="logo-desc">
+            
+            只懂追求技术的小白
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;" target="_blank" rel="noopener">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			Medias
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>   
+				
+                  <a href="/galleries " style="margin-left:75px";>
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>我的相册</span>
+                  </a>
+                </li>
+               
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/NJAUzhangwenjun" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/NJAUzhangwenjun" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页(或联系博主：qq：2447950131)！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        大数剧-hadoop-安装
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-hadoop-%E5%AE%89%E8%A3%85/">
+                                <span class="chip bg-color">大数剧-hadoop-安装</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                大数剧
+                            </a>
+                        
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/hadoop/" class="post-category">
+                                hadoop
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-11-26
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2021-01-28
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    18 分
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <center>更多内容请关注：https://wjhub.gitee.io</center>
+
+<p><img src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586869254.png" alt="Java快速开发学习"></p>
+<center><a href="https://wjhub.gitee.io">锁清秋</a></center>
+
+<hr>
+<h1 id="大数剧-hadoop-安装"><a href="#大数剧-hadoop-安装" class="headerlink" title="大数剧-hadoop-安装"></a>大数剧-hadoop-安装</h1><blockquote>
+<p>使用ambari环境搭建 可参考网络优秀博客：<a href="https://www.cnblogs.com/langfanyun/p/10368688.html" target="_blank" rel="noopener">https://www.cnblogs.com/langfanyun/p/10368688.html</a><br>下面我的是手动搭建</p>
+</blockquote>
+<h2 id="Hadoop安装方式"><a href="#Hadoop安装方式" class="headerlink" title="Hadoop安装方式"></a>Hadoop安装方式</h2><p>Hadoop的安装方式有三种，分别是单机模式，伪分布式模式，分布式模式。</p>
+<ul>
+<li>单机模式：单机模式：Hadoop 默认模式为非分布式模式（本地模式），无需进行其他配置即可运行。非分布式即单 Java 进程，方便进行调试。</li>
+<li>伪分布式模式：Hadoop 可以在单节点上以伪分布式的方式运行，Hadoop 进程以分离的 Java 进程来运行，节点既作为 NameNode 也作为 DataNode，同时，读取的是 HDFS 中的文件。</li>
+<li>分布式模式：使用多个节点构成集群环境来运行Hadoop。</li>
+</ul>
+<h2 id="创建hadoop用户"><a href="#创建hadoop用户" class="headerlink" title="创建hadoop用户"></a>创建hadoop用户</h2><pre class=" language-bash"><code class="language-bash"><span class="token function">su</span> root <span class="token comment" spellcheck="true"># 以 root 用户登录</span>
+<span class="token function">useradd</span> -m hadoop -s /bin/bash <span class="token comment" spellcheck="true"># 创建新用户hadoop</span>
+<span class="token function">passwd</span> hadoop <span class="token comment" spellcheck="true">#修改密码</span>
+vim <span class="token function">sudo</span> <span class="token comment" spellcheck="true">#hadoop 用户增加管理员权限，方便部署，避免一些对新手来说比较棘手的权限问题</span></code></pre>
+<p>增加</p>
+<pre class=" language-bash"><code class="language-bash">hadoop ALL<span class="token operator">=</span><span class="token punctuation">(</span>ALL<span class="token punctuation">)</span> ALL</code></pre>
+<h2 id="更新yum"><a href="#更新yum" class="headerlink" title="更新yum"></a>更新yum</h2><pre class=" language-bash"><code class="language-bash"><span class="token function">sudo</span> yum update</code></pre>
+<h2 id="安装SSH、配置SSH无密码登陆"><a href="#安装SSH、配置SSH无密码登陆" class="headerlink" title="安装SSH、配置SSH无密码登陆"></a>安装SSH、配置SSH无密码登陆</h2><p>集群、单节点模式都需要用到 SSH 登陆（类似于远程登陆，可以登录某台 Linux 主机，并且在上面运行命令），默认已安装了 SSH client，此外还需要安装 SSH server：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">sudo</span> yum <span class="token function">install</span> openssh-server</code></pre>
+<p>安装后，可以使用如下命令登陆本机：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">ssh</span> localhost</code></pre>
+<p>但这样登陆是需要每次输入密码的， 需要配置成SSH无密码登陆比较方便。</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token keyword">exit</span>                           <span class="token comment" spellcheck="true"># 退出刚才的 ssh localhost</span>
+<span class="token function">cd</span> ~/.ssh/                     <span class="token comment" spellcheck="true"># 若没有该目录，请先执行一次ssh localhost</span>
+ssh-keygen -t rsa              <span class="token comment" spellcheck="true"># 会有提示，都按回车就可以</span>
+<span class="token function">cat</span> id_rsa.pub <span class="token operator">>></span> authorized_keys  <span class="token comment" spellcheck="true"># 加入授权</span>
+<span class="token function">chmod</span> 600 ./authorized_keys    <span class="token comment" spellcheck="true"># 修改文件权限</span></code></pre>
+<p>此时再用 ssh localhost<br> 命令，无需输入密码就可以直接登录了</p>
+<p>这只是本机访问，不同电脑之间登录如下：</p>
+<pre class=" language-bash"><code class="language-bash">    <span class="token function">sudo</span> vim  /etc/ssh/sshd_config</code></pre>
+<p>大概在98行 把#去掉，ESC:wq,再执行下面命令</p>
+<pre class=" language-undefined"><code class="language-undefined">sudo service sshd restart</code></pre>
+<p>然后把各自虚拟机上生成的id_rsa.pub拷贝到其他电脑上<br> #192.168.92.101<br> hadoop@192.168.92.101:scp <del>/.ssh/id_<a href="https://link.jianshu.com?t=http://rsa.pub" target="_blank" rel="noopener">rsa.pub</a> hadoop@192.168.92.102:</del>/.ssh/<a href="https://link.jianshu.com?t=http://master.pub" target="_blank" rel="noopener">master.pub</a><br> hadoop@192.168.92.101:scp <del>/.ssh/id_<a href="https://link.jianshu.com?t=http://rsa.pub" target="_blank" rel="noopener">rsa.pub</a> hadoop@192.168.92.103:</del>/.ssh/<a href="https://link.jianshu.com?t=http://master.pub" target="_blank" rel="noopener">master.pub</a></p>
+<pre class=" language-ruby"><code class="language-ruby"><span class="token comment" spellcheck="true">#192.168.92.102</span>
+hadoop@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">92.102</span><span class="token symbol">:scp</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token regex">/id_rsa.pub hadoop@192.168.92.101:~/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>slave02<span class="token punctuation">.</span>pub 
+hadoop@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">92.102</span><span class="token symbol">:scp</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token regex">/id_rsa.pub hadoop@192.168.92.103:~/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>slave02<span class="token punctuation">.</span>pub 
+
+<span class="token comment" spellcheck="true">#192.168.92.103</span>
+hadoop@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">92.103</span><span class="token symbol">:scp</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token regex">/id_rsa.pub hadoop@192.168.92.101:~/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>slave03<span class="token punctuation">.</span>pub 
+hadoop@<span class="token number">192.168</span><span class="token punctuation">.</span><span class="token number">92.103</span><span class="token symbol">:scp</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token regex">/id_rsa.pub hadoop@192.168.92.102:~/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>slave03<span class="token punctuation">.</span>pub</code></pre>
+<pre class=" language-shell"><code class="language-shell">
+cat slave2.pub >> authorized_keys
+cat slave3.pub >> authorized_keys</code></pre>
+<p>重复以上步骤（注意自己操作的主机，文件名）<br> 修改主机名:</p>
+<pre class=" language-cpp"><code class="language-cpp">sudo hostnamectl <span class="token operator">--</span><span class="token keyword">static</span> set<span class="token operator">-</span>hostname master
+sudo hostnamectl <span class="token operator">--</span><span class="token keyword">static</span> set<span class="token operator">-</span>hostname slave2
+sudo hostnamectl <span class="token operator">--</span><span class="token keyword">static</span> set<span class="token operator">-</span>hostname slave3</code></pre>
+<p>重新连接就可以看到新的主机名了</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><pre class=" language-undefined"><code class="language-undefined">ssh master
+ssh slave02
+ssh slave03</code></pre>
+<p>此时会有如下提示(SSH首次登陆提示)，输入 yes 。</p>
+<p><img src="https://myblog-1258908231.cos.ap-shanghai.myqcloud.com/%E5%A4%A7%E6%95%B0%E5%89%A7-hadoop/20201127022337532.png" alt=""></p>
+<h2 id="安装Java环境"><a href="#安装Java环境" class="headerlink" title="安装Java环境"></a>安装Java环境</h2><p>Hadoop3.1.3需要JDK版本在1.8及以上。需要按照下面步骤来自己手动安装JDK1.8。<br> 已经把JDK1.8的安装包jdk-8u162-linux-x64.tar.gz放在了百度云盘，<a href="https://pan.baidu.com/s/1gbmPBXrJDCxwqPGkfvX5Xg" target="_blank" rel="noopener">可以点击这里到百度云盘下载JDK1.8安装包</a>（提取码：lnwl）。请把压缩格式的文件jdk-8u162-linux-x64.tar.gz下载到本地电脑</p>
+<p>在Linux命令行界面中，执行如下Shell命令（注意：当前登录用户名是hadoop）：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/libsudo <span class="token function">mkdir</span> jvm <span class="token comment" spellcheck="true">#创建/usr/lib/jvm目录用来存放JDK文件</span>
+<span class="token function">cd</span> ~ <span class="token comment" spellcheck="true">#进入hadoop用户的主目录cd Downloads  #注意区分大小写字母，刚才已经通过FTP软件把JDK安装包jdk-8u162-linux-x64.tar.gz上传到该目录下</span>
+<span class="token function">sudo</span> <span class="token function">tar</span> -zxvf ./jdk-8u162-linux-x64.tar.gz -C /usr/lib/jvm  <span class="token comment" spellcheck="true">#把JDK文件解压到/usr/lib/jvm目录下</span>
+<span class="token function">rm</span> -rf ./jdk-8u162-linux-x64.tar.gz  <span class="token comment" spellcheck="true"># 删除</span></code></pre>
+<p>上面使用了解压缩命令tar，如果对Linux命令不熟悉，可以参考<a href="http://dblab.xmu.edu.cn/blog/1624-2/" target="_blank" rel="noopener">常用的Linux命令用法</a>。</p>
+<p>JDK文件解压缩以后，可以执行如下命令到/usr/lib/jvm目录查看一下：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/lib/jvm
+<span class="token function">ls</span></code></pre>
+<p>可以看到，在/usr/lib/jvm目录下有个jdk1.8.0_162目录。<br>下面继续执行如下命令，设置环境变量：</p>
+<pre class=" language-bash"><code class="language-bash">vim /etc/profile</code></pre>
+<p>上面命令使用vim编辑器（<a href="http://dblab.xmu.edu.cn/blog/1607-2/" target="_blank" rel="noopener">查看vim编辑器使用方法</a>）打开了hadoop这个用户的环境变量配置文件，请在这个文件的开头位置，添加如下几行内容：</p>
+<pre class=" language-shell"><code class="language-shell">export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_162
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH</code></pre>
+<p>让配置生效</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">source</span> /etc/profile</code></pre>
+<p>这时，可以使用如下命令查看是否安装成功：</p>
+<pre class=" language-bash"><code class="language-bash">java -version</code></pre>
+<p>如果能够在屏幕上返回如下信息，则说明安装成功：</p>
+<pre class=" language-shell"><code class="language-shell">hadoop@ubuntu:~$ java -version
+java version "1.8.0_162"
+Java(TM) SE Runtime Environment (build 1.8.0_162-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.162-b12, mixed mode)</code></pre>
+<p>至此，就成功安装了Java环境。下面就可以进入Hadoop的安装。</p>
+<h2 id="安装-Hadoop3-1-3"><a href="#安装-Hadoop3-1-3" class="headerlink" title="安装 Hadoop3.1.3"></a>安装 Hadoop3.1.3</h2><p>Hadoop安装文件，可以到<a href="https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-3.1.3/hadoop-3.1.3.tar.gz" target="_blank" rel="noopener">Hadoop官网</a>下载hadoop-3.1.3.tar.gz。<br>也可以直接<a href="https://pan.baidu.com/s/1gbmPBXrJDCxwqPGkfvX5Xg" target="_blank" rel="noopener">点击这里从百度云盘下载软件</a>（提取码：lnwl），进入百度网盘后，进入“软件”目录，找到hadoop-3.1.3.tar.gz文件，下载到本地。<br> 选择将 Hadoop 安装至 /usr/local/ 中：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">tar</span> -zxf ~/下载/hadoop-3.1.3.tar.gz -C /usr/local    <span class="token comment" spellcheck="true"># 解压到/usr/local中cd /usr/local/sudo mv ./hadoop-3.1.3/ ./hadoop            # 将文件夹名改为hadoopsudo chown -R hadoop ./hadoop       # 修改文件权限</span></code></pre>
+<p>Hadoop 解压后即可使用。输入如下命令来检查 Hadoop 是否可用，成功则会显示 Hadoop 版本信息：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/hadoop./bin/hadoop version</code></pre>
+<p>相对路径与绝对路径</p>
+<p>请务必注意命令中的相对路径与绝对路径，本文后续出现的 <code>./bin/...</code>，<code>./etc/...</code> 等包含 ./ 的路径，均为相对路径，以 /usr/local/hadoop 为当前目录。例如在 /usr/local/hadoop 目录中执行 <code>./bin/hadoop version</code> 等同于执行 <code>/usr/local/hadoop/bin/hadoop version</code>。可以将相对路径改成绝对路径来执行，但如果你是在主文件夹 ~ 中执行 <code>./bin/hadoop version</code>，执行的会是 <code>/home/hadoop/bin/hadoop version</code>，就不是 所想要的了。</p>
+<h2 id="Hadoop单机配置-非分布式"><a href="#Hadoop单机配置-非分布式" class="headerlink" title="Hadoop单机配置(非分布式)"></a>Hadoop单机配置(非分布式)</h2><p>Hadoop 默认模式为非分布式模式（本地模式），无需进行其他配置即可运行。非分布式即单 Java 进程，方便进行调试。</p>
+<p>现在 可以执行例子来感受下 Hadoop 的运行。Hadoop 附带了丰富的例子（运行 <code>./bin/hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar</code> 可以看到所有例子），包括 wordcount、terasort、join、grep 等。</p>
+<p>在此 选择运行 grep 例子， 将 input 文件夹中的所有文件作为输入，筛选当中符合正则表达式 dfs[a-z.]+ 的单词并统计出现的次数，最后输出结果到 output 文件夹中。</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/hadoopmkdir ./inputcp ./etc/hadoop/*.xml ./input   <span class="token comment" spellcheck="true"># 将配置文件作为输入文件</span>
+./bin/hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar 
+<span class="token function">grep</span> ./input ./output <span class="token string">'dfs[a-z.]+'</span><span class="token function">cat</span> ./output/*          <span class="token comment" spellcheck="true"># 查看运行结果</span></code></pre>
+<p>执行成功后如下所示，输出了作业的相关信息，输出的结果是符合正则的单词 dfsadmin 出现了1次</p>
+<p><strong>注意</strong>，Hadoop 默认不会覆盖结果文件，因此再次运行上面实例会提示出错，需要先将 <code>./output</code> 删除。</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">rm</span> -r ./output</code></pre>
+<h2 id="Hadoop伪分布式配置"><a href="#Hadoop伪分布式配置" class="headerlink" title="Hadoop伪分布式配置"></a>Hadoop伪分布式配置</h2><p>Hadoop 可以在单节点上以伪分布式的方式运行，Hadoop 进程以分离的 Java 进程来运行，节点既作为 NameNode 也作为 DataNode，同时，读取的是 HDFS 中的文件。</p>
+<p>Hadoop 的配置文件位于 /usr/local/hadoop/etc/hadoop/ 中，伪分布式需要修改2个配置文件 <strong>core-site.xml</strong> 和 <strong>hdfs-site.xml</strong> 。Hadoop的配置文件是 xml 格式，每个配置以声明 property 的 name 和 value 的方式来实现。</p>
+<p>修改配置文件 <strong>core-site.xml</strong> (通过 gedit 编辑会比较方便: <code>gedit ./etc/hadoop/core-site.xml</code>)，将当中的</p>
+<pre class=" language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span></code></pre>
+<p>修改为下面配置：</p>
+<pre class=" language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>hadoop.tmp.dir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>file:/usr/local/hadoop/tmp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">></span></span>Abase for other temporary directories.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>fs.defaultFS<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>hdfs://localhost:9000<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span></code></pre>
+<p>同样的，修改配置文件 <strong>hdfs-site.xml</strong>：</p>
+<pre class=" language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.replication<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.namenode.name.dir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>file:/usr/local/hadoop/tmp/dfs/name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.datanode.data.dir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>file:/usr/local/hadoop/tmp/dfs/data<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.webhdfs.enabled<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.http.address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>0.0.0.0:50070<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span></code></pre>
+<blockquote>
+<p>说明：</p>
+<ol>
+<li>开启web服务</li>
+</ol>
+<pre class=" language-xml"><code class="language-xml">    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.webhdfs.enabled<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.http.address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>0.0.0.0:50070<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span></code></pre>
+<ol start="2">
+<li>端口号（关闭防火墙）</li>
+</ol>
+<p>web访问hadoop默认HTTP端口总结</p>
+<p>一、HDFS</p>
+<p>   1.NameNode 默认端口   50070</p>
+<p>   2.SecondNameNode 默认端口   50090</p>
+<p>   3.TaskNode 默认端口   50075</p>
+<p>在hadoop2的HDFS中fs.defaultFS在core-site.xml 中配置，默认端口是8020，但是由于其接收Client连接的RPC端口，所以如果在hdfs-site.xml中配置了RPC端口9000，所以fs.defaultFS端口变为9000</p>
+<p>二、MapReduce</p>
+<p>   1.JobTracker 默认端口   50030</p>
+<p>   2.TaskTracker 默认端口   50060</p>
+</blockquote>
+<p>Hadoop配置文件说明</p>
+<p>Hadoop 的运行方式是由配置文件决定的（运行 Hadoop 时会读取配置文件），因此如果需要从伪分布式模式切换回非分布式模式，需要删除 core-site.xml 中的配置项。</p>
+<p>此外，伪分布式虽然只需要配置 fs.defaultFS 和 dfs.replication 就可以运行（官方教程如此），不过若没有配置 hadoop.tmp.dir 参数，则默认使用的临时目录为 /tmp/hadoo-hadoop，而这个目录在重启时有可能被系统清理掉，导致必须重新执行 format 才行。所以  进行了设置，同时也指定 dfs.namenode.name.dir 和 dfs.datanode.data.dir，否则在接下来的步骤中可能会出错。</p>
+<p>配置完成后，执行 NameNode 的格式化:</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/hadoop./bin/hdfs namenode -format</code></pre>
+<p>成功的话，会看到 “successfully formatted” 的提示，具体返回信息类似如下：</p>
+<pre class=" language-shell"><code class="language-shell">2020-01-08 15:31:31,560 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = hadoop/127.0.1.1
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:  version = 3.1.3
+*************************************************************/
+
+......
+2020-01-08 15:31:35,677 INFO common.Storage: Storage directory /usr/local/hadoop/tmp/dfs/name **has been successfully formatted**.
+2020-01-08 15:31:35,700 INFO namenode.FSImageFormatProtobuf: Saving image file /usr/local/hadoop/tmp/dfs/name/current/fsimage.ckpt_0000000000000000000 using no compression
+2020-01-08 15:31:35,770 INFO namenode.FSImageFormatProtobuf: Image file /usr/local/hadoop/tmp/dfs/name/current/fsimage.ckpt_0000000000000000000 of size 393 bytes saved in 0 seconds .
+2020-01-08 15:31:35,810 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid >= 0
+2020-01-08 15:31:35,816 INFO namenode.FSImage: FSImageSaver clean checkpoint: txid = 0 when meet shutdown.
+2020-01-08 15:31:35,816 INFO namenode.NameNode: SHUTDOWN_MSG:  
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at hadoop/127.0.1.1
+*************************************************************/</code></pre>
+<p>如果在这一步时提示 <strong>Error: JAVA_HOME is not set and could not be found.</strong> 的错误，则说明之前设置 JAVA_HOME 环境变量那边就没设置好，请按教程先设置好 JAVA_HOME 变量，否则后面的过程都是进行不下去的。如果已经按照前面教程在.bashrc文件中设置了JAVA_HOME，还是出现 <strong>Error: JAVA_HOME is not set and could not be found.</strong> 的错误，那么，请到hadoop的安装目录修改配置文件“/usr/local/hadoop/etc/hadoop/hadoop-env.sh”，在里面找到“export JAVA_HOME=${JAVA_HOME}”这行，然后，把它修改成JAVA安装路径的具体地址，比如，“export JAVA_HOME=/usr/lib/jvm/default-java”，然后，再次启动Hadoop。</p>
+<p>接着开启 NameNode 和 DataNode 守护进程。</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> /usr/local/hadoop./sbin/start-dfs.sh  <span class="token comment" spellcheck="true">#start-dfs.sh是个完整的可执行文件，中间没有空</span></code></pre>
+<p>若出现如下SSH提示，输入yes即可。</p>
+<p>启动时可能会出现如下 WARN 提示：WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform… using builtin-java classes where applicable WARN 提示可以忽略，并不会影响正常使用。</p>
+<p>这个并不是 ssh 的问题，可通过设置 Hadoop 环境变量来解决。首先按键盘的 <strong>ctrl + c</strong> 中断启动，然后在 ~/.bashrc 中，增加如下两行内容（设置过程与 JAVA_HOME 变量一样，其中 HADOOP_HOME 为 Hadoop 的安装目录）：</p>
+<pre class=" language-shell"><code class="language-shell">export HADOOP_HOME=/usr/local/hadoopexport HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native</code></pre>
+<p>保存后，务必执行 <code>source ~/.bashrc</code> 使变量设置生效，然后再次执行 <code>./sbin/start-dfs.sh</code> 启动 Hadoop。</p>
+<p>启动完成后，可以通过命令 <code>jps</code> 来判断是否成功启动，若成功启动则会列出如下进程: “NameNode”、”DataNode” 和 “SecondaryNameNode”（如果 SecondaryNameNode 没有启动，请运行 sbin/stop-dfs.sh 关闭进程，然后再次尝试启动尝试）。如果没有 NameNode 或 DataNode ，那就是配置不成功，请仔细检查之前步骤，或通过查看启动日志排查原因。</p>
+<p>Hadoop无法正常启动的解决方法</p>
+<p>一般可以查看启动日志来排查原因，注意几点：</p>
+<ul>
+<li>启动时会提示形如 “DBLab-XMU: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hadoop-namenode-DBLab-XMU.out”，其中 DBLab-XMU 对应你的机器名，但其实启动日志信息是记录在 /usr/local/hadoop/logs/hadoop-hadoop-namenode-DBLab-XMU.log 中，所以应该查看这个后缀为 <strong>.log</strong> 的文件；</li>
+<li>每一次的启动日志都是追加在日志文件之后，所以得拉到最后面看，对比下记录的时间就知道了。</li>
+<li>一般出错的提示在最后面，通常是写着 Fatal、Error、Warning 或者 Java Exception 的地方。</li>
+<li>可以在网上搜索一下出错信息，看能否找到一些相关的解决方法。</li>
+</ul>
+<p>此外，<strong>若是 DataNode 没有启动</strong>，可尝试如下的方法（注意这会删除 HDFS 中原有的所有数据，如果原有的数据很重要请不要这样做）：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token comment" spellcheck="true"># 针对 DataNode 没法启动的解决方法</span>
+<span class="token function">cd</span> /usr/local/hadoop
+./sbin/stop-dfs.sh   <span class="token comment" spellcheck="true"># 关闭</span>
+<span class="token function">rm</span> -r ./tmp     <span class="token comment" spellcheck="true"># 删除 tmp 文件，注意这会删除 HDFS 中原有的所有数据</span>
+./bin/hdfs namenode -format   <span class="token comment" spellcheck="true"># 重新格式化 NameNode</span>
+./sbin/start-dfs.sh  <span class="token comment" spellcheck="true"># 重启</span></code></pre>
+<p>成功启动后，可以访问 Web 界面 <a href="http://localhost:50070/" target="_blank" rel="noopener">http://localhost:50070</a>（localhost为hdfs主机IP） 查看 NameNode 和 Datanode 信息，还可以在线查看 HDFS 中的文件。</p>
+<h2 id="运行Hadoop伪分布式实例"><a href="#运行Hadoop伪分布式实例" class="headerlink" title="运行Hadoop伪分布式实例"></a>运行Hadoop伪分布式实例</h2><p>上面的单机模式，grep 例子读取的是本地数据，伪分布式读取的则是 HDFS 上的数据。要使用 HDFS，首先需要在 HDFS 中创建用户目录：</p>
+<pre class=" language-bash"><code class="language-bash">./bin/hdfs dfs -mkdir -p /user/hadoop</code></pre>
+<blockquote>
+<p>注意</p>
+<p>这里的命令是以”./bin/hadoop dfs”开头的Shell命令方式，实际上有三种shell命令方式。<br>\1. hadoop fs<br>\2. hadoop dfs<br>\3. hdfs dfs</p>
+<p>hadoop fs适用于任何不同的文件系统，比如本地文件系统和HDFS文件系统<br>hadoop dfs只能适用于HDFS文件系统<br>hdfs dfs跟hadoop dfs的命令作用一样，也只能适用于HDFS文件系统</p>
+</blockquote>
+<p>接着将 ./etc/hadoop 中的 xml 文件作为输入文件复制到分布式文件系统中，即将 /usr/local/hadoop/etc/hadoop 复制到分布式文件系统中的 /user/hadoop/input 中。我们使用的是 hadoop 用户，并且已创建相应的用户目录 /user/hadoop ，因此在命令中就可以使用相对路径如 input，其对应的绝对路径就是 /user/hadoop/input:</p>
+<pre class=" language-bash"><code class="language-bash">./bin/hdfs dfs -mkdir input./bin/hdfs dfs -put ./etc/hadoop/*.xml input</code></pre>
+<p>复制完成后，可以通过如下命令查看文件列表：</p>
+<pre class=" language-bash"><code class="language-bash">./bin/hdfs dfs -ls input</code></pre>
+<p>伪分布式运行 MapReduce 作业的方式跟单机模式相同，区别在于伪分布式读取的是HDFS中的文件（可以将单机步骤中创建的本地 input 文件夹，输出结果 output 文件夹都删掉来验证这一点）。</p>
+<pre class=" language-bash"><code class="language-bash">./bin/hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar <span class="token function">grep</span> input output <span class="token string">'dfs[a-z.]+'</span></code></pre>
+<p>查看运行结果的命令（查看的是位于 HDFS 中的输出结果）：</p>
+<pre class=" language-bash"><code class="language-bash">./bin/hdfs dfs -cat output/*</code></pre>
+<p>  我们也可以将运行结果取回到本地：</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">rm</span> -r ./output    <span class="token comment" spellcheck="true"># 先删除本地的 output 文件夹（如果存在）</span>
+./bin/hdfs dfs -get output ./output     <span class="token comment" spellcheck="true"># 将 HDFS 上的 output 文件夹拷贝到本机</span>
+<span class="token function">cat</span> ./output/*</code></pre>
+<p>Hadoop 运行程序时，输出目录不能存在，否则会提示错误 “org.apache.hadoop.mapred.FileAlreadyExistsException: Output directory hdfs://localhost:9000/user/hadoop/output already exists” ，因此若要再次执行，需要执行如下命令删除 output 文件夹:</p>
+<pre class=" language-bash"><code class="language-bash">./bin/hdfs dfs -rm -r output    <span class="token comment" spellcheck="true"># 删除 output 文件夹</span></code></pre>
+<p>运行程序时，输出目录不能存在</p>
+<p>运行 Hadoop 程序时，为了防止覆盖结果，程序指定的输出目录（如 output）不能存在，否则会提示错误，因此运行前需要先删除输出目录。在实际开发应用程序时，可考虑在程序中加上如下代码，能在每次运行时自动删除输出目录，避免繁琐的命令行操作：</p>
+<pre class=" language-java"><code class="language-java">Configuration conf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Job job <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Job</span><span class="token punctuation">(</span>conf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/* 删除输出目录 */</span>
+Path outputPath <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Path</span><span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+outputPath<span class="token punctuation">.</span><span class="token function">getFileSystem</span><span class="token punctuation">(</span>conf<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>outputPath<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>若要关闭 Hadoop，则运行</p>
+<pre class=" language-bash"><code class="language-bash">./sbin/stop-dfs.sh</code></pre>
+<p>注意</p>
+<p>下次启动 hadoop 时，无需进行 NameNode 的初始化，只需要运行 <code>./sbin/start-dfs.sh</code> 就可以！</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io" rel="external nofollow noreferrer">张文军</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io/object-object-da-shu-ju-hadoop-an-zhuang/">https://wjhub.gitee.io/object-object-da-shu-ju-hadoop-an-zhuang/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="https://wjhub.gitee.io" target="_blank">张文军</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-hadoop-%E5%AE%89%E8%A3%85/">
+                                    <span class="chip bg-color">大数剧-hadoop-安装</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e2373eeaa1a18c1"></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XACT7J8EsoUU4ytieqXVWC8G-gzGzoHsz',
+        appKey: 'KGl573Bxj9uiDPoYFyg6M9Ls',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/object-object-da-shu-ju-hadoop-ji-ben-jie-shao/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="大数剧-hadoop-基本介绍">
+                        
+                        <span class="card-title">大数剧-hadoop-基本介绍</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            大数剧-hadoop-基本介绍
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-11-28
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                    大数剧
+                                </a>
+                            
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/hadoop/" class="post-category">
+                                    hadoop
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-hadoop-%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D/">
+                        <span class="chip bg-color">大数剧-hadoop-基本介绍</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/object-object-da-shu-ju-hadoop/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="大数剧-hadoop-安装">
+                        
+                        <span class="card-title">大数剧-hadoop-安装</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            大数剧-hadoop-安装
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-26
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                    大数剧
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-hadoop-%E5%AE%89%E8%A3%85/">
+                        <span class="chip bg-color">大数剧-hadoop-安装</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('300')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 学习笔记<br />'
+            + '文章作者: 张文军<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归张文军所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            <span style="vertical-align: text-bottom;">更多内容请关注公众号:<img   width="70" height="70" src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586509086.png"></span>
+            Copyright&nbsp;&copy; 
+            <span id="year">年份</span>
+            <a href="https://wjhub.gitee.io" target="_blank">张文军</a><br>
+            
+            
+            
+            
+            
+            <!-- 
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+             -->
+            <br>
+
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "23";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="http://beian.miit.gov.cn" target="_blank">苏ICP备19067943号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/NJAUzhangwenjun" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:njauzhangwenjun@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2447950131" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2447950131" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+ <!-- 广告
+ <script
+ data-ad-client="ca-pub-1951614324840467"
+ async
+ src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+></script> -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?870b03ca633b2094a1f2f17b76a4fe65";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?63270bce1614ac74b0f3b8911574a80b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i["DaoVoiceObject"] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            a.charset = "utf-8";
+            m.parentNode.insertBefore(a, m)
+        })(window, document, "script", ('https:' == document.location.protocol ? 'https:' : 'http:') +
+            "//widget.daovoice.io/widget/6984b559.js", "daovoice")
+        daovoice('init', {
+            app_id: "c60a1431"
+        });
+        daovoice('update');
+    </script>
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1574 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="SSH、 yum、 Shell、Maven、Git, 张文军,学习笔记,锁清秋">
+    <meta name="description" content="更多内容请关注：
+
+
+锁清秋
+
+
+一、SSH1、SSH工作机制ssh为Secure Shell（安全外壳协议）的缩写。很多ftp、pop和telnet在本质上都是不安全的。我们使用的Xshell6就是基于SSH的客户端实现。SSH的服务端实">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+
+
+    <meta name="baidu_union_verify" content="28f5c5d83967eb03d315b5e8e7538217">
+
+
+    
+    <title>SSH、 yum、 Shell、Maven、Git | 学习笔记</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+
+    
+    
+<link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">学习笔记</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>Medias</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>我的相册</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">学习笔记</div>
+        <div class="logo-desc">
+            
+            只懂追求技术的小白
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;" target="_blank" rel="noopener">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			Medias
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>   
+				
+                  <a href="/galleries " style="margin-left:75px";>
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>我的相册</span>
+                  </a>
+                </li>
+               
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/NJAUzhangwenjun" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/NJAUzhangwenjun" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页(或联系博主：qq：2447950131)！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        SSH、 yum、 Shell、Maven、Git
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Linux%E4%B9%8B-SSH-yum-Shell-Maven-Git/">
+                                <span class="chip bg-color">Linux之 SSH, yum, Shell,Maven,Git</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%B7%A5%E5%85%B7/" class="post-category">
+                                工具
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-02-03
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2020-11-26
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    9 分
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <center>更多内容请关注：</center>
+
+<p><img src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586869254.png" alt="Java快速开发学习"></p>
+<center><a href="https://wjhub.gitee.io">锁清秋</a></center>
+
+<hr>
+<h2 id="一、SSH"><a href="#一、SSH" class="headerlink" title="一、SSH"></a>一、SSH</h2><h3 id="1、SSH工作机制"><a href="#1、SSH工作机制" class="headerlink" title="1、SSH工作机制"></a>1、SSH工作机制</h3><p>ssh为Secure Shell（安全外壳协议）的缩写。<br>很多ftp、pop和telnet在本质上都是不安全的。<br>我们使用的Xshell6就是基于SSH的客户端实现。<br>SSH的服务端实现为openssh- deamon。<br>在linux上使用ssh</p>
+<pre class=" language-shell"><code class="language-shell">ssh root@192.168.33.88</code></pre>
+<h3 id="2、SSH免密码登录"><a href="#2、SSH免密码登录" class="headerlink" title="2、SSH免密码登录"></a>2、SSH免密码登录</h3><p>生成秘钥</p>
+<pre class=" language-shell"><code class="language-shell">ssh-keygen</code></pre>
+<p>把自己的公钥拷给对方</p>
+<pre class=" language-shell"><code class="language-shell">ssh-copy-id 192.168.33.3</code></pre>
+<p>基于ssh的文件拷贝：</p>
+<pre class=" language-shell"><code class="language-shell">scp abc.txt 192.168.33.3:/root</code></pre>
+<p>基于ssh的目录拷贝：需要加-r递归拷贝</p>
+<pre class=" language-shell"><code class="language-shell">scp aaa -r 192.168.33.3:/root</code></pre>
+<p>远程执行命令：</p>
+<pre class=" language-shell"><code class="language-shell">ssh 192.168.33.3 "echo hello > /root/hello.txt" </code></pre>
+<h2 id="二、yum工具"><a href="#二、yum工具" class="headerlink" title="二、yum工具"></a>二、yum工具</h2><p>yum类似于Maven工具，可以从中央仓库下载安装各种软件。<br>当某个软件有依赖其它软件时，yum也会自动下载并安装其它软件。<br>常用命令：</p>
+<ul>
+<li><p>安装软件包：<code>yum install xxx -y</code>（-y 表示免确认）</p>
+</li>
+<li><p>清除本地索引数据：<code>yum clear all</code></p>
+</li>
+<li><p>查找库中软件包：<code>yum list | grep xxx</code></p>
+</li>
+<li><p>列出本地所配置的仓库信息：<code>yum repolist</code></p>
+</li>
+<li><p>其它参数：直接敲yum回车<br>如：搜索jdk工具</p>
+<pre class=" language-shell"><code class="language-shell">yum list | grep jdk</code></pre>
+<p><a href="https://www.cnblogs.com/yoyoketang/p/10186513.html" target="_blank" rel="noopener">使用 yum 安装 JDK 和 Tomcat</a></p>
+</li>
+</ul>
+<h2 id="三、Shell编程"><a href="#三、Shell编程" class="headerlink" title="三、Shell编程"></a>三、Shell编程</h2><h3 id="1、基本格式"><a href="#1、基本格式" class="headerlink" title="1、基本格式"></a>1、基本格式</h3><p>Shell俗称壳（用来区别于核），是指“为使用者提供操作界面”的软件（命令解析器）。<br>Shell是用户与内核进行交互操作的一种接口，目前最流行的Shell称为 bash Shell。<br>Shell也是一门编程语言（解释型的编程语言），即shell脚本（就是在用linux的shell命令编程）。<br>一个系统可以存在多个shell，可以通过<code>cat /etc/shells</code>命令查看系统中安装的shell，不同的shell可能支持的命令语法是不<br>同的。</p>
+<pre class=" language-shell"><code class="language-shell">[root@localhost /]# cat /etc/shells</code></pre>
+<p>代码写在普通文本文件中，通常以.sh为后缀名</p>
+<pre class=" language-shell"><code class="language-shell">vi hello.sh
+#!/bin/bash ##表示用哪一种shell解析器来解析执行这个脚本
+echo "hello word" ##注释也可以写在这里
+##这是一行注释</code></pre>
+<p>执行脚本：</p>
+<pre class=" language-shell"><code class="language-shell">sh hello.sh</code></pre>
+<p>或者给脚本添加x权限，直接执行</p>
+<pre class=" language-shell"><code class="language-shell">./hello.sh</code></pre>
+<h3 id="2、变量"><a href="#2、变量" class="headerlink" title="2、变量"></a>2、变量</h3><p>变量=值（例如A=5）<br>注意：等号两侧不能有空格<br>变量名一般习惯为大写<br>使用变量：$A<br>定义变量<br>A=1<br>查看变量</p>
+<pre class=" language-shell"><code class="language-shell">echo $A</code></pre>
+<p>查看当前进程中所有变量</p>
+<pre class=" language-shell"><code class="language-shell">set</code></pre>
+<p>撤销变量</p>
+<pre class=" language-shell"><code class="language-shell">unset A</code></pre>
+<p>声明静态变量,不能unset</p>
+<pre class=" language-shell"><code class="language-shell">readonly B=2</code></pre>
+<p>注意：变量中的值没有类型，全部为字符串。</p>
+<h2 id="四、Maven"><a href="#四、Maven" class="headerlink" title="四、Maven"></a>四、Maven</h2><h3 id="1、Maven的安装与配置"><a href="#1、Maven的安装与配置" class="headerlink" title="1、Maven的安装与配置"></a>1、Maven的安装与配置</h3><p>1、确认jdk是否安装<br><a href="http://maven.apache.org/docs/history.html" target="_blank" rel="noopener">http://maven.apache.org/docs/history.html</a><br>Maven3.3.X及以上版本至少需要jdk1.7的支持。<br>2、去官网<a href="http://maven.apache.org/download.cgi" target="_blank" rel="noopener">http://maven.apache.org/download.cgi</a><br>3、下载 apache-maven-3.5.3-bin.zip<br>4、解压<br>目录结构：<br>-bin：命令<br>-boot：maven启动所需<br>-conf：配置文件（常用的setting.xml就在其中）<br>-lib：maven所依赖的jar包<br>5、环境变量<br>环境变量配置和JDK配置一样，如：M2_HOME/MAVEN_HOME和Path </p>
+<h3 id="2、Maven规定了一套默认的项目格式"><a href="#2、Maven规定了一套默认的项目格式" class="headerlink" title="2、Maven规定了一套默认的项目格式"></a>2、Maven规定了一套默认的项目格式</h3><p>-src/main/java —— 存放项目的.java文件</p>
+<p>-src/main/resources —— 存放项目资源文件，如spring、struts2配置文件，db.properties</p>
+<p>-src/main/webapp —— 存放jsp，css，image等文件src/test/java —— 存放所有测试.java文件，如JUnit测试类</p>
+<p>-src/test/resources —— 测试资源文件</p>
+<p>-pom.xml——主要要写的maven配置文件</p>
+<p>-target —— 项目由maven自动输出位置</p>
+<p>  即：</p>
+<p>  –src<br>  —–main<br>  ———-java<br>  ———-resources<br>  —–test<br>  ———-java<br>  ———-resources<br>  –target<br>  –pom.xml</p>
+<h3 id="3、常用命令"><a href="#3、常用命令" class="headerlink" title="3、常用命令"></a>3、常用命令</h3><ul>
+<li>mvn -v：查看版本</li>
+<li>mvn compile：编译</li>
+<li>mvn test：测试</li>
+<li>mvn package：打包</li>
+<li>mvn install：打包并拷贝到本地仓库 </li>
+</ul>
+<h3 id="4、Maven相关概念介绍"><a href="#4、Maven相关概念介绍" class="headerlink" title="4、Maven相关概念介绍"></a>4、Maven相关概念介绍</h3><h4 id="1、项目对象模型（POM）"><a href="#1、项目对象模型（POM）" class="headerlink" title="1、项目对象模型（POM）"></a>1、项目对象模型（POM）</h4><h4 id="2、坐标"><a href="#2、坐标" class="headerlink" title="2、坐标"></a>2、坐标</h4><p>什么是坐标<br>在平面几何中坐标（x，y）可以标识平面中唯一的一点<br>Maven坐标主要组成<br>    groupId：定义当前Maven项目隶属项目<br>    artifactId：定义实际项目中的一个模块<br>    version：定义当前项目的当前版本<br>    packaging：定义该项目的打包方式<br>Maven为什么使用坐标<br>Maven世界拥有大量构建，我们需要找一个用来标识</p>
+<h4 id="3、依赖管理"><a href="#3、依赖管理" class="headerlink" title="3、依赖管理"></a>3、依赖管理</h4><p>​1、依赖声明</p>
+<pre class=" language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>junit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>junit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>4.12<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span></code></pre>
+<p>2、依赖范围<br>依赖范围scope用来控制依赖和编译、测试、运行的classpath的关系:</p>
+<ul>
+<li>compile：默认编译依赖范围。对于编译、测试、运行三种classpath都有效。</li>
+<li>test：测试依赖范围。只对于测试classpath有效。</li>
+<li>provided：已提供依赖访问。对于编译、测试的classpath有效，但对于运行无效，因为容器已经提供，例如servlet-api</li>
+<li>runtime：运行时提供。例如jdbc驱动 </li>
+</ul>
+<h4 id="4、仓库管理"><a href="#4、仓库管理" class="headerlink" title="4、仓库管理"></a>4、仓库管理</h4><p>何为Maven仓库<br>–用来统一存储所有Maven共享构建的位置就是仓库<br>Maven仓库布局<br>  根据Maven坐标定义每个构建在仓库中唯一存储路径<br>  大致为：groupId/artifactId/version/artifactId-version.packaging<br>仓库的分类</p>
+<ul>
+<li>本地仓库<br> ~/.m2/repository/<br> 每个用户只有一个本地仓库</li>
+<li>远程仓库<ul>
+<li>中央仓库：Maven默认的远程仓库<a href="http://repo1.maven.org/maven2/" target="_blank" rel="noopener">http://repo1.maven.org/maven2/</a></li>
+<li>私服：是一种特殊的远程仓库，它是架设在局域网内的仓库</li>
+<li>镜像：用来替代中央仓库，速度一般比中央仓库 </li>
+</ul>
+</li>
+</ul>
+<h4 id="5、生命周期"><a href="#5、生命周期" class="headerlink" title="5、生命周期"></a>5、生命周期</h4><p>何为生命周期</p>
+<ul>
+<li>Maven生命周期就是为了对所有的构建过程进行抽象和统一包括项目清理、初始化、编译、打包、测试、部署等几乎所有构建步骤</li>
+</ul>
+<p>Maven三大生命周期</p>
+<ul>
+<li>clean：清理项目的</li>
+<li>default：构建项目的</li>
+<li>site：生成项目站点的</li>
+</ul>
+<h4 id="6、仓库"><a href="#6、仓库" class="headerlink" title="6、仓库"></a>6、仓库</h4><p>1、本地仓库<br>设置本地仓库：conf/setting.xml</p>
+<h2 id="五、git"><a href="#五、git" class="headerlink" title="五、git"></a>五、git</h2><h4 id="1、git初始化"><a href="#1、git初始化" class="headerlink" title="1、git初始化"></a>1、git初始化</h4><p>1、安装—–Google it</p>
+<ul>
+<li>为每一台电脑配置身份信息</li>
+</ul>
+<pre class=" language-shell"><code class="language-shell">$ git config --global user.name "Your Name"
+$ git config --global user.email "email@example.com"</code></pre>
+<h4 id="2、git基本命令"><a href="#2、git基本命令" class="headerlink" title="2、git基本命令"></a>2、<strong>git基本命令</strong></h4><pre class=" language-shell"><code class="language-shell"># 把某个目录变成可以让git管理到的目录（创建版本库）
+git init
+
+#把内容输入到一个文件
+echo "xxxx" > xxxx 
+
+#把工作空间的某个文件添加到cache
+git add  xxxx
+
+#把工作空间的所有内容添加到cache
+git add -A
+
+#把cache当中的某个文件提交到本地库
+git commit -m "xxxx"
+
+#all
+git commit -am "xxxx"
+
+#cache ---->work file恢复一个文件  file1 file2 恢复两个文件  .恢复所有文件
+git checkout readme.txt 
+
+#git状态查询
+git status
+
+#查看不同的地方 默认查看工作区和cache
+#git diff --cached   比较cache和Repository
+#git diff HEAD 工作区和最新的Resository
+#git diff commit-id 工作区和制定的repository
+#git diff --cached commit-id
+#git diff --commit-id commit-id
+git diff 
+
+#reset 顾名思义   （HEAD~100）
+git reset HEAD^
+
+#git的日志
+git log git log --pretty=oneline
+
+#oh my pretty pretty boy i love you 
+git reflog  查看历史命令
+
+#git rm --cached file_path
+git rm 
+git mv
+#远程仓库的克隆岛本地库
+git clone
+#关联远程仓库
+git remote add
+#推送到远程仓库
+git push
+#拉取远程仓库的内容
+git pull
+#查看当前分支 -a查看所有分支 -av 查看所有分支的信息 -avv 查看所有分支的信息和关系
+git branch
+#创建一个分支 基于当前分支创建分支
+git branch  xxx
+#基于oldType创建分支
+git branch newBranch oldType
+#切换分支
+git checkout 分支的名字
+#删除分支
+git branch -d   xxx
+#查看文件内容
+git cat-file -p  commitid
+#查看对象类型 blob commit tree
+git cat-file -t commitid
+</code></pre>
+<h4 id="3、github"><a href="#3、github" class="headerlink" title="3、github"></a>3、github</h4><ol>
+<li><p>$ ssh-keygen -t rsa -C “email”    //public key for push</p>
+</li>
+<li><p>git remote add <strong>nickName</strong> <strong>gitUrl</strong>    <strong>// conn remote</strong></p>
+</li>
+<li><p>git push -u <strong>remoteBranch</strong> <strong>localBranch</strong></p>
+</li>
+</ol>
+<h6 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h6><p>查看分支</p>
+<p>创建分支</p>
+<pre><code>基于当前分支创积分分支    
+
+基于远程分支创建分支
+
+基于新分支创建分支
+
+基于提交创建分支其
+实都是基于**commit**创建分支</code></pre><p>合并分支</p>
+<p>一定要切换到被合并的分支上去合并</p>
+<p>比如说A要合并A1</p>
+<p>那么先要切换到A1，然后在A1上面执行merge</p>
+<h4 id="4、远程仓库"><a href="#4、远程仓库" class="headerlink" title="4、远程仓库"></a>4、<strong>远程仓库</strong></h4><p>基于文件共享（nfs）</p>
+<p>linux  ssh</p>
+<p>装好git yum install git</p>
+<p>git地址：username@ip:/dir</p>
+<p>密码</p>
+<p>gitlab</p>
+<p><a href="https://about.gitlab.com/installation/#centos-7" target="_blank" rel="noopener">https://about.gitlab.com/installation/#centos-7</a></p>
+<p>传上去</p>
+<p>gitlab-ce-10.8.2-ce.0.el7.x86_64.rpm</p>
+<p>安装 rpm -ivh /home/tools/gitlab-ce-10.8.2-ce.0.el7.x86_64.rpm</p>
+<p>sudo gitlab-ctl reconfigure   时间很少8-10分钟</p>
+<p> gitlab-ctl start 启动gitlab</p>
+<p>访问gitlab  <a href="http://ip:port/" target="_blank" rel="noopener">http://ip:port</a></p>
+<p>设置密码</p>
+<p>use</p>
+<p>github</p>
+<h2 id="github骚操作"><a href="#github骚操作" class="headerlink" title="github骚操作"></a>github骚操作</h2><h3 id="stars或fork数量关键词去查找"><a href="#stars或fork数量关键词去查找" class="headerlink" title="stars或fork数量关键词去查找"></a>stars或fork数量关键词去查找</h3><ul>
+<li><p>公式</p>
+<ul>
+<li><p>xxx关键词 star通配符</p>
+<ul>
+<li>：&gt;或者：&gt;=</li>
+</ul>
+</li>
+<li><p>区间范围数字</p>
+<ul>
+<li>数字1..数字2</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>查找stars数大于等于5000的springboot项目</p>
+<ul>
+<li>springboot stars:&gt;=5000</li>
+</ul>
+</li>
+<li><p>查找forks数大于500的springcloud项目</p>
+<ul>
+<li>springcloud forks:&gt;500</li>
+</ul>
+</li>
+<li><p>组合使用</p>
+<ul>
+<li><p>查找fork在100到200之间并且stars数在80到100之间的springboot项目</p>
+<ul>
+<li>springboot forks:100..200 stars:80..100</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="awesome加强搜索"><a href="#awesome加强搜索" class="headerlink" title="awesome加强搜索"></a>awesome加强搜索</h3><ul>
+<li><p>公式</p>
+<ul>
+<li><p>awesome关键字</p>
+<ul>
+<li>awesome系列一般是用来学习、工具、书籍类相关的项目</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>搜索优秀的redis相关的项目，包括框架、教程等</p>
+</li>
+</ul>
+<h3 id="高亮显示某一行代码"><a href="#高亮显示某一行代码" class="headerlink" title="高亮显示某一行代码"></a>高亮显示某一行代码</h3><ul>
+<li><p>公式</p>
+<ul>
+<li><p>1行</p>
+<ul>
+<li>地址后面紧跟#L数字</li>
+</ul>
+</li>
+<li><p>多行</p>
+<ul>
+<li>地址后面紧跟#L数字-L数字2</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="项目内搜索"><a href="#项目内搜索" class="headerlink" title="项目内搜索"></a>项目内搜索</h3><ul>
+<li>英文t</li>
+</ul>
+<h3 id="搜索某个地区内的大佬"><a href="#搜索某个地区内的大佬" class="headerlink" title="搜索某个地区内的大佬"></a>搜索某个地区内的大佬</h3><ul>
+<li><p>公式</p>
+<ul>
+<li>location：地区</li>
+<li>language：语言</li>
+</ul>
+</li>
+<li><p>地区北京的Java方向的用户</p>
+<ul>
+<li>location：beijing language：java</li>
+</ul>
+</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io" rel="external nofollow noreferrer">张文军</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io/object-object-linux/">https://wjhub.gitee.io/object-object-linux/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="https://wjhub.gitee.io" target="_blank">张文军</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Linux%E4%B9%8B-SSH-yum-Shell-Maven-Git/">
+                                    <span class="chip bg-color">Linux之 SSH, yum, Shell,Maven,Git</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e2373eeaa1a18c1"></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XACT7J8EsoUU4ytieqXVWC8G-gzGzoHsz',
+        appKey: 'KGl573Bxj9uiDPoYFyg6M9Ls',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/object-object-tomcat/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Tomcat">
+                        
+                        <span class="card-title">Tomcat</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Tomcat
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/" class="post-category">
+                                    中间件
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Tomcat/">
+                        <span class="chip bg-color">Tomcat</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/object-object-xian-cheng-chi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="线程池">
+                        
+                        <span class="card-title">线程池</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            线程池
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    并发
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%B9%B6%E5%8F%91-%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+                        <span class="chip bg-color">并发,多线程,线程池</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('300')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 学习笔记<br />'
+            + '文章作者: 张文军<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归张文军所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            <span style="vertical-align: text-bottom;">更多内容请关注公众号:<img   width="70" height="70" src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586509086.png"></span>
+            Copyright&nbsp;&copy; 
+            <span id="year">年份</span>
+            <a href="https://wjhub.gitee.io" target="_blank">张文军</a><br>
+            
+            
+            
+            
+            
+            <!-- 
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+             -->
+            <br>
+
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "23";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="http://beian.miit.gov.cn" target="_blank">苏ICP备19067943号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/NJAUzhangwenjun" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:njauzhangwenjun@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2447950131" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2447950131" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+ <!-- 广告
+ <script
+ data-ad-client="ca-pub-1951614324840467"
+ async
+ src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+></script> -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?870b03ca633b2094a1f2f17b76a4fe65";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?63270bce1614ac74b0f3b8911574a80b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i["DaoVoiceObject"] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            a.charset = "utf-8";
+            m.parentNode.insertBefore(a, m)
+        })(window, document, "script", ('https:' == document.location.protocol ? 'https:' : 'http:') +
+            "//widget.daovoice.io/widget/6984b559.js", "daovoice")
+        daovoice('init', {
+            app_id: "c60a1431"
+        });
+        daovoice('update');
+    </script>
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

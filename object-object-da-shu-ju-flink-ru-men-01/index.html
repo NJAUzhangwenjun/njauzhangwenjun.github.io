@@ -1,0 +1,1405 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="大数剧-flink-入门, 张文军,学习笔记,锁清秋">
+    <meta name="description" content="更多内容请关注：https://wjhub.gitee.io
+
+
+锁清秋
+
+
+
+
+
+以下资料部分来源于网络
+
+Apache Flink 零基础入门（一&amp;amp;二）：基础概念解析一、Apache Flink 的定义、架构及原理Apache ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+
+
+    <meta name="baidu_union_verify" content="28f5c5d83967eb03d315b5e8e7538217">
+
+
+    
+    <title>大数剧-flink-入门 | 学习笔记</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+
+    
+    
+<link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">学习笔记</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>Medias</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>我的相册</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">学习笔记</div>
+        <div class="logo-desc">
+            
+            只懂追求技术的小白
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;" target="_blank" rel="noopener">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			Medias
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>   
+				
+                  <a href="/galleries " style="margin-left:75px";>
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>我的相册</span>
+                  </a>
+                </li>
+               
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/NJAUzhangwenjun" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/NJAUzhangwenjun" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页(或联系博主：qq：2447950131)！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        大数剧-flink-入门
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-flink/">
+                                <span class="chip bg-color">大数剧-flink</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                大数剧
+                            </a>
+                        
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/flink/" class="post-category">
+                                flink
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-01-04
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2021-01-27
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5.4k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    19 分
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <center>更多内容请关注：https://wjhub.gitee.io</center>
+
+<p><img src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586869254.png" alt="Java快速开发学习"></p>
+<center><a href="https://wjhub.gitee.io">锁清秋</a></center>
+
+
+
+<hr>
+<blockquote>
+<p>以下资料部分来源于网络</p>
+</blockquote>
+<h1 id="Apache-Flink-零基础入门（一-amp-二）：基础概念解析"><a href="#Apache-Flink-零基础入门（一-amp-二）：基础概念解析" class="headerlink" title="Apache Flink 零基础入门（一&amp;二）：基础概念解析"></a>Apache Flink 零基础入门（一&amp;二）：基础概念解析</h1><h3 id="一、Apache-Flink-的定义、架构及原理"><a href="#一、Apache-Flink-的定义、架构及原理" class="headerlink" title="一、Apache Flink 的定义、架构及原理"></a><strong>一、Apache Flink 的定义、架构及原理</strong></h3><p>Apache Flink 是一个分布式大数据处理引擎，可对有限数据流和无限数据流进行有状态或无状态的计算，能够部署在各种集群环境，对各种规模大小的数据进行快速计算。</p>
+<h4 id="1-Flink-Application"><a href="#1-Flink-Application" class="headerlink" title="1. Flink Application"></a><strong>1. Flink Application</strong></h4><p>了解Flink 应用开发需要先理解Flink 的Streams、State、Time 等基础处理语义以及Flink 兼顾灵活性和方便性的多层次API。</p>
+<ul>
+<li><strong>Streams</strong>：流，分为有限数据流与无限数据流，unbounded stream 是有始无终的数据流，即无限数据流；而bounded stream 是限定大小的有始有终的数据集合，即有限数据流，二者的区别在于无限数据流的数据会随时间的推演而持续增加，计算持续进行且不存在结束的状态，相对的有限数据流数据大小固定，计算最终会完成并处于结束的状态。</li>
+<li><strong>State</strong>，状态是计算过程中的数据信息，在容错恢复和Checkpoint 中有重要的作用，流计算在本质上是Incremental Processing，因此需要不断查询保持状态；另外，为了确保Exactly- once 语义，需要数据能够写入到状态中；而持久化存储，能够保证在整个分布式系统运行失败或者挂掉的情况下做到Exactly- once，这是状态的另外一个价值。</li>
+<li><strong>Time</strong>，分为Event time、Ingestion time、Processing time，Flink 的无限数据流是一个持续的过程，时间是我们判断业务状态是否滞后，数据处理是否及时的重要依据。</li>
+<li><strong>API</strong>，API 通常分为三层，由上而下可分为SQL / Table API、DataStream API、ProcessFunction 三层，API 的表达能力及业务抽象能力都非常强大，但越接近SQL 层，表达能力会逐步减弱，抽象能力会增强，反之，ProcessFunction 层API 的表达能力非常强，可以进行多种灵活方便的操作，但抽象能力也相对越小。</li>
+</ul>
+<h4 id="2-Flink-Architecture"><a href="#2-Flink-Architecture" class="headerlink" title="2. Flink Architecture"></a><strong>2. Flink Architecture</strong></h4><p>在架构部分，主要分为以下四点：</p>
+<p>第一，Flink 具备统一的框架处理有界和无界两种数据流的能力</p>
+<p>第二， 部署灵活，Flink 底层支持多种资源调度器，包括Yarn、Kubernetes 等。Flink 自身带的Standalone 的调度器，在部署上也十分灵活。</p>
+<p>第三， 极高的可伸缩性，可伸缩性对于分布式系统十分重要，阿里巴巴双11大屏采用Flink 处理海量数据，使用过程中测得Flink 峰值可达17 亿/秒。</p>
+<p>第四， 极致的流式处理性能。Flink 相对于Storm 最大的特点是将状态语义完全抽象到框架中，支持本地状态读取，避免了大量网络IO，可以极大提升状态存取的性能。</p>
+<h4 id="3-Flink-Operation"><a href="#3-Flink-Operation" class="headerlink" title="3. Flink Operation"></a><strong>3. Flink Operation</strong></h4><p>后面会有专门课程讲解，此处简单分享Flink 关于运维及业务监控的内容：</p>
+<ul>
+<li>Flink具备7 X 24 小时高可用的SOA（面向服务架构），原因是在实现上Flink 提供了一致性的Checkpoint。Checkpoint是Flink 实现容错机制的核心，它周期性的记录计算过程中Operator 的状态，并生成快照持久化存储。当Flink 作业发生故障崩溃时，可以有选择的从Checkpoint 中恢复，保证了计算的一致性。</li>
+<li>Flink本身提供监控、运维等功能或接口，并有内置的WebUI，对运行的作业提供DAG 图以及各种Metric 等，协助用户管理作业状态。</li>
+</ul>
+<h4 id="4-Flink-的应用场景"><a href="#4-Flink-的应用场景" class="headerlink" title="4. Flink 的应用场景"></a><strong>4. Flink 的应用场景</strong></h4><h5 id="4-1-Flink-的应用场景：Data-Pipeline"><a href="#4-1-Flink-的应用场景：Data-Pipeline" class="headerlink" title="4.1 Flink 的应用场景：Data Pipeline"></a><strong>4.1 Flink</strong> <strong>的应用场景：Data Pipeline</strong></h5><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/2-16.004.jpeg" alt="img"></p>
+<p>Data Pipeline 的核心场景类似于数据搬运并在搬运的过程中进行部分数据清洗或者处理，而整个业务架构图的左边是Periodic ETL，它提供了流式ETL 或者实时ETL，能够订阅消息队列的消息并进行处理，清洗完成后实时写入到下游的Database或File system 中。场景举例：</p>
+<h6 id="实时数仓"><a href="#实时数仓" class="headerlink" title="实时数仓"></a><strong>实时数仓</strong></h6><p>当下游要构建实时数仓时，上游则可能需要实时的Stream ETL。这个过程会进行实时清洗或扩展数据，清洗完成后写入到下游的实时数仓的整个链路中，可保证数据查询的时效性，形成实时数据采集、实时数据处理以及下游的实时Query。</p>
+<h6 id="搜索引擎推荐"><a href="#搜索引擎推荐" class="headerlink" title="搜索引擎推荐"></a><strong>搜索引擎推荐</strong></h6><p>搜索引擎这块以淘宝为例，当卖家上线新商品时，后台会实时产生消息流，该消息流经过Flink 系统时会进行数据的处理、扩展。然后将处理及扩展后的数据生成实时索引，写入到搜索引擎中。这样当淘宝卖家上线新商品时，能在秒级或者分钟级实现搜索引擎的搜索。</p>
+<h5 id="4-2-Flink-应用场景：Data-Analytics"><a href="#4-2-Flink-应用场景：Data-Analytics" class="headerlink" title="4.2 Flink 应用场景：Data Analytics"></a><strong>4.2 Flink</strong> <strong>应用场景：Data Analytics</strong></h5><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/3-.005.jpeg" alt="img"></p>
+<p>Data Analytics，如图，左边是Batch Analytics，右边是Streaming Analytics。Batch Analytics 就是传统意义上使用类似于Map Reduce、Hive、Spark Batch 等，对作业进行分析、处理、生成离线报表；Streaming Analytics 使用流式分析引擎如Storm、Flink 实时处理分析数据，应用较多的场景如实时大屏、实时报表。</p>
+<h5 id="4-3-Flink-应用场景：Data-Driven"><a href="#4-3-Flink-应用场景：Data-Driven" class="headerlink" title="4.3 Flink 应用场景：Data Driven"></a><strong>4.3 Flink</strong> <strong>应用场景：Data Driven</strong></h5><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/4-.006.jpeg" alt="img"></p>
+<p>从某种程度上来说，所有的实时的数据处理或者是流式数据处理都是属于Data Driven，流计算本质上是Data Driven 计算。应用较多的如风控系统，当风控系统需要处理各种各样复杂的规则时，Data Driven 就会把处理的规则和逻辑写入到Datastream 的API 或者是ProcessFunction 的API 中，然后将逻辑抽象到整个Flink 引擎，当外面的数据流或者是事件进入就会触发相应的规则，这就是Data Driven 的原理。在触发某些规则后，Data Driven 会进行处理或者是进行预警，这些预警会发到下游产生业务通知，这是Data Driven 的应用场景，Data Driven 在应用上更多应用于复杂事件的处理。</p>
+<h3 id="二、「有状态的流式处理」概念解析"><a href="#二、「有状态的流式处理」概念解析" class="headerlink" title="二、「有状态的流式处理」概念解析"></a><strong>二、「有状态的流式处理」概念解析</strong></h3><h4 id="1-传统批处理"><a href="#1-传统批处理" class="headerlink" title="1. 传统批处理"></a><strong>1. 传统批处理</strong></h4><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/5.-%E5%B9%BB%E7%81%AF%E7%89%8704.png" alt="img"></p>
+<p>传统批处理方法是持续收取数据，以时间作为划分多个批次的依据，再周期性地执行批次运算。但假设需要计算每小时出现事件转换的次数，如果事件转换跨越了所定义的时间划分，传统批处理会将中介运算结果带到下一个批次进行计算；除此之外，当出现接收到的事件顺序颠倒情况下，传统批处理仍会将中介状态带到下一批次的运算结果中，这种处理方式也不尽如人意。</p>
+<h4 id="2-理想方法"><a href="#2-理想方法" class="headerlink" title="2. 理想方法"></a><strong>2. 理想方法</strong></h4><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/6.-%E5%B9%BB%E7%81%AF%E7%89%8707.png" alt="img"></p>
+<p><strong>第一点</strong>，要有理想方法，这个理想方法是引擎必须要有能力可以累积状态和维护状态，累积状态代表着过去历史中接收过的所有事件，会影响到输出。</p>
+<p><strong>第二点</strong>，时间，时间意味着引擎对于数据完整性有机制可以操控，当所有数据都完全接收到后，输出计算结果。</p>
+<p><strong>第三点</strong>，理想方法模型需要实时产生结果，但更重要的是采用新的持续性数据处理模型来处理实时数据，这样才最符合Continuous data 的特性。</p>
+<h4 id="3-流式处理"><a href="#3-流式处理" class="headerlink" title="3.**流式处理**"></a><strong>3.**</strong>流式处理**</h4><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/7.-%E5%B9%BB%E7%81%AF%E7%89%8708.png" alt="img"></p>
+<p>流式处理简单来讲即有一个无穷无尽的数据源在持续收取数据，以代码作为数据处理的基础逻辑，数据源的数据经过代码处理后产生出结果，然后输出，这就是流式处理的基本原理。</p>
+<h4 id="4-分布式流式处理"><a href="#4-分布式流式处理" class="headerlink" title="4.分布式流式处理"></a>4.分布式流式处理</h4><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/8.-%E5%B9%BB%E7%81%AF%E7%89%8709.png" alt="img"></p>
+<p>假设Input Streams 有很多个使用者，每个使用者都有自己的ID，如果计算每个使用者出现的次数，我们需要让同一个使用者的出现事件流到同一运算代码，这跟其他批次需要做Group by 是同样的概念，所以跟Stream 一样需要做分区，设定相应的Key，然后让同样的 Key 流到同一个 Computation instance 做同样的运算。</p>
+<h4 id="5-有状态分布式流式处理"><a href="#5-有状态分布式流式处理" class="headerlink" title="5. 有状态分布式流式处理"></a><strong>5. 有状态分布式流式处理</strong></h4><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/9.-%E5%B9%BB%E7%81%AF%E7%89%8710.png" alt="img"></p>
+<p>如图，上述代码中定义了变数X，X 在数据处理过程中会进行读和写，在最后输出结果时，可以依据变数X 决定输出的内容，即状态X 会影响最终的输出结果。这个过程中，第一个重点是先进行了状态Co-partitioned key by，同样的 Key 都会流到Computation instance，与使用者出现次数的原理相同，次数即所谓的状态，这个状态一定会跟同一个Key 的事件累积在同一个 Computation instance。类似于根据输入流的Key 重新分区的状态，当分区进入 Stream 之后，这个 Stream 会累积起来的状态也变成 Copartiton 。</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/10.-%E5%B9%BB%E7%81%AF%E7%89%8711.png" alt="img"></p>
+<p>第二个重点是embeded local state backend。有状态分散式流式处理的引擎，状态可能会累积到非常大，当 Key 非常多时，状态可能就会超出单一节点的 Memory 的负荷量，这时候状态必须有状态后端去维护它；在这个状态后端在正常状况下，用In-memory 维护即可。</p>
+<h3 id="三、Apache-Flink-的优势"><a href="#三、Apache-Flink-的优势" class="headerlink" title="三、Apache Flink 的优势"></a><strong>三、Apache Flink 的优势</strong></h3><h4 id="1-状态容错"><a href="#1-状态容错" class="headerlink" title="1. 状态容错"></a><strong>1.</strong> 状态容错</h4><p>当我们考虑状态容错时难免会想到精确一次的状态容错，应用在运算时累积的状态，每笔输入的事件反映到状态，更改状态都是精确一次，如果修改超过一次的话也意味着数据引擎产生的结果是不可靠的。</p>
+<ul>
+<li>如何确保状态拥有精确一次（Exactly-once guarantee）的容错保证？</li>
+<li>如何在分散式场景下替多个拥有本地状态的运算子产生一个全域一致的快照（Global consistent snapshot）？</li>
+<li>更重要的是，如何在不中断运算的前提下产生快照？</li>
+</ul>
+<h5 id="1-1-简单场景的精确一次容错方法"><a href="#1-1-简单场景的精确一次容错方法" class="headerlink" title="1.1 简单场景的精确一次容错方法"></a><strong>1.1</strong> <strong>简单场景的精确一次容错方法</strong></h5><p>还是以使用者出现次数来看，如果某个使用者出现的次数计算不准确，不是精确一次，那么产生的结果是无法作为参考的。在考虑精确的容错保证前，我们先考虑最简单的使用场景，如无限流的数据进入，后面单一的Process 进行运算，每处理完一笔计算即会累积一次状态，这种情况下如果要确保Process 产生精确一次的状态容错，每处理完一笔数据，更改完状态后进行一次快照，快照包含在队列中并与相应的状态进行对比，完成一致的快照，就能确保精确一次。</p>
+<h5 id="1-2-分布式状态容错"><a href="#1-2-分布式状态容错" class="headerlink" title="1.2 分布式状态容错"></a><strong>1.2</strong> <strong>分布式状态容错</strong></h5><p>Flink作为分布式的处理引擎，在分布式的场景下，进行多个本地状态的运算，只产生一个全域一致的快照，如需要在不中断运算值的前提下产生全域一致的快照，就涉及到分散式状态容错。</p>
+<ul>
+<li><strong>Global consistent snapshot</strong></li>
+</ul>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/11.-%E5%B9%BB%E7%81%AF%E7%89%8721.png" alt="img"></p>
+<p>关于Global consistent snapshot，当Operator 在分布式的环境中，在各个节点做运算，首先产生Global consistent snapshot 的方式就是处理每一笔数据的快照点是连续的，这笔运算流过所有的运算值，更改完所有的运算值后，能够看到每一个运算值的状态与该笔运算的位置，即可称为Consistent snapshot，当然，Global consistent snapshot 也是简易场景的延伸。</p>
+<h6 id="容错恢复"><a href="#容错恢复" class="headerlink" title="容错恢复"></a><strong>容错恢复</strong></h6><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/12.-%E5%B9%BB%E7%81%AF%E7%89%8722.png" alt="img"></p>
+<p>首先了解一下Checkpoint，上面提到连续性快照每个Operator 运算值本地的状态后端都要维护状态，也就是每次将产生检查点时会将它们传入共享的DFS 中。当任何一个Process 挂掉后，可以直接从三个完整的Checkpoint 将所有的运算值的状态恢复，重新设定到相应位置。Checkpoint的存在使整个Process 能够实现分散式环境中的Exactly-once。</p>
+<h5 id="1-3-分散式快照（Distributed-Snapshots）方法"><a href="#1-3-分散式快照（Distributed-Snapshots）方法" class="headerlink" title="1.3 分散式快照（Distributed Snapshots）方法"></a><strong>1.3</strong> <strong>分散式快照（Distributed Snapshots）方法</strong></h5><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/13.-%E5%B9%BB%E7%81%AF%E7%89%8723.png" alt="img"></p>
+<p>关于Flink 如何在不中断运算的状况下持续产生Global consistent snapshot，其方式是基于用 Simple lamport 演算法机制下延伸的。已知的一个点Checkpoint barrier，Flink 在某个Datastream 中会一直安插Checkpoint barrier，Checkpoint barrier 也会N – 1等等，Checkpoint barrier N 代表着所有在这个范围里面的数据都是Checkpoint barrier N。</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/14.-%E5%B9%BB%E7%81%AF%E7%89%8725.png" alt="img"></p>
+<p>举例：假设现在需要产生Checkpoint barrier N，但实际上在Flink 中是由Job manager 触发Checkpoint，Checkpoint 被触发后开始从数据源产生Checkpoint barrier。当Job 开始做Checkpoint barrier N 的时候，可以理解为Checkpoint barrier N 需要逐步填充左下角的表格。</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/15.-%E5%B9%BB%E7%81%AF%E7%89%8726.png" alt="img"></p>
+<p>如图，当部分事件标为红色，Checkpoint barrier N 也是红色时，代表着这些数据或事件都由Checkpoint barrier N 负责。Checkpoint barrier N 后面白色部分的数据或事件则不属于Checkpoint barrier N。</p>
+<p>在以上的基础上，当数据源收到Checkpoint barrier N 之后会先将自己的状态保存，以读取Kafka资料为例，数据源的状态就是目前它在Kafka 分区的位置，这个状态也会写入到上面提到的表格中。下游的Operator 1 会开始运算属于Checkpoint barrier N 的数据，当Checkpoint barrier N 跟着这些数据流动到Operator 1 之后,Operator 1 也将属于Checkpoint barrier N 的所有数据都反映在状态中，当收到Checkpoint barrier N 时也会直接对Checkpoint去做快照。</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/16.-%E5%B9%BB%E7%81%AF%E7%89%8727.png" alt="img"></p>
+<p>当快照完成后继续往下游走，Operator 2 也会接收到所有数据，然后搜索Checkpoint barrier N 的数据并直接反映到状态，当状态收到Checkpoint barrier N 之后也会直接写入到Checkpoint N 中。以上过程到此可以看到Checkpoint barrier N 已经完成了一个完整的表格，这个表格叫做Distributed Snapshots，即分布式快照。分布式快照可以用来做状态容错，任何一个节点挂掉的时候可以在之前的Checkpoint 中将其恢复。继续以上Process，当多个Checkpoint 同时进行，Checkpoint barrier N 已经流到Job manager 2，Flink job manager 可以触发其他的Checkpoint，比如Checkpoint N + 1，Checkpoint N + 2 等等也同步进行，利用这种机制，可以在不阻挡运算的状况下持续地产生Checkpoint。</p>
+<h4 id="2-状态维护"><a href="#2-状态维护" class="headerlink" title="2. 状态维护"></a><strong>2. 状态维护</strong></h4><p>状态维护即用一段代码在本地维护状态值，当状态值非常大时需要本地的状态后端来支持。</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/17.-%E5%B9%BB%E7%81%AF%E7%89%8734.png" alt="img"></p>
+<p>如图，在Flink 程序中，可以采用getRuntimeContext().getState(desc); 这组API 去注册状态。Flink 有多种状态后端，采用API 注册状态后，读取状态时都是通过状态后端来读取的。Flink 有两种不同的状态值，也有两种不同的状态后端：</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/18.-%E5%B9%BB%E7%81%AF%E7%89%8737.png" alt="img"></p>
+<ul>
+<li><strong>JVM Heap状态后端</strong>，适合数量较小的状态，当状态量不大时就可以采用JVM Heap 的状态后端。JVM Heap 状态后端会在每一次运算值需要读取状态时，用Java object read / writes 进行读或写，不会产生较大代价，但当Checkpoint 需要将每一个运算值的本地状态放入Distributed Snapshots 的时候，就需要进行序列化了。</li>
+</ul>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/19.-%E5%B9%BB%E7%81%AF%E7%89%8740.png" alt="img"></p>
+<ul>
+<li><strong>RocksDB状态后端</strong>，它是一种out of core 的状态后端。在Runtime 的本地状态后端让使用者去读取状态的时候会经过磁盘，相当于将状态维护在磁盘里，与之对应的代价可能就是每次读取状态时，都需要经过序列化和反序列化的过程。当需要进行快照时只将应用序列化即可，序列化后的数据直接传输到中央的共享DFS 中。</li>
+</ul>
+<p>Flink目前支持以上两种状态后端，一种是纯 Memory 的状态后端，另一种是有资源磁盘的状态后端，在维护状态时可以根据状态的数量选择相应的状态后端。</p>
+<h4 id="3-Event-–-Time"><a href="#3-Event-–-Time" class="headerlink" title="3. Event – Time"></a><strong>3. Event – Time</strong></h4><h5 id="3-1-不同时间种类"><a href="#3-1-不同时间种类" class="headerlink" title="3.1 不同时间种类"></a><strong>3.1</strong> <strong>不同时间种类</strong></h5><p>在Flink 及其他进阶的流式处理引擎出现之前，大数据处理引擎一直只支持Processing-time 的处理。假设定义一个运算 Windows 的窗口，Windows 运算设定每小时进行结算。Processing-time 进行运算时，可以发现数据引擎将3 点至4 点间收到的数据进行结算。实际上在做报表或者分析结果时是想了解真实世界中3 点至4 点之间实际产生数据的输出结果，了解实际数据的输出结果就必须采用Event – Time 了。</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/20.-%E5%B9%BB%E7%81%AF%E7%89%8742.png" alt="img"></p>
+<p>如图，Event – Time 相当于事件，它在数据最源头产生时带有时间戳，后面都需要用时间戳来进行运算。用图来表示，最开始的队列收到数据，每小时对数据划分一个批次，这就是Event – Time Process 在做的事情。</p>
+<h5 id="3-2-Event-–-Time-处理"><a href="#3-2-Event-–-Time-处理" class="headerlink" title="3.2 Event – Time 处理"></a><strong>3.2 Event – Time</strong> <strong>处理</strong></h5><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/21.-%E5%B9%BB%E7%81%AF%E7%89%8744.png" alt="img"></p>
+<p>Event – Time 是用事件真实产生的时间戳去做Re-bucketing，把对应时间3 点到4 点的数据放在3 点到4 点的Bucket，然后Bucket 产生结果。所以Event – Time 跟Processing – time 的概念是这样对比的存在。</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/22.-%E5%B9%BB%E7%81%AF%E7%89%8745.png" alt="img"></p>
+<p>Event – Time 的重要性在于记录引擎输出运算结果的时间。简单来说，流式引擎连续24 小时在运行、搜集资料，假设Pipeline 里有一个 Windows Operator 正在做运算，每小时能产生结果，何时输出 Windows的运算值，这个时间点就是Event – Time 处理的精髓，用来表示该收的数据已经收到。</p>
+<h5 id="3-3-Watermarks"><a href="#3-3-Watermarks" class="headerlink" title="3.3 Watermarks"></a><strong>3.3 Watermarks</strong></h5><p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/23.-%E5%B9%BB%E7%81%AF%E7%89%8746.png" alt="img"></p>
+<p>Flink实际上是用 Watermarks 来实现Event – Time 的功能。Watermarks 在Flink 中也属于特殊事件，其精髓在于当某个运算值收到带有时间戳“ T ”的 Watermarks 时就意味着它不会接收到新的数据了。使用Watermarks 的好处在于可以准确预估收到数据的截止时间。举例，假设预期收到数据时间与输出结果时间的时间差延迟5 分钟，那么Flink 中所有的 Windows Operator 搜索3 点至4 点的数据，但因为存在延迟需要再多等5分钟直至收集完4：05 分的数据，此时方能判定4 点钟的资料收集完成了，然后才会产出3 点至4 点的数据结果。这个时间段的结果对应的就是 Watermarks 的部分。</p>
+<h4 id="4-状态保存与迁移"><a href="#4-状态保存与迁移" class="headerlink" title="4. 状态保存与迁移"></a><strong>4. 状态保存与迁移</strong></h4><p>流式处理应用无时无刻不在运行，运维上有几个重要考量：</p>
+<ul>
+<li>更改应用逻辑/修bug 等，如何将前一执行的状态迁移到新的执行？</li>
+<li>如何重新定义运行的平行化程度？</li>
+<li>如何升级运算丛集的版本号？</li>
+</ul>
+<p>Checkpoint完美符合以上需求，不过Flink 中还有另外一个名词保存点（Savepoint），当手动产生一个Checkpoint 的时候，就叫做一个Savepoint。Savepoint 跟Checkpoint 的差别在于Checkpoint是Flink 对于一个有状态应用在运行中利用分布式快照持续周期性的产生Checkpoint，而Savepoint 则是手动产生的Checkpoint，Savepoint 记录着流式应用中所有运算元的状态。</p>
+<p><img src="../images/%E5%A4%A7%E6%95%B0%E6%8D%AE-flink%E5%85%A5%E9%97%A8.assets/24.-%E5%B9%BB%E7%81%AF%E7%89%8749.png" alt="img"></p>
+<p>如图，Savepoint A 和Savepoint B，无论是变更底层代码逻辑、修bug 或是升级Flink 版本，重新定义应用、计算的平行化程度等，最先需要做的事情就是产生Savepoint。</p>
+<p>Savepoint产生的原理是在Checkpoint barrier 流动到所有的Pipeline 中手动插入从而产生分布式快照，这些分布式快照点即Savepoint。Savepoint 可以放在任何位置保存，当完成变更时，可以直接从Savepoint 恢复、执行。</p>
+<p>从Savepoint 的恢复执行需要注意，在变更应用的过程中时间在持续，如Kafka 在持续收集资料，当从Savepoint 恢复时，Savepoint 保存着Checkpoint 产生的时间以及Kafka 的相应位置，因此它需要恢复到最新的数据。无论是任何运算，Event – Time 都可以确保产生的结果完全一致。</p>
+<p>假设恢复后的重新运算用Process Event – Time，将 Windows 窗口设为1 小时，重新运算能够在10 分钟内将所有的运算结果都包含到单一的 Windows 中。而如果使用Event – Time，则类似于做Bucketing。在Bucketing 的状况下，无论重新运算的数量多大，最终重新运算的时间以及Windows 产生的结果都一定能保证完全一致。</p>
+<h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a><strong>四、总结</strong></h3><p>本文首先从Apache Flink 的定义、架构、基本原理入手，对大数据流计算相关的基本概念进行辨析，在此基础上简单回顾了大数据处理方式的历史演进以及有状态的流式数据处理的原理，最后从目前有状态的流式处理面临的挑战分析Apache Flink 作为业界公认为最好的流计算引擎之一所具备的天然优势。希望有助于大家厘清大数据流式处理引擎涉及的基本概念，能够更加得心应手的使用Flink。</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io" rel="external nofollow noreferrer">张文军</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io/object-object-da-shu-ju-flink-ru-men-01/">https://wjhub.gitee.io/object-object-da-shu-ju-flink-ru-men-01/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="https://wjhub.gitee.io" target="_blank">张文军</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-flink/">
+                                    <span class="chip bg-color">大数剧-flink</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e2373eeaa1a18c1"></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XACT7J8EsoUU4ytieqXVWC8G-gzGzoHsz',
+        appKey: 'KGl573Bxj9uiDPoYFyg6M9Ls',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/object-object-da-shu-ju-flink-ru-men-02/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="大数剧-flink-入门02">
+                        
+                        <span class="card-title">大数剧-flink-入门02</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            flink-入门
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                    大数剧
+                                </a>
+                            
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/flink/" class="post-category">
+                                    flink
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7-flink/">
+                        <span class="chip bg-color">大数剧-flink</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/object-object-chang-shi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="常识">
+                        
+                        <span class="card-title">常识</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            开发常用常识
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-16
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%B8%B8%E8%AF%86/" class="post-category">
+                                    常识
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Linux%E5%91%BD%E4%BB%A4nohup%E5%92%8C/">
+                        <span class="chip bg-color">Linux命令nohup和&amp;</span>
+                    </a>
+                    
+                    <a href="/tags/2-1-%E8%A7%A3%E6%9E%90/">
+                        <span class="chip bg-color">2&gt;&amp;1 解析</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('300')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 学习笔记<br />'
+            + '文章作者: 张文军<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归张文军所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            <span style="vertical-align: text-bottom;">更多内容请关注公众号:<img   width="70" height="70" src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586509086.png"></span>
+            Copyright&nbsp;&copy; 
+            <span id="year">年份</span>
+            <a href="https://wjhub.gitee.io" target="_blank">张文军</a><br>
+            
+            
+            
+            
+            
+            <!-- 
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+             -->
+            <br>
+
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "23";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="http://beian.miit.gov.cn" target="_blank">苏ICP备19067943号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/NJAUzhangwenjun" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:njauzhangwenjun@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2447950131" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2447950131" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+ <!-- 广告
+ <script
+ data-ad-client="ca-pub-1951614324840467"
+ async
+ src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+></script> -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?870b03ca633b2094a1f2f17b76a4fe65";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?63270bce1614ac74b0f3b8911574a80b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i["DaoVoiceObject"] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            a.charset = "utf-8";
+            m.parentNode.insertBefore(a, m)
+        })(window, document, "script", ('https:' == document.location.protocol ? 'https:' : 'http:') +
+            "//widget.daovoice.io/widget/6984b559.js", "daovoice")
+        daovoice('init', {
+            app_id: "c60a1431"
+        });
+        daovoice('update');
+    </script>
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

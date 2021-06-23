@@ -1,0 +1,1337 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="大数剧-知识概括, 张文军,学习笔记,锁清秋">
+    <meta name="description" content="Hadoop初试 Hadoop1、什么是Hadoop2、Hadoop发行版介绍3、Hadoop版本演变历史4、Hadoop3.x的细节优化5、Hadoop三大核心组件介绍6、伪分布集群安装部署7、分布式集群安装部署8、Hadoop的客户端节">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+
+
+    <meta name="baidu_union_verify" content="28f5c5d83967eb03d315b5e8e7538217">
+
+
+    
+    <title>大数剧-知识概括 | 学习笔记</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+
+    
+    
+<link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">学习笔记</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>Medias</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>我的相册</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">学习笔记</div>
+        <div class="logo-desc">
+            
+            只懂追求技术的小白
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;" target="_blank" rel="noopener">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			Medias
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>   
+				
+                  <a href="/galleries " style="margin-left:75px";>
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>我的相册</span>
+                  </a>
+                </li>
+               
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/NJAUzhangwenjun" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/NJAUzhangwenjun" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页(或联系博主：qq：2447950131)！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        大数剧-知识概括
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7/">
+                                <span class="chip bg-color">大数剧</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E5%89%A7/" class="post-category">
+                                大数剧
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-08-26
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2021-01-28
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    12 分
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h2><h3 id="初试-Hadoop"><a href="#初试-Hadoop" class="headerlink" title="初试 Hadoop"></a>初试 Hadoop</h3><p>1、什么是Hadoop<br>2、Hadoop发行版介绍<br>3、Hadoop版本演变历史<br>4、Hadoop3.x的细节优化<br>5、Hadoop三大核心组件介绍<br>6、伪分布集群安装部署<br>7、分布式集群安装部署<br>8、Hadoop的客户端节点</p>
+<h3 id="Hadoop之HDFS的使用"><a href="#Hadoop之HDFS的使用" class="headerlink" title="Hadoop之HDFS的使用"></a>Hadoop之HDFS的使用</h3><p>1、生活场景引入：”小明租房”案例一步一步引入Hadoop中的分布式存储架构<br>2、HDFS的Shell介绍<br>3、HDFS的常见Shell操作<br>4、HDFS案例实操<br>5、Java代码操作HDFS</p>
+<h3 id="Hadoop之HDFS核心进程剖析"><a href="#Hadoop之HDFS核心进程剖析" class="headerlink" title="Hadoop之HDFS核心进程剖析"></a>Hadoop之HDFS核心进程剖析</h3><blockquote>
+<p>通过对HDFS中核心进程NameNode、SecondaryNameNode、DataNode进行详细分析，理解HDFS的底层原理</p>
+</blockquote>
+<p>1、NameNode介绍<br>2、NameNode深入<br>3、SecondaryNameNode介绍<br>4、DataNode介绍<br>5、HDFS的回收站<br>6、HDFS的安全模式详解<br>7、实战：定时上传数据至HDFS<br>8、HDFS的高可用和高扩展机制分析</p>
+<h3 id="Hadoop之初识MR"><a href="#Hadoop之初识MR" class="headerlink" title="Hadoop之初识MR"></a>Hadoop之初识MR</h3><blockquote>
+<p>MapReduce的执行流程，并且通过开发WordCount案例加深理解。</p>
+</blockquote>
+<p>1、MapReduce介绍<br>2、 MapReduce执行原理<br>3、实战：WordCount案例图解<br>4、实战：WordCount案例开发<br>5、MapReduce任务日志查看<br>6、停止Hadoop集群中的任务<br>7、MapReduce程序扩展</p>
+<p>阶段二：PB级离线数据计算分析方案</p>
+<p>第6周  拿来就用的企业级解决方案</p>
+<p>详细分析了小文件的解决方案、数据倾斜的解决方案、YARN调度器的使用、以及Hadoop在CDH和HDP中的使用。</p>
+<p>课程安排：</p>
+<p>1、小文件问题之SequenceFile<br>2、小文件问题之MapFile<br>3、案例：小文件存储和计算<br>4、 数据倾斜问题分析<br>5、数据倾斜案例实战<br>6、YARN的基本情况介绍<br>7、YARN中的调度器分析<br>8、案例：YARN多资源队列配置和使用<br>9、Hadoop官方文档使用指北<br>10、Hadoop在CDH中的使用<br>11、Hadoop在HDP中的使用</p>
+<h2 id="Flume"><a href="#Flume" class="headerlink" title="Flume"></a>Flume</h2><p>1、快速了解Flume<br>2、Flume的三大核心组件<br>3、Flume安装部署<br>4、Flume的Hello World<br>5、案例：采集文件内容上传至HDFS<br>6、Flume高级组件之Source Interceptors<br>7、Flume高级组件之Channel Selectors<br>8、Flume高级组件之Sink Processors<br>9、各种自定义组件<br>10、Flume优化<br>11、Flume进程监控</p>
+<h2 id="数据仓库Hive"><a href="#数据仓库Hive" class="headerlink" title="数据仓库Hive"></a>数据仓库Hive</h2><p>1、快速了解Hive<br>2、数据库和数据仓库的区别<br>3、Hive安装部署<br>4、Hive使用方式之命令行方式<br>5、Hive使用方式之JDBC方式<br>6、Set命令的使用<br>7、Hive的日志配置<br>8、Hive中数据库的操作<br>9、Hive中表的操作<br>10、Hive中数据类型的应用<br>11、Hive表类型之内部表+外部表<br>12、Hive表类型之内部分区表<br>13、Hive表类型之外部分区表<br>14、Hive表类型之桶表+视图<br>15、Hive数据处理综合案例<br>16、Hive高级函数之分组排序取TopN<br>17、Hive高级函数之行转列<br>18、Hive高级函数之列转行<br>19、Hive的排序函数<br>20、Hive的分组和去重函数<br>21、一个SQL语句分析<br>22、Hive的Web工具-HUE</p>
+<h2 id="Scala语言"><a href="#Scala语言" class="headerlink" title="Scala语言"></a>Scala语言</h2><p>1、快速了解Scala<br>2、Scala环境安装配置<br>3、Scala中的变量和数据类型<br>4、Scala中的表达式和循环<br>5、Scala集合体系之Set+List+Map<br>6、Scala中的Array和Tuple<br>7、Scala中函数的使用<br>8、Scala面向对象之类的使用<br>9、Scala面向对象之对象和伴生对象<br>10、Scala面向对象之apply和main的使用<br>11、Scala面向对象之接口的使用<br>12、Scala函数式编程之匿名函数和高阶函数的使用<br>13、Scala高级特性之模式匹配和隐式转换</p>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><blockquote>
+<p>Spark是目前企业中应用最广泛的计算引擎，盘它！实际案例详细分析Spark中的Transformation算子和Action算子使用，RDD持久化，共享变量使用</p>
+</blockquote>
+<p>1、快速了解Spark<br>2、Spark 集群安装部署(Standalone+ON YARN)<br>3、Spark工作原理分析<br>4、什么是RDD<br>5、Spark架构原理<br>6、Spark项目开发环境配置<br>7、WordCount代码开发(Java+Scala)<br>8、Spark任务的三种提交方式<br>9、Spark开启historyServer服务<br>10、创建RDD的三种方式<br>11、Transformation和Action介绍<br>12、Transformation操作开发实战<br>13、Action操作开发实战<br>14、RDD持久化原理<br>15、RDD持久化开发实战<br>16、共享变量之Broadcast Variable的使用<br>17、共享变量之Accumulator的使用<br>18、案例实战：TopN主播统计<br>19、面试题</p>
+<h2 id="Spark性能优化的道与术"><a href="#Spark性能优化的道与术" class="headerlink" title="Spark性能优化的道与术"></a>Spark性能优化的道与术</h2><blockquote>
+<p>通过对Spark中的宽依赖、窄依赖、Stage、Shuffle机制进行详细分析，加深对Spark的理解，以及对Spark中的checkpoint机制通过源码层面进行深度剖析。</p>
+</blockquote>
+<p>1、宽依赖和窄依赖<br>2、Stage的理解<br>3、Spark任务的三种提交模式<br>4、Shuffle介绍<br>5、三种Shuffle机制分析<br>6、checkpoint概述<br>7、checkpoint和持久化的区别<br>8、checkpoint代码开发和执行分析<br>9、checkpoint源码分析之写操作和读操作<br>10、Spark程序性能优化分析<br>11、高性能序列化类库Kryo的使用<br>12、持久化或者checkpoint<br>13、JVM垃圾回收调忧<br>14、提高并行度<br>15、数据本地化<br>16、算子优化<br>17、SparkSql快速上手使用<br>18、实战：SparkSQL实现TopN主播统计</p>
+<h2 id="电商数据仓库之用户行为数仓"><a href="#电商数据仓库之用户行为数仓" class="headerlink" title="电商数据仓库之用户行为数仓"></a>电商数据仓库之用户行为数仓</h2><blockquote>
+<p>整合各个业务线数据，为各个业务系统提供统一&amp;规范的数据出口。通过对项目的由来，需求、技术进行分析和选型，实现用户行为数据数仓开发。</p>
+</blockquote>
+<p>1、项目效果展示<br>2、项目的由来<br>3、什么是数据仓库<br>4、数据仓库基础知识<br>5、数据仓库分层<br>6、典型数仓系统架构分析<br>7、技术选型<br>8、整体架构设计<br>9、服务器资源规划<br>10、生成用户行为数据【客户端数据】<br>11、生成商品订单相关数据【服务端数据】<br>12、采集用户行为数据【客户端数据】<br>13、Sqoop安装部署<br>14、Sqoop之数据导入功能<br>15、Sqoop之数据导出功能<br>16、采集商品订单相关数据【服务端数据】<br>17、用户行为数据数仓开发之ods层开发<br>18、用户行为数据数仓开发之ods层脚本抽取<br>19、用户行为数据数仓开发之dwd层开发<br>20、用户行为数据数仓开发之dwd层脚本抽取<br>21、用户行为数据数仓需求分析<br>22、用户行为数据数仓需求开发<br>23、用户行为数据数仓表和任务脚本总结</p>
+<h2 id="电商数据仓库之商品订单数仓"><a href="#电商数据仓库之商品订单数仓" class="headerlink" title="电商数据仓库之商品订单数仓"></a>电商数据仓库之商品订单数仓</h2><blockquote>
+<p>基于商品订单数据开发数仓，详细分析了拉链表的由来和具体实现。使用数据可视化工具Zepplin实现数据展现，使用Azkaban调度器实现任务依赖调度。</p>
+</blockquote>
+<p>1、商品订单数据数仓开发之ods层和dwd层<br>2、商品订单数据数仓需求分析与开发<br>3、什么是拉链表<br>4、如何制作拉链表<br>5、【实战】基于订单表的拉链表实现<br>6、拉链表的性能问题分析<br>7、商品订单数据数仓表和任务脚本总结<br>8、数据可视化之Zepplin的安装部署和参数配置<br>9、数据可视化之Zepplin的使用<br>10、任务调度之Crontab调度器的使用<br>11、任务调度之Azkaban的安装部署<br>12、任务调度之Azkaban提交独立任务<br>13、任务调度之Azkaban提交依赖任务<br>14、任务调度之在数仓中使用Azkaban<br>15、项目优化</p>
+<h2 id="高频实时数据处理方案"><a href="#高频实时数据处理方案" class="headerlink" title="高频实时数据处理方案"></a>高频实时数据处理方案</h2><h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><blockquote>
+<p>Kafka是一个支持高吞吐、持久性、分布式的消息队列，非常适合海量数据的实时生产和消费，详细分析了Kafka的核心原理、代码实战、性能优化，以及Kafka的企业级应用。</p>
+</blockquote>
+<p>1、什么是消息队列<br>2、什么是Kafka<br>3、Zookeeper安装部署之单机模式和集群模式<br>4、 Kafka安装部署之单机模式和集群模式<br>5、Kafka中的生产者和消费者<br>6、案例：QQ群聊天<br>7、Broker扩展内容<br>8、Producer扩展内容<br>9、Consumer扩展内容<br>10、Topic+Partition+Message扩展内容<br>11、Kafka中的存储策略<br>12、Kafka中的容错机制<br>13、Java代码实现生产者代码<br>14、Java代码实现消费者代码<br>15、消费者代码扩展<br>16、Consumer消费Offset查询<br>17、Consumer消费顺序<br>18、Kafka的三种语义<br>19、Kafka参数调忧之JVM参数调忧<br>20、Kafka参数调忧之Replication参数调忧<br>21、Kafka参数调忧之Log参数调忧<br>22、Kafka Topic命名小技巧<br>23、Kafka集群监控管理工具(CMAK)<br>24、实战：Flume集成Kafka<br>25、实战：Kafka集群平滑升级</p>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><blockquote>
+<p>Redis是一种面向键值对的NoSQL内存数据库，可以满足我们对海量数据的读写需求，学习Redis中的五种常用数据类型以及Redis中的一些高级特性，达到快速上手使用。</p>
+</blockquote>
+<p>1、快速了解Redis<br>2、Redis的安装部署<br>3、Redis基础命令<br>4、Redis多数据库特性<br>5、Redis常用数据类型之String<br>6、Redis常用数据类型之Hash<br>7、Redis常用数据类型之List<br>8、Redis常用数据类型之Set<br>9、Redis常用数据类型之Sorted Set<br>10、案例：存储高一班的学员信息<br>11、Java代码操作Redis之单连接<br>12、Java代码操作Redis之连接池<br>13、提取RedisUtils工具类<br>14、Redis高级特性之expire<br>15、Redis高级特性之pipeline<br>16、Redis高级特性之info<br>17、Redis持久化之RDB<br>18、Redis持久化之AOF<br>19、Redis的安全策略<br>20、Redis监控命令-monitor<br>21、Redis架构演进过程</p>
+<h2 id="Flink快速上手篇"><a href="#Flink快速上手篇" class="headerlink" title="Flink快速上手篇"></a>Flink快速上手篇</h2><p>快速了解Flink的基本原理和核心特点，掌握Flink中流数据和批数据的编程思路和代码实战，Flink中Standalone集群、ON YARN集群的安装部署，以及Flink中核心API的使用。</p>
+<p>1、快速了解Flink<br>2、Flink Streaming程序开发<br>3、Flink Batch程序开发<br>4、Flink Standalone集群安装部署<br>5、Flink ON YARN的第一种方式<br>6、Flink ON YARN的第二种方式<br>7、向集群中提交Flink任务<br>8、Flink核心API介绍<br>9、DataStream API之DataSource<br>10、DataStream API之Transformation<br>11、DataStream API之分区规则介绍<br>12、DataStream API之分区规则的使用<br>13、DataStream API之DataSink<br>14、DataSet API之DataSource<br>15、DataSet API之Transformation<br>16、DataSet API之DataSink<br>17、Table API 和 SQL介绍<br>18、创建TableEnvironment对象<br>19、TableAPI和SQL的使用<br>20、使用DataStream创建表<br>21、使用DataSet创建表<br>22、将表转换成DataStream<br>22、将表转换成DataSet</p>
+<h2 id="Flink高级进阶之路"><a href="#Flink高级进阶之路" class="headerlink" title="Flink高级进阶之路"></a>Flink高级进阶之路</h2><blockquote>
+<p>详细剖析Window和Time的使用，Watermark的实战应用，并行度的设置，Kafka Connector的具体应用，以及SparkStreaming的特性和使用。</p>
+</blockquote>
+<p>1、Window的概念和类型<br>2、TimeWindow的使用<br>3、CountWindow的使用<br>4、自定义Window的使用<br>5、Window中的增量聚合和全量聚合<br>6、Flink中的Time<br>7、Watermark的分析<br>8、开发Watermark代码<br>9、通过数据跟踪观察Watermark<br>10、Watermark+EventTime处理乱序数据<br>11、延迟数据的三种处理方式<br>12、在多并行度下的Watermark应用<br>13、Watermark案例总结<br>14、并行度介绍及四种设置方式<br>15、并行度案例分析<br>16、KafkaConsumer的使用<br>17、KafkaConsumer消费策略设置<br>18、KafkaConsumer的容错<br>19、KafkaProducer的使用<br>20、KafkaProducer的容错<br>21、SparkStreaming的WordCount程序开发<br>22、SparkStreaming整合Kafka</p>
+<h2 id="综合项目：三度关系推荐系统-数据中台"><a href="#综合项目：三度关系推荐系统-数据中台" class="headerlink" title="综合项目：三度关系推荐系统+数据中台"></a>综合项目：三度关系推荐系统+数据中台</h2><p>第18周  直播平台三度关系推荐V1.0</p>
+<p>构建直播平台用户三度关系推荐系统，详细分析数据采集/数据分发/数据存储/数据计算/数据展现等功能，完整复现互联网企业大数据项目从0<del>1，从1</del>N的开发过程。</p>
+<p>课程安排：</p>
+<p>1、项目介绍<br>2、项目需求分析<br>3、技术选型<br>4、整体架构设计<br>5、Neo4j快速上手使用<br>6、数据采集架构详细分析<br>7、数据来源分析<br>8、模拟产生数据<br>9、数据采集聚合<br>10、数据分发<br>11、数据落盘<br>12、数据计算核心指标详细分析与实现<br>13、三度关系推荐页面数据接入<br>14、三度关系推荐流程演示<br>15、项目代码双语支持<br>16、项目总结</p>
+<p>第19周  直播平台三度关系推荐V2.0</p>
+<p>分析V1.0架构存在的问题及弊端，重新设计整体架构方案，进行迭代优化，基于最新的架构方案重新实现核心功能代码，开发数据接口，优化数据传输逻辑，提高数据安全性。</p>
+<p>课程安排：</p>
+<p>1、现有V1.0技术架构分析<br>2、V2.0技术架构设计<br>3、数据计算核心指标详细分析<br>4、历史粉丝关注数据初始化<br>5、实时维护粉丝关注数据<br>6、每天定时更新主播等级<br>7、每天定时更新用户活跃时间<br>8、每周一计算最近一月主播视频评级<br>9、每周一计算最近一月主播视频评级<br>10、三度关系列表数据导出到Redis<br>11、数据接口定义与开发<br>12、项目代码双语支持<br>13、项目总结</p>
+<p>第20周  数据中台大屏</p>
+<p>掌握一线互联网企业数据中台构建流程，了解巨头企业的项目架构，理解巨型项目的思想。</p>
+<p>课程安排：</p>
+<p>1、什么是中台<br>2、中台化主要解决的问题<br>3、中台的延伸<br>4、什么是数据中台<br>5、数据中台演进的四个阶段<br>6、数据中台需要具备三大能力<br>7、企业级数据中台架构分析</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io" rel="external nofollow noreferrer">张文军</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wjhub.gitee.io/object-object-da-shu-ju-xue-xi-lu-xian/">https://wjhub.gitee.io/object-object-da-shu-ju-xue-xi-lu-xian/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="https://wjhub.gitee.io" target="_blank">张文军</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%A4%A7%E6%95%B0%E5%89%A7/">
+                                    <span class="chip bg-color">大数剧</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e2373eeaa1a18c1"></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XACT7J8EsoUU4ytieqXVWC8G-gzGzoHsz',
+        appKey: 'KGl573Bxj9uiDPoYFyg6M9Ls',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'just go go'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/object-object-mian-shi-zhun-bei-a-li-3/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="面试准备-阿里-3">
+                        
+                        <span class="card-title">面试准备-阿里-3</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            面试准备（VIP-shop-> 阿里）
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="post-category">
+                                    面试题
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%9D%A2%E8%AF%95%E5%87%86%E5%A4%87%EF%BC%88VIP-shop-%E9%98%BF%E9%87%8C%EF%BC%89/">
+                        <span class="chip bg-color">面试准备（VIP-shop-&gt; 阿里）</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/object-object-chang-jian-suan-fa-si-xiang/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="常见算法思想">
+                        
+                        <span class="card-title">常见算法思想</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            常见算法思想
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E7%AE%97%E6%B3%95/" class="post-category">
+                                    算法
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">回溯算法</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-DP/">
+                        <span class="chip bg-color">动态规划(DP)</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('300')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 学习笔记<br />'
+            + '文章作者: 张文军<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归张文军所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            <span style="vertical-align: text-bottom;">更多内容请关注公众号:<img   width="70" height="70" src="https://zhangwenjun-1258908231.cos.ap-nanjing.myqcloud.com/njauit/1586509086.png"></span>
+            Copyright&nbsp;&copy; 
+            <span id="year">年份</span>
+            <a href="https://wjhub.gitee.io" target="_blank">张文军</a><br>
+            
+            
+            
+            
+            
+            <!-- 
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+             -->
+            <br>
+
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2019";
+                    var startMonth = "11";
+                    var startDate = "23";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="http://beian.miit.gov.cn" target="_blank">苏ICP备19067943号</a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/NJAUzhangwenjun" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:njauzhangwenjun@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2447950131" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2447950131" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+ <!-- 广告
+ <script
+ data-ad-client="ca-pub-1951614324840467"
+ async
+ src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+></script> -->
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?870b03ca633b2094a1f2f17b76a4fe65";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?63270bce1614ac74b0f3b8911574a80b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i["DaoVoiceObject"] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            a.charset = "utf-8";
+            m.parentNode.insertBefore(a, m)
+        })(window, document, "script", ('https:' == document.location.protocol ? 'https:' : 'http:') +
+            "//widget.daovoice.io/widget/6984b559.js", "daovoice")
+        daovoice('init', {
+            app_id: "c60a1431"
+        });
+        daovoice('update');
+    </script>
+    
+
+    
+
+    
+
+    
+    <script type="text/javascript" src="/libs/background/ribbon-dynamic.js" async="async"></script>
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
